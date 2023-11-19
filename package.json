@@ -1,0 +1,51 @@
+{
+  "name": "mpactions",
+  "scripts": {
+    "dev": "next dev",
+    "build": "yarn prisma migrate deploy && yarn prisma generate && next build",
+    "env": "vercel env pull .env"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
+    "@iconify/react": "^4.1.1",
+    "@prisma/client": "5.6.0",
+    "@radix-ui/react-accessible-icon": "^1.0.3",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@tanstack/react-query": "^5.8.4",
+    "@trpc/client": "^10.43.6",
+    "@trpc/react-query": "^10.43.6",
+    "@trpc/server": "^10.43.6",
+    "@types/node": "20.9.2",
+    "@types/react": "18.2.37",
+    "@types/react-dom": "18.2.15",
+    "autoprefixer": "10.4.16",
+    "clsx": "^2.0.0",
+    "cookie": "^0.6.0",
+    "crypto-random-string": "^5.0.0",
+    "nanoid": "^5.0.3",
+    "next": "^14.0.3",
+    "postcss": "8.4.31",
+    "pubnub": "^7.4.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.48.2",
+    "tailwindcss": "3.3.5",
+    "typescript": "5.2.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/cookie": "^0",
+    "@types/pubnub": "^7",
+    "eslint": "8.54.0",
+    "eslint-config-next": "14.0.3",
+    "npm-check-updates": "^16.14.10",
+    "prettier": "^3.1.0",
+    "prettier-plugin-tailwindcss": "^0.5.7",
+    "prisma": "^5.6.0",
+    "vercel": "^32.5.5"
+  },
+  "packageManager": "yarn@4.0.2"
+}

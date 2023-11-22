@@ -3,10 +3,13 @@ import cryptoRandomString from "crypto-random-string";
 import {
     createErrorResponse,
     createSuccessResponse,
-} from "@/app/api/lib/apiResponse";
+} from "@/app/api/lib/server/apiResponse";
 import { SessionModel } from "@/db/models/Session/mongo";
 import { UserAPIModel } from "@/db/models/User/consumers";
 import { UserModel } from "@/db/models/User/mongo";
+import { mongoConnect } from "@/db/mongo";
+
+mongoConnect();
 
 export const POST = async (req: Request) => {
     const body = await req.json();

@@ -1,10 +1,10 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-import { connectMongo } from "@/db/mongo";
+import { mongoConnect } from "@/db/mongo";
 import { appRouter } from "@/server/router";
 import { createContext } from "@/server/trpc";
 
-connectMongo();
+mongoConnect();
 
 const handler = (req: Request) =>
     fetchRequestHandler({

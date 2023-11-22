@@ -1,8 +1,21 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 import { DiscordLoginButton } from "@/app/DiscordLoginButton";
+import { useUser } from "@/app/providers/UserProvider";
 
 export default function RootPage() {
+    const user = useUser();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (user.authenticated) {
+            router.push("/home");
+        }
+    }, []);
+
     return (
         <div className="flex h-screen w-screen items-center justify-center">
             <main className="flex max-w-md flex-col gap-2 rounded-lg bg-white/10 p-4 shadow-md">

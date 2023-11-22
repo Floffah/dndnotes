@@ -1,8 +1,8 @@
 "use client";
 
-import { trpc } from "@/app/api/lib/trpc";
+import { trpc } from "@/app/api/lib/client/trpc";
 import { Icon } from "@/app/components/Icon";
-import { authenticateUser } from "@/app/lib/authentication";
+import { authenticateUser } from "@/app/lib/authenticateUser";
 
 export function DiscordLoginButton() {
     const utils = trpc.useUtils();

@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 
 import "@/app/globals.css";
+import BaseLayout from "@/app/layouts/BaseLayout";
 import { TRPCProvider } from "@/app/providers/TRPCProvider";
 
 export const metadata = {
@@ -9,11 +10,5 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
-    return (
-        <html lang="en">
-            <body>
-                <TRPCProvider>{children}</TRPCProvider>
-            </body>
-        </html>
-    );
+    return <BaseLayout>{children}</BaseLayout>;
 }

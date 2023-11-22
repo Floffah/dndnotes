@@ -1,10 +1,8 @@
 import { procedure, router } from "../trpc";
 
-import { UserAPIModel } from "@/db/models/User/consumers";
+import { UserAPIModel, UserAPIType } from "@/db/models/User/consumers";
 
 export const appRouter = router({
-    greeting: procedure.query(() => "hello tRPC v10!"),
-
     getCurrentUser: procedure.query((opts) => {
         if (!opts.ctx.session) return null;
 

@@ -7,7 +7,7 @@ import {
     ReactNode,
 } from "react";
 
-import { trpc } from "@/app/api/lib/trpc";
+import { trpc } from "@/app/api/lib/client/trpc";
 
 export const TRPCProvider = trpc.withTRPC(({ children }: PropsWithChildren) => {
     return <>{children}</>;

@@ -20,7 +20,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
             value={{
                 ...((userQuery.data as UserAPIType) ?? {}),
                 loading: userQuery.isLoading,
-                authenticated: userQuery.isLoading && !userQuery.data,
+                authenticated: userQuery.isLoading && !!userQuery.data?.id,
             }}
         >
             {children}

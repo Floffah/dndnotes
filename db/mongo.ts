@@ -7,6 +7,10 @@ if (!cached) {
 }
 
 export async function mongoConnect() {
+    if (process.env.CI) {
+        return;
+    }
+
     if (cached.conn) {
         return cached.conn;
     }

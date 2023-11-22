@@ -13,16 +13,18 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-query": "^5.8.4",
-    "@trpc/client": "^10.43.6",
-    "@trpc/react-query": "^10.43.6",
-    "@trpc/server": "^10.43.6",
-    "@types/node": "20.9.2",
-    "@types/react": "18.2.37",
-    "@types/react-dom": "18.2.15",
+    "@trpc/client": "^11.0.0-alpha-next-2023-11-21-11-13-12.106",
+    "@trpc/next": "^11.0.0-alpha-next-2023-11-21-11-13-12.106",
+    "@trpc/react-query": "^11.0.0-alpha-next-2023-11-21-11-13-12.106",
+    "@trpc/server": "^11.0.0-alpha-next-2023-11-21-11-13-12.106",
+    "@types/node": "20.9.4",
+    "@types/react": "18.2.38",
+    "@types/react-dom": "18.2.17",
     "autoprefixer": "10.4.16",
     "clsx": "^2.0.0",
     "cookie": "^0.6.0",
     "crypto-random-string": "^5.0.0",
+    "mongoose": "^8.0.1",
     "nanoid": "^5.0.3",
     "next": "^14.0.3",
     "postcss": "8.4.31",
@@ -31,7 +33,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.48.2",
     "tailwindcss": "3.3.5",
-    "typescript": "5.2.2",
+    "typescript": "5.3.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -40,10 +42,10 @@
     "@types/pubnub": "^7",
     "eslint": "8.54.0",
     "eslint-config-next": "14.0.3",
-    "npm-check-updates": "^16.14.10",
+    "npm-check-updates": "^16.14.11",
     "prettier": "^3.1.0",
     "prettier-plugin-tailwindcss": "^0.5.7",
-    "vercel": "^32.5.5"
+    "vercel": "^32.5.6"
   },
   "packageManager": "yarn@4.0.2"
 }

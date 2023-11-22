@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
@@ -20,7 +22,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
             value={{
                 ...((userQuery.data as UserAPIType) ?? {}),
                 loading: userQuery.isLoading,
-                authenticated: userQuery.isLoading && !!userQuery.data?.id,
+                authenticated: !userQuery.isLoading && !!userQuery.data?.id,
             }}
         >
             {children}

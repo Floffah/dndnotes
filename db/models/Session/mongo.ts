@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model } from "mongoose";
 
 import { Session } from "@/db/models/Session/index";
 import { decorateSchema } from "@/db/models/decorateSchema";

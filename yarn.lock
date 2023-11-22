@@ -1293,28 +1293,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.8.3":
-  version: 5.8.3
-  resolution: "@tanstack/query-core@npm:5.8.3"
-  checksum: cc2cc74f63b73dfda241de0c468e81be1db32e601783dafe599ce678b5e2697b6cedac42118d0e4b5aa7abfca2a6534065494157905dffd46446290b24587827
+"@tanstack/query-core@npm:4.36.1":
+  version: 4.36.1
+  resolution: "@tanstack/query-core@npm:4.36.1"
+  checksum: f286529dbd4c9cdb237ef0bfa72d785c74b5d0958290e8d85c343043ba7be4bbc6cb771167d8c13ca12bd4f37412a3d8b69331f57daa375b2071fd4752aed66a
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.8.4":
-  version: 5.8.4
-  resolution: "@tanstack/react-query@npm:5.8.4"
+"@tanstack/react-query@npm:4.36.1":
+  version: 4.36.1
+  resolution: "@tanstack/react-query@npm:4.36.1"
   dependencies:
-    "@tanstack/query-core": "npm:5.8.3"
+    "@tanstack/query-core": "npm:4.36.1"
+    use-sync-external-store: "npm:^1.2.0"
   peerDependencies:
-    react: ^18.0.0
-    react-dom: ^18.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-native: "*"
   peerDependenciesMeta:
     react-dom:
       optional: true
     react-native:
       optional: true
-  checksum: 495a36b774b063cabe44e2b61c62185fe25c4b6cd4b1d86a1c6b494560981a25534beb8341557559b785a186dcefe99fb6478091a96a51f7337e419d8c42b045
+  checksum: 15d9c98269d52fbdd49f4eb4b077b5d70346f904ea2ae51fd0400949d731afde658919a1143dd849fb50d4c5b6d0ab072e7b313a098ef316dd1c24089653f626
   languageName: node
   linkType: hard
 
@@ -1352,49 +1353,49 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trpc/client@npm:^11.0.0-alpha-next-2023-11-21-11-13-12.106":
-  version: 11.0.0-alpha-next-2023-11-21-11-13-12.106
-  resolution: "@trpc/client@npm:11.0.0-alpha-next-2023-11-21-11-13-12.106"
+"@trpc/client@npm:^10.44.0":
+  version: 10.44.0
+  resolution: "@trpc/client@npm:10.44.0"
   peerDependencies:
-    "@trpc/server": 11.0.0-alpha-next-2023-11-21-11-13-12.106+fd86afd65
-  checksum: 2e03bf82198c52cb0c5ab9876524493329ddb134a6d029f21b0609321ceffe43c59da0a63a921f008e9759807d1b5ca6c2d0588edee1daf76c665675c05e45ba
+    "@trpc/server": 10.44.0
+  checksum: ef033019983b8cb5ade236bcececcbbcc586c426855eb407bd1822ad7b2180385daa2bba405068ed40048b3f056f73a609addabe38b5c915791dc3a6b197400a
   languageName: node
   linkType: hard
 
-"@trpc/next@npm:^11.0.0-alpha-next-2023-11-21-11-13-12.106":
-  version: 11.0.0-alpha-next-2023-11-21-11-13-12.106
-  resolution: "@trpc/next@npm:11.0.0-alpha-next-2023-11-21-11-13-12.106"
+"@trpc/next@npm:^10.44.0":
+  version: 10.44.0
+  resolution: "@trpc/next@npm:10.44.0"
   dependencies:
     react-ssr-prepass: "npm:^1.5.0"
   peerDependencies:
-    "@tanstack/react-query": ^5.0.0
-    "@trpc/client": 11.0.0-alpha-next-2023-11-21-11-13-12.106+fd86afd65
-    "@trpc/react-query": 11.0.0-alpha-next-2023-11-21-11-13-12.106+fd86afd65
-    "@trpc/server": 11.0.0-alpha-next-2023-11-21-11-13-12.106+fd86afd65
+    "@tanstack/react-query": ^4.18.0
+    "@trpc/client": 10.44.0
+    "@trpc/react-query": 10.44.0
+    "@trpc/server": 10.44.0
     next: "*"
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 846de9c171866a9f698b877d9e58dae014eb315e526c85b59baa54c080d77b852f241ef2096e9a4ac72ff91b6cf7af6ec0821270309b091c5a0e91e0da9912c0
+  checksum: 529b4074c80320147cb6ae01f5b2a5e0a693e7ce7ccdd215c78ed12bf198082866f9b93a88a57d9a064411cf06e0582671b311afcc812c32fb41a56d8c88f907
   languageName: node
   linkType: hard
 
-"@trpc/react-query@npm:^11.0.0-alpha-next-2023-11-21-11-13-12.106":
-  version: 11.0.0-alpha-next-2023-11-21-11-13-12.106
-  resolution: "@trpc/react-query@npm:11.0.0-alpha-next-2023-11-21-11-13-12.106"
+"@trpc/react-query@npm:^10.44.0":
+  version: 10.44.0
+  resolution: "@trpc/react-query@npm:10.44.0"
   peerDependencies:
-    "@tanstack/react-query": ^5.0.0
-    "@trpc/client": 11.0.0-alpha-next-2023-11-21-11-13-12.106+fd86afd65
-    "@trpc/server": 11.0.0-alpha-next-2023-11-21-11-13-12.106+fd86afd65
+    "@tanstack/react-query": ^4.18.0
+    "@trpc/client": 10.44.0
+    "@trpc/server": 10.44.0
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 6e8222546a5325c8e47f5819f19040e433a2c791122330ede193366b5909b38ef24a9b3bb298a07789e825b692840629f61c48c254c78d7c32ce10fe1ff43511
+  checksum: a8e87dbc562b9eb589c562bf4e64984a21b6d461d72de2ca7b025e782bab5c75d6ed49c876d40a1dfea922ff1c5217ddf78444e665af099d2856443c3bb8468b
   languageName: node
   linkType: hard
 
-"@trpc/server@npm:^11.0.0-alpha-next-2023-11-21-11-13-12.106":
-  version: 11.0.0-alpha-next-2023-11-21-11-13-12.106
-  resolution: "@trpc/server@npm:11.0.0-alpha-next-2023-11-21-11-13-12.106"
-  checksum: e73426042700af28e39545916467763ce3a338cb5dfc5f337de7083f6fa651d5c6b6393e3f1e04e58a8980066046a819bf6f4c06adc4d16faa07f7a4b6646a68
+"@trpc/server@npm:^10.44.0":
+  version: 10.44.0
+  resolution: "@trpc/server@npm:10.44.0"
+  checksum: f5bc4864edf99eba63489237a5eb954ca5828c0d80f648bb4dbb7e26109614a9f9dbccbfe581b345dbfebfee7a3e276cb83cace7ec4f6fbfc0c29c9fedea9145
   languageName: node
   linkType: hard
 
@@ -5995,12 +5996,12 @@ __metadata:
     "@radix-ui/react-select": "npm:^2.0.0"
     "@radix-ui/react-separator": "npm:^1.0.3"
     "@radix-ui/react-slot": "npm:^1.0.2"
-    "@tanstack/react-query": "npm:^5.8.4"
+    "@tanstack/react-query": "npm:4.36.1"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
-    "@trpc/client": "npm:^11.0.0-alpha-next-2023-11-21-11-13-12.106"
-    "@trpc/next": "npm:^11.0.0-alpha-next-2023-11-21-11-13-12.106"
-    "@trpc/react-query": "npm:^11.0.0-alpha-next-2023-11-21-11-13-12.106"
-    "@trpc/server": "npm:^11.0.0-alpha-next-2023-11-21-11-13-12.106"
+    "@trpc/client": "npm:^10.44.0"
+    "@trpc/next": "npm:^10.44.0"
+    "@trpc/react-query": "npm:^10.44.0"
+    "@trpc/server": "npm:^10.44.0"
     "@types/cookie": "npm:^0"
     "@types/node": "npm:20.9.4"
     "@types/pubnub": "npm:^7"
@@ -8769,6 +8770,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 89f0018fd9aee1fc17c85ac18c4bf8944d460d453d0d0e04ddbc8eaddf3fa591e9c74a1f8a438a1bff368a7a2417fab380bdb3df899d2194c4375b0982736de0
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: ac4814e5592524f242921157e791b022efe36e451fe0d4fd4d204322d5433a4fc300d63b0ade5185f8e0735ded044c70bcf6d2352db0f74d097a238cebd2da02
   languageName: node
   linkType: hard
 

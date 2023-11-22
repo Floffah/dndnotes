@@ -1,10 +1,8 @@
-"use client";
-
 import "../globals.css";
 import { Nunito } from "next/font/google";
 import { PropsWithChildren, forwardRef } from "react";
 
-import { TRPCProvider } from "@/app/providers/TRPCProvider";
+import { HydrationProvider } from "@/app/providers/HydrationProvider";
 import { UserProvider } from "@/app/providers/UserProvider";
 
 const nunito = Nunito({ subsets: ["latin"] });
@@ -14,9 +12,9 @@ const BaseLayout = forwardRef<HTMLHtmlElement, PropsWithChildren>(
         return (
             <html lang="en" ref={ref}>
                 <body className={nunito.className}>
-                    <TRPCProvider>
+                    <HydrationProvider>
                         <UserProvider>{children}</UserProvider>
-                    </TRPCProvider>
+                    </HydrationProvider>
                 </body>
             </html>
         );

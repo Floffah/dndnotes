@@ -14,7 +14,7 @@ export default function RootPage() {
         if (user.authenticated) {
             router.push("/home");
         }
-    }, []);
+    }, [user.authenticated, router]);
 
     return (
         <div className="flex h-screen w-screen items-center justify-center">

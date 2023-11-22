@@ -1,15 +1,12 @@
-import { httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 
+import { trpcOptions, trpcQueryClientConfig } from "@/app/api/lib/trpcOptions";
 import type { AppRouter } from "@/server/router";
 
 export const trpc = createTRPCNext<AppRouter>({
     config: () => ({
-        links: [
-            httpBatchLink({
-                url: process.env.NEXT_PUBLIC_BASE_URL + "/api",
-            }),
-        ],
+        ...trpcOptions(),
+        queryClientConfig: trpcQueryClientConfig,
     }),
     ssr: true,
 });

@@ -1,3 +1,5 @@
+"use client";
+
 import * as AccessibleIcon from "@radix-ui/react-accessible-icon";
 import {
     Icon as IconifyIcon,

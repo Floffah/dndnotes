@@ -1,20 +1,19 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { DiscordLoginButton } from "@/app/DiscordLoginButton";
-import { useUser } from "@/app/providers/UserProvider";
+import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
+import { SESSION_TOKEN } from "@/app/api/lib/storage";
 
-export default function RootPage() {
-    const user = useUser();
-    const router = useRouter();
+export default async function RootPage() {
+    const helpers = getTRPCServerHelpers();
 
-    useEffect(() => {
-        if (user.authenticated) {
-            router.push("/home");
-        }
-    }, [user.authenticated, router]);
+    const user =
+        cookies().has(SESSION_TOKEN) && (await helpers.getCurrentUser.fetch());
+
+    if (user) {
+        redirect("/home");
+    }
 
     return (
         <div className="flex h-screen w-screen items-center justify-center">

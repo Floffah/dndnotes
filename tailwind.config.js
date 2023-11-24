@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./app/**/*.{js,ts,jsx,tsx,mdx}"],
+    content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
     theme: {
         fontFamily: {
             sans: ["Nunito", "sans-serif"],

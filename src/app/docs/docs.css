@@ -1,0 +1,65 @@
+.docs-root-layout {
+    & h1 {
+        @apply text-3xl font-bold mt-5;
+    }
+
+    & h2 {
+        @apply text-2xl font-bold mt-5;
+    }
+
+    & h3 {
+        @apply text-xl font-semibold mt-5;
+    }
+
+    & h4 {
+        @apply text-lg font-semibold mt-4;
+    }
+
+    & h5 {
+        @apply text-base font-semibold mt-4;
+    }
+
+    & h6 {
+        @apply text-sm font-semibold mt-4;
+    }
+
+    & p {
+        @apply text-base my-4 text-white/75;
+
+        & strong {
+            @apply font-semibold text-white/90;
+        }
+
+        & a {
+            @apply text-blue-400;
+
+            &:hover {
+                @apply underline underline-offset-2 decoration-blue-400/75;
+            }
+        }
+    }
+
+    & ul {
+        @apply ml-4 list-disc;
+
+        & li {
+            @apply my-1 font-light text-white/75;
+
+            & strong {
+                @apply font-semibold text-white/90;
+            }
+        }
+    }
+
+    & ul.contains-task-list {
+        @apply ml-4 list-none;
+    }
+
+    & ul li ul {
+        @apply !ml-5;
+    }
+
+    & input[type="checkbox"] {
+        @apply text-black;
+    }
+}

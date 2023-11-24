@@ -2,6 +2,7 @@ import { initTRPC } from "@trpc/server";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { parse } from "cookie";
 
+import { SESSION_TOKEN } from "@/app/api/lib/storage";
 import { SessionModel } from "@/db/models/Session/mongo";
 import { UserModel } from "@/db/models/User/mongo";
 
@@ -13,7 +14,7 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
     }
 
     const cookies = parse(opts.req.headers.get("cookie") as string);
-    const token = cookies["dndnotes-session-token"];
+    const token = cookies[SESSION_TOKEN];
 
     if (!token) {
         return {

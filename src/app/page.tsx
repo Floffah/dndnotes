@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 
 import { DiscordLoginButton } from "@/app/DiscordLoginButton";
 import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
@@ -12,7 +12,7 @@ export default async function RootPage() {
         cookies().has(SESSION_TOKEN) && (await helpers.getCurrentUser.fetch());
 
     if (user) {
-        redirect("/home");
+        redirect("/home", RedirectType.replace);
     }
 
     return (

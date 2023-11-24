@@ -1,10 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { trpc } from "@/app/api/lib/client/trpc";
 import { Icon } from "@/app/components/Icon";
 import { authenticateUser } from "@/app/lib/authenticateUser";
 
 export function DiscordLoginButton() {
+    const router = useRouter();
     const utils = trpc.useUtils();
 
     return (
@@ -13,6 +16,8 @@ export function DiscordLoginButton() {
             onClick={() => {
                 authenticateUser((user) => {
                     utils.getCurrentUser.setData(undefined, user);
+
+                    router.replace("/home");
                 });
             }}
         >

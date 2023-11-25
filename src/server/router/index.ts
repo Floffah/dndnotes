@@ -1,5 +1,4 @@
 import { procedure, router } from "../trpc";
-import { z } from "zod";
 
 import { UserAPIModel } from "@/db/models/User/consumers";
 import { mongoConnect } from "@/db/mongo";

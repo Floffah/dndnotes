@@ -5,9 +5,9 @@ import {
     createSuccessResponse,
 } from "@/app/api/lib/server/apiResponse";
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
-import { SessionModel } from "@/db/models/Session/mongo";
+import { SessionModel } from "@/db/models/Session/model";
 import { UserAPIModel } from "@/db/models/User/consumers";
-import { UserModel } from "@/db/models/User/mongo";
+import { UserModel } from "@/db/models/User/model";
 import { mongoConnect } from "@/db/mongo";
 
 mongoConnect();

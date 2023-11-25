@@ -1,13 +1,14 @@
 import { Schema, model } from "mongoose";
 
 import { Session } from "@/db/models/Session/index";
+import { UserModel } from "@/db/models/User/model";
 import { decorateSchema } from "@/db/models/decorateSchema";
 
 export const SessionSchema = decorateSchema(
     new Schema<Session>({
         user: {
             type: Schema.Types.ObjectId,
-            ref: "User",
+            ref: UserModel,
             required: true,
         },
         token: {

@@ -3,8 +3,7 @@ import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { parse } from "cookie";
 
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
-import { SessionModel } from "@/db/models/Session/mongo";
-import { UserModel } from "@/db/models/User/mongo";
+import { SessionModel } from "@/db/models/Session/model";
 
 export const createContext = async (opts: FetchCreateContextFnOptions) => {
     if (!opts.req.headers.has("cookie")) {
@@ -22,7 +21,6 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
         };
     }
 
-    UserModel;
     const session = await SessionModel.findOne({
         token,
     })

@@ -1,7 +1,7 @@
 import type { InferSchemaType } from "mongoose";
 
 import type { User } from "@/db/models/User/index";
-import type { UserSchema } from "@/db/models/User/mongo";
+import type { UserSchema } from "@/db/models/User/model";
 import { BaseAPIModel, BaseClientModel } from "@/db/models/baseModel";
 import type { OmitAPI, ToObjectType } from "@/db/models/types";
 

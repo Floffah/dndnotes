@@ -6,7 +6,7 @@ if (!cached) {
     cached = global.mongoose = { conn: null, promise: null };
 }
 
-export async function mongoConnect() {
+export async function mongoConnect(connectionUrl?: string) {
     if (process.env.CI) {
         return;
     }
@@ -16,10 +16,15 @@ export async function mongoConnect() {
     }
 
     if (!cached.promise) {
-        cached.promise = connect(process.env.MONGODB_URI as string).then(
-            (mongoose) => mongoose,
-        );
+        cached.promise = connect(
+            connectionUrl ?? (process.env.MONGODB_URI as string),
+        ).then((mongoose) => mongoose);
     }
     cached.conn = await cached.promise;
-    return cached.conn;
+    return cached.conn as typeof import("mongoose");
+}
+
+export function resetConnection() {
+    cached.conn = null;
+    cached.promise = null;
 }

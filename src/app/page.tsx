@@ -9,7 +9,7 @@ export default async function RootPage() {
     const helpers = getTRPCServerHelpers();
 
     const user =
-        cookies().has(SESSION_TOKEN) && (await helpers.getCurrentUser.fetch());
+        cookies().has(SESSION_TOKEN) && (await helpers.user.me.fetch());
 
     if (user) {
         redirect("/home", RedirectType.replace);

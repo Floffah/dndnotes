@@ -15,7 +15,7 @@ export const UserContext = createContext<UserContextValue>(null!);
 export const useUser = () => useContext(UserContext);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-    const userQuery = trpc.getCurrentUser.useQuery();
+    const userQuery = trpc.user.me.useQuery();
 
     return (
         <UserContext.Provider

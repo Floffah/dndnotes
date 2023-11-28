@@ -15,7 +15,7 @@ export function DiscordLoginButton() {
             className="flex items-center gap-2 self-center rounded-md bg-discord-blurple px-3 py-1 outline-0 ring-0"
             onClick={() => {
                 authenticateUser((user) => {
-                    utils.getCurrentUser.setData(undefined, user);
+                    utils.user.me.setData(undefined, user);
 
                     router.replace("/home");
                 });

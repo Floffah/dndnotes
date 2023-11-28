@@ -8873,6 +8873,7 @@ __metadata:
     tailwindcss: "npm:3.3.5"
     ts-jest: "npm:^29.1.1"
     typescript: "npm:5.3.2"
+    unique-username-generator: "npm:^1.2.0"
     vercel: "npm:^32.5.6"
     zod: "npm:^3.22.4"
   languageName: unknown
@@ -11897,6 +11898,13 @@ __metadata:
   dependencies:
     crypto-random-string: "npm:^4.0.0"
   checksum: b35ea034b161b2a573666ec16c93076b4b6106b8b16c2415808d747ab3a0566b5db0c4be231d4b11cfbc16d7fd915c9d8a45884bff0e2db11b799775b2e1e017
+  languageName: node
+  linkType: hard
+
+"unique-username-generator@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "unique-username-generator@npm:1.2.0"
+  checksum: 6a3490797586417c2e55a630736e1daec7fcaa469894d711550d465b1bcf210337d924c7ffe27f649a396c7f49fb3960bfe8cdd43367c03d6f31eeab8d8daf6c
   languageName: node
   linkType: hard
 

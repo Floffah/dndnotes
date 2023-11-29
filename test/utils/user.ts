@@ -15,6 +15,7 @@ export async function createUser<WithSession extends boolean>(
         name,
         email: `${name}@example.com`,
     });
+
     let session: Document<unknown, {}, Session> & Session & { _id: ObjectId } =
         null!;
 

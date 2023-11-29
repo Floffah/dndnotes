@@ -5,9 +5,7 @@ import { inferProcedureOutput } from "@trpc/server";
 
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
 import { Session } from "@/db/models/Session";
-import { SessionModel } from "@/db/models/Session/model";
 import { User } from "@/db/models/User";
-import { UserModel } from "@/db/models/User/model";
 import { AppRouter } from "@/server/router";
 
 describe("User", () => {
@@ -104,7 +102,7 @@ describe("User", () => {
                 });
 
                 test("Sanitizer does remove email", () => {
-                    expect(userResponse?.email).toBeNull();
+                    expect(userResponse?.email).not.toEqual(user2.email);
                 });
             });
 

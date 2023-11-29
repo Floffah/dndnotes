@@ -8,3 +8,8 @@ export type OmitAPI<
     Object,
     Fields extends keyof Omit<Object, "toObject" | "createdAt" | "updatedAt">,
 > = Omit<Object, "toObject" | "createdAt" | "updatedAt" | Fields>;
+
+export type RemoveAPIFields<Object> = Omit<
+    Object,
+    "toObject" | "createdAt" | "updatedAt"
+>;

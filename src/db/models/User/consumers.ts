@@ -17,12 +17,12 @@ export class UserAPIModel extends BaseAPIModel implements Omit<User, "email"> {
         this.providers = user.providers;
     }
 
-    toObject(opts: { user: User | undefined }) {
+    toObject(opts: { currentUser?: User } = {}) {
         const base = super.toObject();
 
         let email: string | null = null;
 
-        if (opts.user && base.id === opts.user.id) {
+        if (opts.currentUser && base.id === opts.currentUser.id) {
             email = this.email;
         }
 
@@ -49,7 +49,7 @@ export class UserClientModel
         this.email = user.email;
     }
 
-    toObject(opts: { user: User }) {
+    toObject(opts: { currentUser?: User } = {}) {
         return {
             ...super.toObject(),
             name: this.name,

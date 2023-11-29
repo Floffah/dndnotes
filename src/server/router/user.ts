@@ -9,7 +9,7 @@ export const userRouter = router({
         if (!opts.ctx.session) return null;
 
         return new UserAPIModel(opts.ctx.session.user).toObject({
-            user: opts.ctx.session.user,
+            currentUser: opts.ctx.session.user,
         });
     }),
     get: procedure
@@ -24,7 +24,7 @@ export const userRouter = router({
             if (!user) return null;
 
             return new UserAPIModel(user).toObject({
-                user: opts.ctx.session?.user,
+                currentUser: opts.ctx.session?.user,
             });
         }),
 });

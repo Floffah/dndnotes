@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { Button } from "@/app/components/Button";
+import { CampaignsList } from "@/app/home/CampaignsList";
 import { NavBar } from "@/app/home/NavBar";
 
 export default function HomePage() {
@@ -22,18 +24,8 @@ export default function HomePage() {
                         </p>
                     </div>
 
-                    <div className="flex h-full w-full items-center justify-center">
-                        <p className="text-center">
-                            Your campaigns, documents, and characters list will
-                            be here! See{" "}
-                            <Link
-                                href="/docs/roadmap"
-                                className="text-blue-400 hover:underline hover:decoration-blue-400/75 hover:underline-offset-2"
-                            >
-                                the roadmap
-                            </Link>{" "}
-                            for details
-                        </p>
+                    <div className="flex w-full flex-col gap-3">
+                        <CampaignsList />
                     </div>
                 </div>
             </div>

@@ -26,7 +26,7 @@
     "clsx": "^2.0.0",
     "cookie": "^0.6.0",
     "crypto-random-string": "^5.0.0",
-    "mongoose": "^8.0.1",
+    "mongoose": "^8.0.2",
     "nanoid": "^5.0.3",
     "next": "^14.0.3",
     "postcss": "8.4.31",
@@ -46,7 +46,7 @@
     "@types/cookie": "^0.6.0",
     "@types/jest": "^29.5.10",
     "@types/mdx": "^2.0.10",
-    "@types/node": "20.10.0",
+    "@types/node": "20.10.1",
     "@types/pubnub": "^7",
     "@types/react": "^18.2.39",
     "@types/react-dom": "^18.2.17",
@@ -61,7 +61,7 @@
     "prettier-plugin-tailwindcss": "^0.5.7",
     "ts-jest": "^29.1.1",
     "unique-username-generator": "^1.2.0",
-    "vercel": "^32.5.6"
+    "vercel": "^32.6.0"
   },
   "packageManager": "yarn@4.0.2"
 }

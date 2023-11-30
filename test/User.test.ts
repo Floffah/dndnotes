@@ -1,11 +1,14 @@
 import { resetDatabase } from "./utils/mongo";
-import { TRPCTestClient, initTRPCForTesting } from "./utils/trpc";
 import { createUser } from "./utils/user";
 import { inferProcedureOutput } from "@trpc/server";
 
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
 import { Session } from "@/db/models/Session";
 import { User } from "@/db/models/User";
+import {
+    TRPCServerCaller,
+    createTRPCServerCaller,
+} from "@/server/lib/createTRPCServerCaller";
 import { AppRouter } from "@/server/router";
 
 describe("User", () => {
@@ -22,10 +25,10 @@ describe("User", () => {
         });
 
         describe("Not authenticated", () => {
-            let trpc: TRPCTestClient;
+            let trpc: TRPCServerCaller;
 
             beforeAll(async () => {
-                trpc = await initTRPCForTesting({
+                trpc = await createTRPCServerCaller({
                     headers: new Headers({
                         cookie: "",
                     }),
@@ -39,10 +42,10 @@ describe("User", () => {
         });
 
         describe("Authenticated", () => {
-            let trpc: TRPCTestClient;
+            let trpc: TRPCServerCaller;
 
             beforeAll(async () => {
-                trpc = await initTRPCForTesting({
+                trpc = await createTRPCServerCaller({
                     headers: new Headers({
                         cookie: `${SESSION_TOKEN}=${session1.token}`,
                     }),
@@ -86,7 +89,7 @@ describe("User", () => {
                 >;
 
                 beforeAll(async () => {
-                    const trpc = await initTRPCForTesting({
+                    const trpc = await createTRPCServerCaller({
                         headers: new Headers({
                             cookie: `${SESSION_TOKEN}=${session1.token}`,
                         }),
@@ -112,7 +115,7 @@ describe("User", () => {
                 >;
 
                 beforeAll(async () => {
-                    const trpc = await initTRPCForTesting({
+                    const trpc = await createTRPCServerCaller({
                         headers: new Headers({
                             cookie: "",
                         }),

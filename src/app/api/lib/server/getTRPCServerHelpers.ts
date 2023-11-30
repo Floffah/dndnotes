@@ -1,20 +1,14 @@
-import { createTRPCProxyClient } from "@trpc/client";
 import { createServerSideHelpers } from "@trpc/react-query/server";
-import { cookies } from "next/headers";
 import { cache } from "react";
 
-import { trpcOptions, trpcQueryClientConfig } from "@/app/api/lib/trpcOptions";
-import type { AppRouter } from "@/server/router";
+import { trpcQueryClientConfig } from "@/app/api/lib/trpcOptions";
+import { createNextTRPCContext } from "@/server/lib/createNextTRPCContext";
+import { appRouter } from "@/server/router";
 
-export const getTRPCServerHelpers = cache(() => {
-    const proxyClient = createTRPCProxyClient<AppRouter>({
-        ...trpcOptions({
-            cookie: cookies().toString(),
-        }),
-    });
-
+export const getTRPCServerHelpers = cache(async () => {
     return createServerSideHelpers({
-        client: proxyClient,
+        ctx: await createNextTRPCContext(),
+        router: appRouter,
         queryClientConfig: trpcQueryClientConfig,
     });
 });

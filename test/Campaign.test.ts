@@ -1,5 +1,4 @@
 import { resetDatabase } from "./utils/mongo";
-import { TRPCTestClient, initTRPCForTesting } from "./utils/trpc";
 import { createUser } from "./utils/user";
 import { inferProcedureOutput } from "@trpc/server";
 import { ObjectId } from "mongodb";
@@ -9,11 +8,15 @@ import { Campaign } from "@/db/models/Campaign";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
 import { User } from "@/db/models/User";
+import {
+    TRPCServerCaller,
+    createTRPCServerCaller,
+} from "@/server/lib/createTRPCServerCaller";
 import { AppRouter } from "@/server/router";
 
 describe("Campaign", () => {
     let authUser: User;
-    let trpc: TRPCTestClient;
+    let trpc: TRPCServerCaller;
 
     beforeAll(async () => {
         await resetDatabase();
@@ -21,7 +24,7 @@ describe("Campaign", () => {
         const { user, session } = await createUser(true);
         authUser = user;
 
-        trpc = await initTRPCForTesting({
+        trpc = await createTRPCServerCaller({
             headers: new Headers({
                 cookie: `${SESSION_TOKEN}=${session.token}`,
             }),

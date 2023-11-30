@@ -4,7 +4,7 @@ import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers"
 import { TRPCProvider } from "@/app/providers/TRPCProvider";
 
 export async function HydrationProvider({ children }: PropsWithChildren) {
-    const helpers = getTRPCServerHelpers();
+    const helpers = await getTRPCServerHelpers();
 
     await helpers.user.me.prefetch();
 

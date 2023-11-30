@@ -11,5 +11,3 @@ export async function resetDatabase() {
         collections.map((collection) => collection.deleteMany({})),
     );
 }
-
-export function mongoJestHooks() {}

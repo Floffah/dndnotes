@@ -1,0 +1,5 @@
+export enum DocumentType {
+    GENERAL_CAMPAIGN = "GENERAL_CAMPAIGN",
+    CHARACTER = "CHARACTER",
+    SESSION = "SESSION",
+}

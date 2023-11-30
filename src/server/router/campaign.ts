@@ -1,10 +1,11 @@
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
+import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
 import { CampaignAPIModel } from "@/db/models/Campaign/consumers";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
-import { CampaignMemberType } from "@/db/types/CampaignMemberType";
+import { CampaignFilter } from "@/server/enums/CampaignFilter";
 import {
     getNoPermissionError,
     getNotAuthenticatedError,
@@ -22,6 +23,38 @@ export const campaignRouter = router({
             currentUser: opts.ctx.session?.user,
         });
     }),
+
+    list: procedure
+        .input(
+            z.object({
+                filter: z.nativeEnum(CampaignFilter),
+            }),
+        )
+        .query(async (opts) => {
+            if (!opts.ctx.session) {
+                throw getNotAuthenticatedError();
+            }
+
+            const campaignMembers = await CampaignMemberModel.find({
+                user: new ObjectId(opts.ctx.session.user.id),
+            });
+
+            const campaigns = await CampaignModel.find({
+                _id: {
+                    $in: campaignMembers.map((cm) => cm.campaign),
+                },
+            });
+
+            return campaigns.map((campaign) =>
+                new CampaignAPIModel(campaign).toObject({
+                    currentUser: opts.ctx.session?.user,
+                    currentMember: campaignMembers.find(
+                        (cm) =>
+                            cm.campaign.toString() === campaign._id.toString(),
+                    ),
+                }),
+            );
+        }),
 
     create: procedure
         .input(

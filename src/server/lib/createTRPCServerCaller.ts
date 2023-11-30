@@ -1,7 +1,7 @@
 import { appRouter } from "@/server/router";
 import { createContext } from "@/server/trpc";
 
-export async function initTRPCForTesting(request: Partial<Request>) {
+export async function createTRPCServerCaller(request: Partial<Request>) {
     const ctx = await createContext({
         req: request as Request,
         resHeaders: new Headers(),
@@ -9,4 +9,6 @@ export async function initTRPCForTesting(request: Partial<Request>) {
 
     return appRouter.createCaller(ctx);
 }
-export type TRPCTestClient = Awaited<ReturnType<typeof initTRPCForTesting>>;
+export type TRPCServerCaller = Awaited<
+    ReturnType<typeof createTRPCServerCaller>
+>;

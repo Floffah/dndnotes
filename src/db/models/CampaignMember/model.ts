@@ -32,6 +32,16 @@ export const CampaignMemberSchema = decorateSchema(
     }),
 );
 
+CampaignMemberSchema.index(
+    {
+        campaign: 1,
+        user: 1,
+    },
+    {
+        unique: true,
+    },
+);
+
 export const CampaignMemberModel = model(
     "CampaignMember",
     CampaignMemberSchema,

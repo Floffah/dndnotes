@@ -73,7 +73,7 @@ export const campaignRouter = router({
 
             const campaign = await CampaignModel.create({
                 name: opts.input.name,
-                creator: new ObjectId(opts.ctx.session.user.id),
+                createdBy: new ObjectId(opts.ctx.session.user.id),
             });
 
             const campaignMember = await CampaignMemberModel.create({

@@ -86,7 +86,7 @@ const DialogContentFooterButton = forwardRef<
     HTMLButtonElement,
     PropsWithChildren<
         {
-            onClick: (
+            onClick?: (
                 close: () => void,
                 event: MouseEvent<HTMLButtonElement>,
             ) => void;

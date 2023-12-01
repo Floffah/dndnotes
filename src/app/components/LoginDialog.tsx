@@ -1,14 +1,18 @@
 "use client";
 
-import { PropsWithChildren, forwardRef } from "react";
+import { PropsWithChildren, forwardRef, useEffect, useState } from "react";
 
 import { Dialog, DialogRef } from "@/app/components/Dialog";
 import { DiscordLoginButton } from "@/app/components/DiscordLoginButton";
 
 export const LoginDialog = forwardRef<
     DialogRef,
-    PropsWithChildren<{ closable?: boolean; open?: boolean }>
->(({ children, open, closable = false }, ref) => {
+    PropsWithChildren<{
+        closable?: boolean;
+        open?: boolean;
+        redirectUri?: string;
+    }>
+>(({ children, open, closable = false, redirectUri }, ref) => {
     return (
         <Dialog ref={ref} closable={closable} open={open}>
             {children && <Dialog.Trigger asChild>{children}</Dialog.Trigger>}
@@ -18,7 +22,7 @@ export const LoginDialog = forwardRef<
                     This site allows DMs and players alike to manage their
                     campaigns in a synchronised and dynamic way.
                 </Dialog.Content.Description>
-                <DiscordLoginButton />
+                <DiscordLoginButton redirectUri={redirectUri} />
             </Dialog.Content>
         </Dialog>
     );

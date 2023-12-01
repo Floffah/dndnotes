@@ -6,7 +6,7 @@ import { trpc } from "@/app/api/lib/client/trpc";
 import { Icon } from "@/app/components/Icon";
 import { authenticateUser } from "@/app/lib/authenticateUser";
 
-export function DiscordLoginButton() {
+export function DiscordLoginButton({ redirectUri }: { redirectUri?: string }) {
     const router = useRouter();
     const utils = trpc.useUtils();
 
@@ -17,7 +17,11 @@ export function DiscordLoginButton() {
                 authenticateUser((user) => {
                     utils.user.me.setData(undefined, user);
 
-                    router.replace("/home");
+                    if (redirectUri) {
+                        router.replace(redirectUri);
+                    } else {
+                        router.replace("/home");
+                    }
                 });
             }}
         >

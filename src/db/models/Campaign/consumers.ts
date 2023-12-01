@@ -68,3 +68,4 @@ export class CampaignClientModel
         };
     }
 }
+export type CampaignClientType = ToObjectType<CampaignClientModel>;

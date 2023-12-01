@@ -51,6 +51,7 @@ describe("Campaign", () => {
         const campaign = await CampaignModel.create({
             name: "Test Campaign",
             description: "Test Description",
+            createdBy: new ObjectId(authUser.id),
         });
 
         const campaignResponse = await trpc.campaign.get(campaign.id);

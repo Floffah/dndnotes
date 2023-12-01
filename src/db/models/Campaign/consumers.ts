@@ -22,7 +22,6 @@ export class CampaignAPIModel
     constructor(campaign: Campaign) {
         super(campaign);
         this.name = campaign.name;
-        console.log(campaign.createdBy);
         this.createdBy =
             campaign.createdBy && campaign.createdBy.name
                 ? new UserAPIModel(campaign.createdBy).toObject()

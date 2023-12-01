@@ -108,7 +108,6 @@ export const POST = async (req: Request) => {
                 ? ".dndnotes.floffah.dev"
                 : "localhost",
         sameSite: "strict",
-        httpOnly: true,
     });
 
     return response;

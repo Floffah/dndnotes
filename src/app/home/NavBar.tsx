@@ -57,9 +57,7 @@ export function NavBar() {
             <NavLink
                 icon="mdi:logout"
                 onClick={async () => {
-                    await fetch("/api/logout", {
-                        method: "GET",
-                    });
+                    await fetch("/api/logout");
 
                     router.push("/");
                 }}

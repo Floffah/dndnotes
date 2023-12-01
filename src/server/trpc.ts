@@ -15,7 +15,7 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
     const cookies = parse(opts.req.headers.get("cookie") as string);
     const token = cookies[SESSION_TOKEN];
 
-    if (!token) {
+    if (!token || token.trim() === "" || token.length < 10) {
         return {
             session: null,
         };

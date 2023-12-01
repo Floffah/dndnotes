@@ -57,3 +57,4 @@ export class UserClientModel
         };
     }
 }
+export type UserClientType = ToObjectType<UserClientModel>;

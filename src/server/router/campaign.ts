@@ -15,7 +15,9 @@ import { procedure, router } from "@/server/trpc";
 
 export const campaignRouter = router({
     get: procedure.input(z.string()).query(async (opts) => {
-        const campaign = await CampaignModel.findById(new ObjectId(opts.input));
+        const campaign = await CampaignModel.findById(new ObjectId(opts.input))
+            .populate("createdBy")
+            .exec();
 
         if (!campaign) return null;
 
@@ -43,7 +45,9 @@ export const campaignRouter = router({
                 _id: {
                     $in: campaignMembers.map((cm) => cm.campaign),
                 },
-            });
+            })
+                .populate("createdBy")
+                .exec();
 
             return campaigns.map((campaign) =>
                 new CampaignAPIModel(campaign).toObject({
@@ -69,6 +73,7 @@ export const campaignRouter = router({
 
             const campaign = await CampaignModel.create({
                 name: opts.input.name,
+                creator: new ObjectId(opts.ctx.session.user.id),
             });
 
             const campaignMember = await CampaignMemberModel.create({

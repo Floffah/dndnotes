@@ -7,7 +7,7 @@ import {
 } from "@iconify/react";
 import { forwardRef } from "react";
 
-interface IconProps extends IconifyIconProps {
+export interface IconProps extends IconifyIconProps {
     label: string;
 }
 

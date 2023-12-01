@@ -14,6 +14,7 @@ import {
 } from "react";
 
 import { Icon } from "@/app/components/Icon";
+import { Loader } from "@/app/components/Loader";
 
 interface ButtonProps extends ComponentProps<"button"> {
     asChild?: boolean;
@@ -64,15 +65,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         const children = (
             <>
                 {loading && (
-                    <Icon
-                        className={clsx("animate-spin", {
+                    <Loader
+                        className={clsx({
                             "opacity-60": disabled,
 
                             "h-4 w-4": size === "sm",
                             "h-5 w-5": size === "md",
                         })}
-                        label="loading"
-                        icon="mdi:loading"
                     />
                 )}
 

@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import Link from "next/link";
 
 import { trpc } from "@/app/api/lib/client/trpc";
@@ -13,7 +14,7 @@ export function CampaignsList() {
     });
 
     return (
-        <div className="flex w-full flex-col rounded-lg border border-white/10 bg-white/5 p-3">
+        <div className="flex w-full flex-col gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
             <div className="flex w-full">
                 <p className="flex-auto text-xl font-semibold">My Campaigns</p>
 
@@ -28,7 +29,11 @@ export function CampaignsList() {
                 </Button>
             </div>
 
-            <div className="flex w-full justify-center py-10">
+            <div
+                className={clsx("flex w-full justify-center", {
+                    "py-10": campaigns.isLoading || !campaigns.data,
+                })}
+            >
                 {campaigns.isLoading || !campaigns.data ? (
                     <Loader className="h-8 w-8 text-white/40" />
                 ) : campaigns.data.length === 0 ? (

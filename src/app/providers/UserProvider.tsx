@@ -3,9 +3,10 @@
 import { createContext, useContext } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
-import type { UserAPIType } from "@/db/models/User/consumers";
+import type { UserClientType } from "@/db/models/User/consumers";
+import { UserClientModel } from "@/db/models/User/consumers";
 
-export interface UserContextValue extends UserAPIType {
+export interface UserContextValue extends UserClientType {
     loading: boolean;
     authenticated: boolean;
 }
@@ -19,11 +20,16 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     return (
         <UserContext.Provider
-            value={{
-                ...((userQuery.data as UserAPIType) ?? {}),
-                loading: userQuery.isLoading,
-                authenticated: !userQuery.isLoading && !!userQuery.data?.id,
-            }}
+            value={
+                userQuery.isLoading
+                    ? ({ loading: true } as UserContextValue)
+                    : {
+                          ...new UserClientModel(userQuery.data!).toObject(),
+                          loading: userQuery.isLoading,
+                          authenticated:
+                              !userQuery.isLoading && !!userQuery.data?.id,
+                      }
+            }
         >
             {children}
         </UserContext.Provider>

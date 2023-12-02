@@ -76,7 +76,10 @@ export class CampaignMemberClientModel
     }
 
     toObject(
-        opts: { currentUser?: User; currentMember?: CampaignMember } = {},
+        opts: {
+            currentUser?: UserAPIType | UserClientType;
+            currentMember?: CampaignMemberClientType | CampaignMemberAPIType;
+        } = {},
     ) {
         const base = super.toObject();
 
@@ -89,3 +92,4 @@ export class CampaignMemberClientModel
         };
     }
 }
+export type CampaignMemberClientType = ToObjectType<CampaignMemberClientModel>;

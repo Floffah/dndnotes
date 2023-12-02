@@ -1,7 +1,9 @@
-import { ObjectId } from "mongodb";
-
 import { Campaign } from "@/db/models/Campaign/index";
 import { CampaignMember } from "@/db/models/CampaignMember";
+import {
+    CampaignMemberAPIType,
+    CampaignMemberClientType,
+} from "@/db/models/CampaignMember/consumers";
 import { User } from "@/db/models/User";
 import {
     UserAPIModel,
@@ -10,7 +12,7 @@ import {
     UserClientType,
 } from "@/db/models/User/consumers";
 import { BaseAPIModel, BaseClientModel } from "@/db/models/baseModel";
-import { OmitAPI, RemoveAPIFields, ToObjectType } from "@/db/models/types";
+import { OmitAPI, ToObjectType } from "@/db/models/types";
 
 export class CampaignAPIModel
     extends BaseAPIModel
@@ -59,7 +61,10 @@ export class CampaignClientModel
     }
 
     toObject(
-        opts: { currentUser?: User; currentMember?: CampaignMember } = {},
+        opts: {
+            currentUser?: UserAPIType | UserClientType;
+            currentMember?: CampaignMemberAPIType | CampaignMemberClientType;
+        } = {},
     ) {
         return {
             ...super.toObject(),

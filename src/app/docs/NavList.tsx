@@ -51,8 +51,10 @@ function NavLinksList({
                                 },
                             )}
                         >
-                            {toSentenceCase(name)}
-                            {typeof item !== "string" && (
+                            {typeof item !== "string" && "label" in item
+                                ? item.label
+                                : toSentenceCase(name)}
+                            {typeof item !== "string" && item.children && (
                                 <Icon
                                     label="down icon"
                                     icon="mdi:chevron-down"

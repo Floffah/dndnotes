@@ -1,13 +1,12 @@
 import clsx from "clsx";
 
-import { trpc } from "@/app/api/lib/client/trpc";
 import { Icon } from "@/app/components/Icon";
 import { Loader } from "@/app/components/Loader";
+import { CampaignContextValue } from "@/app/providers/CampaignProvider";
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
-import type { CampaignAPIType } from "@/db/models/Campaign/consumers";
-import { CampaignMemberAPIType } from "@/db/models/CampaignMember/consumers";
+import { CampaignMemberClientType } from "@/db/models/CampaignMember/consumers";
 
-function Member({ member }: { member: CampaignMemberAPIType }) {
+function Member({ member }: { member: CampaignMemberClientType }) {
     return (
         <div
             key={member.id}
@@ -25,30 +24,25 @@ function Member({ member }: { member: CampaignMemberAPIType }) {
     );
 }
 
-export function MembersList({ campaign }: { campaign: CampaignAPIType }) {
-    const campaignMembers = trpc.campaignMember.list.useQuery(
-        {
-            campaignId: campaign.id,
-        },
-        {
-            enabled: !!campaign?.id,
-        },
-    );
-
+export function MembersList({ campaign }: { campaign: CampaignContextValue }) {
     return (
         <div
             className={clsx(
                 "flex w-full max-w-[17rem] flex-col gap-1 overflow-y-auto overflow-x-hidden rounded-lg border border-white/10 bg-white/5",
                 {
-                    "items-center justify-center":
-                        !campaignMembers.data || !campaign?.id,
+                    "items-center justify-center": campaign.loading,
                 },
             )}
         >
-            {campaignMembers.data && campaign?.id ? (
-                campaignMembers.data.map((member) => (
-                    <Member key={member.id} member={member} />
-                ))
+            {!campaign.loading ? (
+                <>
+                    <p className="p-3 pb-0 text-xs text-white/75">
+                        MEMBERS &#8212; {campaign.members.length}
+                    </p>
+                    {campaign.members.map((member) => (
+                        <Member key={member.id} member={member} />
+                    ))}
+                </>
             ) : (
                 <Loader className="h-8 w-8 text-white/50" />
             )}

@@ -18,17 +18,18 @@ export const useUser = () => useContext(UserContext);
 export function UserProvider({ children }: { children: React.ReactNode }) {
     const userQuery = trpc.user.me.useQuery();
 
+    const user = userQuery.data
+        ? new UserClientModel(userQuery.data).toObject()
+        : {};
+
     return (
         <UserContext.Provider
             value={
-                userQuery.isLoading
-                    ? ({ loading: true } as UserContextValue)
-                    : {
-                          ...new UserClientModel(userQuery.data!).toObject(),
-                          loading: userQuery.isLoading,
-                          authenticated:
-                              !userQuery.isLoading && !!userQuery.data?.id,
-                      }
+                {
+                    ...user,
+                    loading: userQuery.isLoading,
+                    authenticated: !userQuery.isLoading && !!userQuery.data?.id,
+                } as UserContextValue
             }
         >
             {children}

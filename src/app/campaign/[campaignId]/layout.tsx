@@ -31,16 +31,6 @@ export default async function CampaignLayout({
 }) {
     const helpers = await getTRPCServerHelpers();
 
-    const user = await helpers.user.me.fetch();
-
-    if (!user) {
-        redirect(
-            `/login?redirectUri=${encodeURIComponent(
-                `/campaign/${campaignId}`,
-            )}`,
-        );
-    }
-
     await helpers.campaign.get.prefetch(campaignId);
     await helpers.campaignMember.list.prefetch({
         campaignId,

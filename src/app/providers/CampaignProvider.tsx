@@ -8,10 +8,12 @@ import {
     CampaignClientModel,
     CampaignClientType,
 } from "@/db/models/Campaign/consumers";
+import { CampaignMember } from "@/db/models/CampaignMember";
 import {
     CampaignMemberClientModel,
     CampaignMemberClientType,
 } from "@/db/models/CampaignMember/consumers";
+import { User } from "@/db/models/User";
 
 export interface CampaignContextValue extends CampaignClientType {
     loading: boolean;
@@ -35,7 +37,7 @@ export function CampaignProvider({
     });
 
     const currentMember = campaignMembers.data?.find(
-        (member) => member.user.id === user.id,
+        (member) => member.user?.id === user.id,
     );
 
     let contextValue: Partial<CampaignContextValue> = {};
@@ -53,14 +55,17 @@ export function CampaignProvider({
     }
 
     if (campaignMembers.data) {
-        contextValue.members = campaignMembers.data!.map(
-            (member) => new CampaignMemberClientModel(member),
+        contextValue.members = campaignMembers.data!.map((member) =>
+            new CampaignMemberClientModel(member).toObject({
+                currentUser: user,
+                currentMember,
+            }),
         );
         contextValue.currentMember = new CampaignMemberClientModel(
             currentMember!,
         ).toObject({
             currentUser: user,
-            currentMember: currentMember!,
+            currentMember: currentMember,
         });
     }
 

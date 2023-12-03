@@ -5,7 +5,7 @@ import { campaignRouter } from "@/server/router/campaign";
 import { campaignMemberRouter } from "@/server/router/campaignMember";
 import { userRouter } from "@/server/router/user";
 
-mongoConnect();
+await mongoConnect();
 
 export const appRouter = router({
     user: userRouter,

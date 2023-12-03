@@ -1,32 +1,27 @@
 import { Campaign } from "@/db/models/Campaign/index";
 import { CampaignMember } from "@/db/models/CampaignMember";
-import {
-    CampaignMemberAPIType,
-    CampaignMemberClientType,
-} from "@/db/models/CampaignMember/consumers";
 import { User } from "@/db/models/User";
 import {
     UserAPIModel,
     UserAPIType,
     UserClientModel,
-    UserClientType,
 } from "@/db/models/User/consumers";
 import { BaseAPIModel, BaseClientModel } from "@/db/models/baseModel";
-import { OmitAPI, ToObjectType } from "@/db/models/types";
+import { ModelLike, OmitAPI, ToObjectType } from "@/db/models/types";
 
 export class CampaignAPIModel
     extends BaseAPIModel
     implements Omit<Campaign, "createdBy">
 {
     name: string;
-    createdBy: UserAPIType | null;
+    createdBy: User | null;
 
     constructor(campaign: Campaign) {
         super(campaign);
         this.name = campaign.name;
         this.createdBy =
             campaign.createdBy && campaign.createdBy.name
-                ? new UserAPIModel(campaign.createdBy).toObject()
+                ? campaign.createdBy
                 : null;
     }
 
@@ -38,7 +33,9 @@ export class CampaignAPIModel
         return {
             ...base,
             name: this.name,
-            createdBy: this.createdBy,
+            createdBy: this.createdBy
+                ? new UserAPIModel(this.createdBy).toObject(opts)
+                : null,
         };
     }
 }
@@ -50,27 +47,31 @@ export class CampaignClientModel
     implements OmitAPI<CampaignAPIModel, "createdBy">
 {
     name: string;
-    createdBy: UserClientType | null;
+    createdBy: UserAPIType | null;
 
     constructor(campaign: CampaignAPIType) {
         super(campaign);
         this.name = campaign.name;
-        this.createdBy = campaign.createdBy
-            ? new UserClientModel(campaign.createdBy).toObject()
-            : null;
+        this.createdBy = campaign.createdBy ? campaign.createdBy : null;
     }
 
     toObject(
         opts: {
-            currentUser?: UserAPIType | UserClientType;
-            currentMember?: CampaignMemberAPIType | CampaignMemberClientType;
+            currentUser?: ModelLike<User>;
+            currentMember?: Omit<
+                ModelLike<CampaignMember>,
+                "user" | "campaign"
+            >;
         } = {},
     ) {
         return {
             ...super.toObject(),
             name: this.name,
-            createdBy: this.createdBy,
+            createdBy: this.createdBy
+                ? new UserClientModel(this.createdBy).toObject(opts)
+                : null,
         };
     }
 }
+
 export type CampaignClientType = ToObjectType<CampaignClientModel>;

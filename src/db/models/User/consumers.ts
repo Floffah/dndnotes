@@ -2,8 +2,12 @@ import type { InferSchemaType } from "mongoose";
 
 import type { User } from "@/db/models/User/index";
 import type { UserSchema } from "@/db/models/User/model";
-import { BaseAPIModel, BaseClientModel } from "@/db/models/baseModel";
-import type { OmitAPI, ToObjectType } from "@/db/models/types";
+import {
+    BaseAPIModel,
+    BaseClientModel,
+    BaseClientType,
+} from "@/db/models/baseModel";
+import type { ModelLike, OmitAPI, ToObjectType } from "@/db/models/types";
 
 export class UserAPIModel extends BaseAPIModel implements Omit<User, "email"> {
     email: string | null;
@@ -49,12 +53,16 @@ export class UserClientModel
         this.email = user.email;
     }
 
-    toObject(opts: { currentUser?: User } = {}) {
+    toObject(opts: { currentUser?: ModelLike<User> } = {}) {
         return {
             ...super.toObject(),
             name: this.name,
             email: this.email,
+        } as BaseClientType & {
+            name: string;
+            email: string | null;
         };
     }
 }
+
 export type UserClientType = ToObjectType<UserClientModel>;

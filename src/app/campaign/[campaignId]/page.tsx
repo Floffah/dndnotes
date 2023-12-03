@@ -13,7 +13,7 @@ export default function CampaignPage() {
         !user.loading &&
         !user.authenticated &&
         !campaign.loading &&
-        !campaign.members.some((member) => member.user?.id === user.id)
+        !campaign.members?.some((member) => member.user?.id === user.id)
     ) {
         return <NoCampaignPermissionDialog open={true} />;
     }

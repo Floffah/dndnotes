@@ -6,15 +6,27 @@ import {
     UserAPIType,
     UserClientModel,
 } from "@/db/models/User/consumers";
-import { BaseAPIModel, BaseClientModel } from "@/db/models/baseModel";
+import {
+    BaseAPIModel,
+    BaseAPIType,
+    BaseClientModel,
+} from "@/db/models/baseModel";
 import { ModelLike, OmitAPI, ToObjectType } from "@/db/models/types";
 
 export class CampaignAPIModel
     extends BaseAPIModel
-    implements Omit<Campaign, "createdBy">
+    implements Omit<Campaign, "createdBy" | "schedule">
 {
     name: string;
     createdBy: User | null;
+    schedule: {
+        manual?: boolean;
+        start?: Date;
+        repeat?: number;
+        dayOfWeek?: number[];
+
+        nextSession: Date;
+    };
 
     constructor(campaign: Campaign) {
         super(campaign);
@@ -23,6 +35,14 @@ export class CampaignAPIModel
             campaign.createdBy && campaign.createdBy.name
                 ? campaign.createdBy
                 : null;
+
+        this.schedule = {
+            manual: campaign.schedule?.manual,
+            start: campaign.schedule?.start,
+            repeat: campaign.schedule?.repeat,
+            dayOfWeek: campaign.schedule?.dayOfWeek,
+            nextSession: campaign.schedule.nextSession,
+        };
     }
 
     toObject(
@@ -36,6 +56,24 @@ export class CampaignAPIModel
             createdBy: this.createdBy
                 ? new UserAPIModel(this.createdBy).toObject(opts)
                 : null,
+            schedule: {
+                manual: this.schedule.manual,
+                start: this.schedule.start?.toISOString(),
+                repeat: this.schedule.repeat,
+                dayOfWeek: this.schedule.dayOfWeek,
+                nextSession: this.schedule.nextSession.toISOString(),
+            },
+        } as BaseAPIType & {
+            name: string;
+            createdBy: UserAPIType | null;
+            schedule: {
+                manual?: boolean;
+                start?: string;
+                repeat?: number;
+                dayOfWeek?: number[];
+
+                nextSession: string;
+            };
         };
     }
 }
@@ -48,11 +86,28 @@ export class CampaignClientModel
 {
     name: string;
     createdBy: UserAPIType | null;
+    schedule: {
+        manual?: boolean;
+        start?: Date;
+        repeat?: number;
+        dayOfWeek?: number[];
+
+        nextSession: Date;
+    };
 
     constructor(campaign: CampaignAPIType) {
         super(campaign);
         this.name = campaign.name;
         this.createdBy = campaign.createdBy ? campaign.createdBy : null;
+        this.schedule = {
+            manual: campaign.schedule?.manual,
+            start: campaign.schedule?.start
+                ? new Date(campaign.schedule.start)
+                : undefined,
+            repeat: campaign.schedule?.repeat,
+            dayOfWeek: campaign.schedule?.dayOfWeek,
+            nextSession: new Date(campaign.schedule.nextSession),
+        };
     }
 
     toObject(
@@ -70,6 +125,13 @@ export class CampaignClientModel
             createdBy: this.createdBy
                 ? new UserClientModel(this.createdBy).toObject(opts)
                 : null,
+            schedule: {
+                manual: this.schedule.manual,
+                start: this.schedule.start,
+                repeat: this.schedule.repeat,
+                dayOfWeek: this.schedule.dayOfWeek,
+                nextSession: this.schedule.nextSession,
+            },
         };
     }
 }

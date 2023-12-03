@@ -20,7 +20,7 @@ export async function generateMetadata(
     }
 
     return populateMetadata({
-        title: `${campaign.name} | Floffah's DND Notes`,
+        title: campaign.name,
         description: `View the campaign ${campaign.name}, hosted by ${campaign.createdBy?.name} on Floffah's DND Notes!`,
     });
 }

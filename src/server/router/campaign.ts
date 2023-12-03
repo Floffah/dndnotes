@@ -92,7 +92,17 @@ export const campaignRouter = router({
         .input(
             z.object({
                 id: z.string(),
-                name: z.string().optional(),
+                name: z.optional(z.string()),
+                schedule: z.optional(
+                    z.object({
+                        manual: z.optional(z.boolean()),
+                        start: z.optional(z.string()),
+                        repeat: z.optional(z.number()),
+                        dayOfWeek: z.optional(z.array(z.number())),
+
+                        nextSession: z.optional(z.string()),
+                    }),
+                ),
             }),
         )
         .mutation(async (opts) => {
@@ -123,6 +133,33 @@ export const campaignRouter = router({
 
             if (opts.input.name) {
                 campaign.name = opts.input.name;
+            }
+
+            if (opts.input.schedule) {
+                if (!campaign.schedule) {
+                    campaign.schedule = {} as any;
+                }
+
+                if (opts.input.schedule.manual) {
+                    campaign.schedule.manual = opts.input.schedule.manual;
+                }
+                if (opts.input.schedule.start) {
+                    campaign.schedule.start = new Date(
+                        opts.input.schedule.start,
+                    );
+                }
+                if (opts.input.schedule.repeat) {
+                    campaign.schedule.repeat = opts.input.schedule.repeat;
+                }
+                if (opts.input.schedule.dayOfWeek) {
+                    campaign.schedule.dayOfWeek = opts.input.schedule.dayOfWeek;
+                }
+
+                if (opts.input.schedule.nextSession) {
+                    campaign.schedule.nextSession = new Date(
+                        opts.input.schedule.nextSession,
+                    );
+                }
             }
 
             await campaign.save();

@@ -20,10 +20,15 @@ export type RemoveAPIFields<Object> = Omit<
 export type ModelLike<T> = PartialAndNullable<Dateify<T>>;
 
 export type PartialAndNullable<T> = {
-    [P in keyof T]?: T[P] | null;
+    [P in keyof T]?: T[P] extends object
+        ? PartialAndNullable<T[P]>
+        : T[P] | null;
 };
 
-// type that removes any date
 type Dateify<T> = {
-    [P in keyof T]: T[P] extends Date ? Date | string : T[P];
+    [P in keyof T]: T[P] extends object
+        ? Dateify<T[P]>
+        : T[P] extends Date
+          ? Date | string
+          : T[P];
 };

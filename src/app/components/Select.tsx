@@ -40,24 +40,34 @@ export const SelectButton = forwardRef<
     );
 });
 
-export const SelectPanel = forwardRef<HTMLDivElement, PropsWithChildren>(
-    ({ children }, ref) => {
-        return (
-            <RUISelect.Portal>
-                <RUISelect.Content
-                    ref={ref}
-                    className="w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg border border-gray-700 bg-gray-800 p-0.75"
-                    position="popper"
-                    sideOffset={5}
-                >
-                    <RUISelect.Viewport className="flex flex-col gap-0.75">
-                        {children}
-                    </RUISelect.Viewport>
-                </RUISelect.Content>
-            </RUISelect.Portal>
-        );
-    },
-);
+export const SelectPanel = forwardRef<
+    HTMLDivElement,
+    PropsWithChildren<
+        Omit<
+            RUISelect.SelectContentProps,
+            "children" | "ref" | "position" | "sideOffset"
+        >
+    >
+>(({ children, className, ...props }, ref) => {
+    return (
+        <RUISelect.Portal>
+            <RUISelect.Content
+                ref={ref}
+                className={clsx(
+                    className,
+                    "w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg border border-gray-700 bg-gray-800 p-0.75",
+                )}
+                position="popper"
+                sideOffset={5}
+                {...props}
+            >
+                <RUISelect.Viewport className="flex flex-col gap-0.75">
+                    {children}
+                </RUISelect.Viewport>
+            </RUISelect.Content>
+        </RUISelect.Portal>
+    );
+});
 
 interface SelectItemProps extends RUISelect.SelectItemProps {}
 

@@ -8,12 +8,10 @@ import {
     CampaignClientModel,
     CampaignClientType,
 } from "@/db/models/Campaign/consumers";
-import { CampaignMember } from "@/db/models/CampaignMember";
 import {
     CampaignMemberClientModel,
     CampaignMemberClientType,
 } from "@/db/models/CampaignMember/consumers";
-import { User } from "@/db/models/User";
 
 export interface CampaignContextValue extends CampaignClientType {
     loading: boolean;

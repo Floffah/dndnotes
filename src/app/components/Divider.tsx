@@ -10,18 +10,26 @@ export const Divider = forwardRef<
         <Separator.Root
             {...props}
             ref={ref}
+            orientation={orientation}
             className={clsx(
                 className,
-                "relative w-full",
+                "relative",
                 !!children &&
                     clsx(
                         "flex items-center text-sm font-semibold text-white/60 before:flex-1 before:bg-white/20 after:flex-1 after:bg-white/20",
                         {
-                            "before:mr-[0.75rem] before:mt-[3px] before:h-[1px] before:w-full after:ml-[0.75rem] after:mt-[3px] after:h-[1px]":
+                            "w-full before:mr-[0.75rem] before:mt-[3px] before:h-[1px] before:w-full after:ml-[0.75rem] after:mt-[3px] after:h-[1px]":
                                 orientation === "horizontal",
+                            "h-full before:mb-[0.75rem] before:ml-[3px] before:h-full before:w-[1px] after:ml-[3px] after:mt-[0.75rem] after:w-[1px]":
+                                orientation === "vertical",
                         },
                     ),
-                !children && "h-[1px] w-full bg-white/20",
+                !children &&
+                    orientation === "horizontal" &&
+                    "h-[1px] w-full bg-white/20",
+                !children &&
+                    orientation === "vertical" &&
+                    "h-full w-[1px] bg-white/20",
             )}
         >
             {children}

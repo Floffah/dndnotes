@@ -7,12 +7,14 @@ export interface FormFieldProps {
     name: string;
     label: string;
     description?: string;
+    orientation?: "horizontal" | "vertical";
 }
 
 export function FormField({
     label,
     name,
     description,
+    orientation = "vertical",
     children,
 }: PropsWithChildren<FormFieldProps>) {
     const { form } = useContext(FormContext);
@@ -30,8 +32,8 @@ export function FormField({
         }
     }, [error]);
 
-    return (
-        <div className="flex flex-col space-y-1">
+    const renderLabel = () => {
+        return (
             <label
                 className={clsx("font-semibold text-white/80", {
                     "!text-red-500": errorMessage,
@@ -39,14 +41,50 @@ export function FormField({
             >
                 {label}
             </label>
-            {description && (
+        );
+    };
+
+    const renderDescription = () => {
+        return (
+            description && (
                 <p className="text-sm text-white/70">{description}</p>
+            )
+        );
+    };
+
+    const renderErrorMessage = () => {
+        return (
+            errorMessage && (
+                <p className="text-sm text-red-500">{errorMessage}</p>
+            )
+        );
+    };
+
+    return (
+        <div className="flex flex-col space-y-1">
+            {orientation === "vertical" && (
+                <>
+                    {renderLabel()}
+                    {renderDescription()}
+
+                    {children}
+
+                    {renderErrorMessage()}
+                </>
             )}
 
-            {children}
+            {orientation === "horizontal" && (
+                <div className="flex flex-col space-y-1">
+                    <div className="flex items-center space-x-2">
+                        {children}
+                        <div className="flex flex-col">
+                            {renderLabel()}
+                            {renderDescription()}
+                        </div>
+                    </div>
 
-            {errorMessage && (
-                <p className="text-sm text-red-500">{errorMessage}</p>
+                    {renderErrorMessage()}
+                </div>
             )}
         </div>
     );

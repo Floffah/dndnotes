@@ -1,3 +1,4 @@
+import { RepeatInterval } from "@/db/enums/RepeatInterval";
 import { Campaign } from "@/db/models/Campaign/index";
 import { CampaignMember } from "@/db/models/CampaignMember";
 import { User } from "@/db/models/User";
@@ -15,14 +16,21 @@ import { ModelLike, OmitAPI, ToObjectType } from "@/db/models/types";
 
 export class CampaignAPIModel
     extends BaseAPIModel
-    implements Omit<Campaign, "createdBy" | "schedule">
+    implements
+        Omit<
+            Campaign,
+            | "createdBy"
+            | "schedule"
+            | "totalSessionsHeld"
+            | "sessionsHeldSinceScheduleStart"
+        >
 {
     name: string;
     createdBy: User | null;
     schedule: {
         manual?: boolean;
         start?: Date;
-        repeat?: number;
+        repeat?: RepeatInterval;
         dayOfWeek?: number[];
 
         nextSession: Date;
@@ -69,7 +77,7 @@ export class CampaignAPIModel
             schedule: {
                 manual?: boolean;
                 start?: string;
-                repeat?: number;
+                repeat?: RepeatInterval;
                 dayOfWeek?: number[];
 
                 nextSession: string;
@@ -89,7 +97,7 @@ export class CampaignClientModel
     schedule: {
         manual?: boolean;
         start?: Date;
-        repeat?: number;
+        repeat?: RepeatInterval;
         dayOfWeek?: number[];
 
         nextSession: Date;

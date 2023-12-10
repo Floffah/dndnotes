@@ -7,8 +7,10 @@ import {
 } from "react-hook-form";
 
 import { FormButton } from "@/app/components/Form/FormButton";
+import { FormDateInput } from "@/app/components/Form/FormDateInput";
 import { FormField } from "@/app/components/Form/FormField";
 import { FormInput } from "@/app/components/Form/FormInput";
+import { FormSwitch } from "@/app/components/Form/FormSwitch";
 
 interface FormProps extends ComponentProps<"form"> {
     form: UseFormReturn<any, any, any>;
@@ -30,14 +32,7 @@ export const Form = Object.assign(
                         <form
                             {...props}
                             ref={ref}
-                            onSubmit={form.handleSubmit((...args) =>
-                                Promise.all([
-                                    onSubmit(...args) as any,
-                                    new Promise((resolve) =>
-                                        setTimeout(resolve, 250),
-                                    ),
-                                ]),
-                            )}
+                            onSubmit={form.handleSubmit(onSubmit)}
                         >
                             {children}
                         </form>
@@ -50,5 +45,7 @@ export const Form = Object.assign(
         Button: FormButton,
         Field: FormField,
         Input: FormInput,
+        Switch: FormSwitch,
+        DateInput: FormDateInput,
     },
 );

@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
+import { RepeatInterval } from "@/db/enums/RepeatInterval";
 import { CampaignAPIModel } from "@/db/models/Campaign/consumers";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
@@ -97,7 +98,7 @@ export const campaignRouter = router({
                     z.object({
                         manual: z.optional(z.boolean()),
                         start: z.optional(z.string()),
-                        repeat: z.optional(z.number()),
+                        repeat: z.optional(z.nativeEnum(RepeatInterval)),
                         dayOfWeek: z.optional(z.array(z.number())),
 
                         nextSession: z.optional(z.string()),
@@ -162,9 +163,9 @@ export const campaignRouter = router({
                 }
             }
 
-            await campaign.save();
+            const updatedCampaign = await campaign.save();
 
-            return new CampaignAPIModel(campaign).toObject({
+            return new CampaignAPIModel(updatedCampaign).toObject({
                 currentUser: opts.ctx.session.user,
             });
         }),

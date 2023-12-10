@@ -1,5 +1,6 @@
-import { Schema, model } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 
+import { RepeatInterval } from "@/db/enums/RepeatInterval";
 import { Campaign } from "@/db/models/Campaign/index";
 import { UserModel } from "@/db/models/User/model";
 import { decorateSchema } from "@/db/models/decorateSchema";
@@ -14,7 +15,8 @@ const CampaignSessionScheduleSchema = new Schema<Campaign["schedule"]>({
         required: false,
     },
     repeat: {
-        type: Number,
+        type: String,
+        enum: RepeatInterval,
         required: false,
     },
     dayOfWeek: {
@@ -30,8 +32,26 @@ CampaignSessionScheduleSchema.virtual("nextSession")
         }
 
         if (this.start) {
+            const sessionsHeld = (
+                this.$parent() as Document<unknown, {}, Campaign> & Campaign
+            ).sessionsHeldSinceScheduleStart;
+
             const nextSession = new Date(this.start);
-            nextSession.setDate(nextSession.getDate() + this.repeat);
+            switch (this.repeat) {
+                case RepeatInterval.WEEKLY:
+                    nextSession.setDate(
+                        nextSession.getDate() + sessionsHeld * 7,
+                    );
+                    break;
+                case RepeatInterval.FORTNIGHTLY:
+                    nextSession.setDate(
+                        nextSession.getDate() + sessionsHeld * 14,
+                    );
+                    break;
+                case RepeatInterval.MONTHLY:
+                    nextSession.setMonth(nextSession.getMonth() + sessionsHeld);
+                    break;
+            }
 
             return nextSession;
         }
@@ -64,6 +84,14 @@ export const CampaignSchema = decorateSchema(
         },
     }),
 );
+
+CampaignSchema.virtual("totalSessionsHeld").get(function () {
+    return 0;
+});
+
+CampaignSchema.virtual("sessionsHeldSinceScheduleStart").get(function () {
+    return 0;
+});
 
 export const CampaignModel = model("Campaign", CampaignSchema, undefined, {
     overwriteModels: true,

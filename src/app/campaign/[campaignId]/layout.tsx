@@ -1,6 +1,5 @@
 import { Hydrate } from "@tanstack/react-query";
 import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
-import { redirect } from "next/navigation";
 
 import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
 import { populateMetadata } from "@/app/lib/populateMetadata";

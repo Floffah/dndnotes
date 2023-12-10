@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { CampaignNavBar } from "@/app/campaign/[campaignId]/CampaignNavBar";
 import { MembersList } from "@/app/campaign/[campaignId]/MembersList";
 import { NoCampaignPermissionDialog } from "@/app/campaign/[campaignId]/NoCampaignPermissionDialog";
 import { SessionList } from "@/app/campaign/[campaignId]/SessionList";
@@ -26,12 +27,7 @@ export default function CampaignPage() {
 
     return (
         <div className="flex h-full w-full flex-col gap-3 p-3">
-            <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 p-2">
-                <p className="text-lg font-semibold">{campaign.name}</p>
-                <p className="text-sm text-white/80">
-                    by {campaign.createdBy?.name}
-                </p>
-            </div>
+            <CampaignNavBar />
 
             <div className="flex h-full gap-3">
                 {campaign.loading ? (
@@ -40,7 +36,7 @@ export default function CampaignPage() {
                     </div>
                 ) : (
                     <div className="flex flex-auto flex-col gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
-                        <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-5 py-3">
+                        <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
                             <span className="text-lg font-semibold">
                                 Next session at:
                             </span>

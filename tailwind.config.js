@@ -8,6 +8,7 @@ module.exports = {
         extend: {
             spacing: {
                 0.75: "0.188rem", // (3px)
+                2.25: "0.563rem", // (9px)
             },
             colors: {
                 discord: {

@@ -1,6 +1,3 @@
-import { Campaign } from "./Campaign";
-import { User } from "./User";
-
 import { BaseAPIModel, BaseClientModel } from "@/db/models/baseModel";
 
 export type ToObjectType<T extends BaseAPIModel | BaseClientModel> = ReturnType<

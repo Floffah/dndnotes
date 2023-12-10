@@ -16,7 +16,6 @@ import {
 } from "@/db/models/User/consumers";
 import {
     BaseAPIModel,
-    BaseAPIType,
     BaseClientModel,
     BaseClientType,
 } from "@/db/models/baseModel";

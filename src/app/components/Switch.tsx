@@ -6,17 +6,19 @@ export const Switch = forwardRef<HTMLButtonElement, RUISwitch.SwitchProps>(
     ({ className, disabled, ...props }, ref) => {
         return (
             <RUISwitch.Root
+                {...props}
                 ref={ref}
                 className={clsx(
                     className,
-                    "relative h-5 w-9 rounded-full bg-blue-700/60 px-0.5 outline-none transition-colors duration-150 data-[state=checked]:bg-blue-700",
+                    "relative h-5 w-9 rounded-full px-0.5 outline-none transition-colors duration-150",
                     {
-                        "cursor-not-allowed select-none bg-gray-700/60":
+                        "bg-white/20 data-[state=checked]:bg-blue-700":
+                            !disabled,
+                        "cursor-not-allowed select-none bg-gray-700/60 data-[state=checked]:bg-blue-700/40":
                             disabled,
                     },
                 )}
                 disabled={disabled}
-                {...props}
             >
                 <RUISwitch.Thumb className="block h-4 w-4 translate-x-0 rounded-full bg-white transition-transform duration-150 will-change-transform data-[state=checked]:translate-x-4" />
             </RUISwitch.Root>

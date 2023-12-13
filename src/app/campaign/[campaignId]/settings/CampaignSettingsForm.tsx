@@ -14,10 +14,10 @@ const formSchema = z.object({
     name: z.string().min(5),
 
     schedule: z.object({
-        manual: z.boolean(),
-        start: z.date(),
-        repeat: z.nativeEnum(RepeatInterval),
-        dayOfWeek: z.array(z.number().min(0).max(6)),
+        manual: z.boolean().optional(),
+        // start: z.date(),
+        // repeat: z.nativeEnum(RepeatInterval),
+        // dayOfWeek: z.array(z.number().min(0).max(6)),
 
         nextSession: z.date(),
     }),
@@ -35,15 +35,17 @@ export function CampaignSettingsForm() {
         defaultValues: {
             name: campaign.name,
             schedule: {
-                manual: campaign.schedule.manual,
-                start: campaign.schedule.start,
-                repeat: campaign.schedule.repeat,
-                dayOfWeek: campaign.schedule.dayOfWeek,
+                manual: true, // campaign.schedule.manual,
+                // start: campaign.schedule.start,
+                // repeat: campaign.schedule.repeat,
+                // dayOfWeek: campaign.schedule.dayOfWeek,
 
-                nextSession: campaign.schedule.nextSession,
+                nextSession: campaign.schedule.nextSession ?? new Date(),
             },
         },
     });
+
+    console.log(form.watch());
 
     const onSubmit = async (values: FormValues) => {
         console.log(values);
@@ -53,9 +55,9 @@ export function CampaignSettingsForm() {
             name: values.name,
             schedule: {
                 manual: values.schedule.manual,
-                start: values.schedule.start?.toISOString(),
-                repeat: values.schedule.repeat,
-                dayOfWeek: values.schedule.dayOfWeek,
+                // start: values.schedule.start?.toISOString(),
+                // repeat: values.schedule.repeat,
+                // dayOfWeek: values.schedule.dayOfWeek,
                 nextSession: values.schedule.nextSession?.toISOString(),
             },
         });
@@ -81,7 +83,7 @@ export function CampaignSettingsForm() {
 
                     <div className="flex flex-col gap-2">
                         <Form.Switch
-                            name="manual"
+                            name="schedule.manual"
                             label="Manually set next session"
                             disabled
                         />
@@ -96,7 +98,6 @@ export function CampaignSettingsForm() {
                         size="md"
                         color="primary"
                         className="mt-5 w-full"
-                        onClick={form.handleSubmit(onSubmit)}
                     >
                         Save
                     </Form.Button>

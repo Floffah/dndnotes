@@ -1,4 +1,5 @@
 import { ComponentProps, useContext } from "react";
+import { Controller } from "react-hook-form";
 
 import { FormField } from "@/app/components/Form/FormField";
 import { FormContext } from "@/app/components/Form/index";
@@ -19,8 +20,6 @@ export function FormSwitch({
 }: FormSwitchProps) {
     const { form } = useContext(FormContext);
 
-    const error = form.formState.errors[name];
-
     return (
         <FormField
             name={name}
@@ -28,10 +27,24 @@ export function FormSwitch({
             description={description}
             orientation="horizontal"
         >
-            <Switch
-                {...props}
-                {...form.register(name)}
-                disabled={form.formState?.isSubmitting || disabled}
+            <Controller
+                render={({ field: { ref, value, onChange, ...field } }) => (
+                    <Switch
+                        {...props}
+                        {...field}
+                        ref={ref}
+                        checked={value}
+                        onCheckedChange={(checked) => onChange(checked)}
+                        disabled={
+                            form.formState?.isSubmitting ||
+                            disabled ||
+                            field.disabled
+                        }
+                    />
+                )}
+                name={name}
+                control={form.control}
+                disabled={disabled}
             />
         </FormField>
     );

@@ -33,7 +33,7 @@ export class CampaignAPIModel
         repeat?: RepeatInterval;
         dayOfWeek?: number[];
 
-        nextSession: Date;
+        nextSession?: Date;
     };
 
     constructor(campaign: Campaign) {
@@ -69,7 +69,7 @@ export class CampaignAPIModel
                 start: this.schedule.start?.toISOString(),
                 repeat: this.schedule.repeat,
                 dayOfWeek: this.schedule.dayOfWeek,
-                nextSession: this.schedule.nextSession.toISOString(),
+                nextSession: this.schedule.nextSession?.toISOString(),
             },
         } as BaseAPIType & {
             name: string;
@@ -100,7 +100,7 @@ export class CampaignClientModel
         repeat?: RepeatInterval;
         dayOfWeek?: number[];
 
-        nextSession: Date;
+        nextSession?: Date;
     };
 
     constructor(campaign: CampaignAPIType) {
@@ -114,7 +114,9 @@ export class CampaignClientModel
                 : undefined,
             repeat: campaign.schedule?.repeat,
             dayOfWeek: campaign.schedule?.dayOfWeek,
-            nextSession: new Date(campaign.schedule.nextSession),
+            nextSession: campaign.schedule?.nextSession
+                ? new Date(campaign.schedule.nextSession)
+                : undefined,
         };
     }
 

@@ -7,11 +7,11 @@ export interface Campaign extends IBaseModel {
     createdBy: User;
     schedule: {
         manual: boolean;
-        start: Date;
-        repeat: RepeatInterval;
-        dayOfWeek: number[]; // 0-6
+        start?: Date;
+        repeat?: RepeatInterval;
+        dayOfWeek?: number[]; // 0-6
 
-        nextSession: Date; // virtual
+        nextSession?: Date; // virtual
     };
 
     totalSessionsHeld: number;

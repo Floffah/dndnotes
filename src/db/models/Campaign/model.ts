@@ -28,6 +28,10 @@ const CampaignSessionScheduleSchema = new Schema<Campaign["schedule"]>({
 CampaignSessionScheduleSchema.virtual("nextSession")
     .get(function () {
         if (this.manual) {
+            if (!this.start || this.start.getTime() < Date.now()) {
+                return null;
+            }
+
             return this.start;
         }
 
@@ -56,7 +60,7 @@ CampaignSessionScheduleSchema.virtual("nextSession")
             return nextSession;
         }
 
-        return new Date(0);
+        return null;
     })
     .set(function (nextSession: Date) {
         if (this.manual) {

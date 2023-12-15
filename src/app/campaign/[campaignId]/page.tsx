@@ -1,5 +1,6 @@
 "use client";
 
+import { formatRelative, subDays } from "date-fns";
 import Link from "next/link";
 
 import { CampaignNavBar } from "@/app/campaign/[campaignId]/CampaignNavBar";
@@ -8,6 +9,7 @@ import { NoCampaignPermissionDialog } from "@/app/campaign/[campaignId]/NoCampai
 import { SessionList } from "@/app/campaign/[campaignId]/SessionList";
 import { Divider } from "@/app/components/Divider";
 import { Loader } from "@/app/components/Loader";
+import { Tooltip } from "@/app/components/Tooltip";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 import { useUser } from "@/app/providers/UserProvider";
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
@@ -40,7 +42,7 @@ export default function CampaignPage() {
                             <span className="text-lg font-semibold">
                                 Next session at:
                             </span>
-                            {campaign.schedule.nextSession.getTime() === 0 ? (
+                            {!campaign.schedule.nextSession ? (
                                 <>
                                     {campaign.currentMember?.type ===
                                     CampaignMemberType.DM ? (
@@ -60,10 +62,20 @@ export default function CampaignPage() {
                                 </>
                             ) : (
                                 <>
-                                    {Intl.DateTimeFormat("en-US", {
-                                        dateStyle: "long",
-                                        timeStyle: "short",
-                                    }).format(campaign.schedule.nextSession)}
+                                    <Tooltip
+                                        title={Intl.DateTimeFormat("en-US", {
+                                            dateStyle: "long",
+                                            timeStyle: "short",
+                                        }).format(
+                                            campaign.schedule.nextSession,
+                                        )}
+                                        side="bottom"
+                                    >
+                                        {formatRelative(
+                                            campaign.schedule.nextSession,
+                                            new Date(),
+                                        )}
+                                    </Tooltip>
                                 </>
                             )}
                         </div>

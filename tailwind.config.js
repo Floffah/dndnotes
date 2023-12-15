@@ -15,6 +15,10 @@ module.exports = {
                     blurple: "#5865F2",
                 },
             },
+            animation: {
+                fadeIn: "fadeIn 0.1s ease-in-out",
+                fadeOut: "fadeOut 0.1s ease-in-out",
+            },
         },
     },
     plugins: [],

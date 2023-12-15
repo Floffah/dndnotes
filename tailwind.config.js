@@ -1,3 +1,5 @@
+const plugin = require("tailwindcss/plugin");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -21,5 +23,19 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        plugin(({ matchUtilities, theme }) =>
+            matchUtilities(
+                {
+                    indicate: (value) => ({
+                        "--indicate-color": `${value}`,
+                    }),
+                },
+                {
+                    values: theme("colors"),
+                    type: "color",
+                },
+            ),
+        ),
+    ],
 };

@@ -6,6 +6,12 @@ body {
     @apply bg-gray-900 text-white h-screen w-screen;
 }
 
+@layer base {
+    :root {
+        --indicate-color: theme('colors.white/50');
+    }
+}
+
 @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
         display: none;
@@ -26,6 +32,14 @@ body {
         }
         100% {
             opacity: 0;
+        }
+    }
+
+    .indicate-action {
+        @apply relative after:absolute after:bottom-0 after:left-0 after:mb-1 after:w-3 after:border-b after:border-dashed after:z-10;
+
+        &::after {
+            border-color: var(--indicate-color);
         }
     }
 }

@@ -63,18 +63,21 @@ export default function CampaignPage() {
                             ) : (
                                 <>
                                     <Tooltip
-                                        title={Intl.DateTimeFormat("en-US", {
-                                            dateStyle: "long",
-                                            timeStyle: "short",
-                                        }).format(
-                                            campaign.schedule.nextSession,
-                                        )}
+                                        title={Intl.DateTimeFormat(
+                                            navigator.language,
+                                            {
+                                                dateStyle: "long",
+                                                timeStyle: "short",
+                                            },
+                                        ).format(campaign.schedule.nextSession)}
                                         side="bottom"
                                     >
-                                        {formatRelative(
-                                            campaign.schedule.nextSession,
-                                            new Date(),
-                                        )}
+                                        <span className="indicate-action indicate-white/50">
+                                            {formatRelative(
+                                                campaign.schedule.nextSession,
+                                                new Date(),
+                                            )}
+                                        </span>
                                     </Tooltip>
                                 </>
                             )}

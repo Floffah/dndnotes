@@ -54,7 +54,7 @@ export function CampaignSettingsForm() {
             id: campaign.id,
             name: values.name,
             schedule: {
-                manual: values.schedule.manual,
+                manual: true, //values.schedule.manual,
                 // start: values.schedule.start?.toISOString(),
                 // repeat: values.schedule.repeat,
                 // dayOfWeek: values.schedule.dayOfWeek,

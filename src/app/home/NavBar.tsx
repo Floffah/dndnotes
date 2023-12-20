@@ -64,7 +64,7 @@ export function NavBar() {
                 onClick={async () => {
                     await fetch("/api/logout");
 
-                    router.push("/");
+                    window.location.href = "/";
                 }}
             >
                 Logout

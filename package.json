@@ -5,7 +5,7 @@
     "build": "next build",
     "test": "jest",
     "env": "vercel env pull .env",
-    "deps": "ncu -u -x @tanstack/react-query,date-fns && yarn"
+    "deps": "ncu -u -x @tanstack/react-query && yarn"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
@@ -30,7 +30,7 @@
     "clsx": "^2.0.0",
     "cookie": "^0.6.0",
     "crypto-random-string": "^5.0.0",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.0.1",
     "mongoose": "^8.0.3",
     "nanoid": "^5.0.4",
     "next": "^14.0.4",
@@ -66,7 +66,7 @@
     "prettier-plugin-tailwindcss": "^0.5.9",
     "ts-jest": "^29.1.1",
     "unique-username-generator": "^1.2.0",
-    "vercel": "^33.0.0"
+    "vercel": "^33.0.1"
   },
   "packageManager": "yarn@4.0.2"
 }

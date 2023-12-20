@@ -3,7 +3,7 @@ import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
 
 import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
 import { populateMetadata } from "@/app/lib/populateMetadata";
-import { stripNonJSONProps } from "@/app/lib/stripNonJSONProps";
+import { serializableClone } from "@/app/lib/serializableClone";
 import { CampaignProvider } from "@/app/providers/CampaignProvider";
 
 export async function generateMetadata(
@@ -36,7 +36,7 @@ export default async function CampaignLayout({
     });
 
     return (
-        <Hydrate state={stripNonJSONProps(helpers.dehydrate())}>
+        <Hydrate state={serializableClone(helpers.dehydrate())}>
             <CampaignProvider campaignId={campaignId}>
                 {children}
             </CampaignProvider>

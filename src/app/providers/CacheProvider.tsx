@@ -4,11 +4,18 @@ import { InferQueryLikeInput } from "@trpc/react-query/shared";
 import { PropsWithChildren, createContext, useContext } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
+import { serializableClone } from "@/app/lib/serializableClone";
 import { useUser } from "@/app/providers/UserProvider";
 import { FriendshipRequestState } from "@/db/enums/FriendshipRequestState";
 import { FriendshipRequestAPIType } from "@/db/models/FriendshipRequest/consumers";
 
 export interface CacheContextValue {
+    campaign: {
+        upsertCampaign: (
+            queryInput: InferQueryLikeInput<typeof trpc.campaign.get>,
+            data: any,
+        ) => void;
+    };
     user: {
         friends: {
             upsertPending: (
@@ -38,6 +45,27 @@ export function CacheProvider({ children }: PropsWithChildren) {
     return (
         <CacheContext.Provider
             value={{
+                campaign: {
+                    upsertCampaign(queryInput, data) {
+                        const campaignsCachedData =
+                            utils.campaign.get.getData(queryInput);
+
+                        if (!campaignsCachedData) {
+                            utils.campaign.get.setData(queryInput, data);
+                            return;
+                        }
+
+                        const clonedData = serializableClone(data);
+
+                        if (campaignsCachedData.createdBy && !data.createdBy) {
+                            clonedData.createdBy = serializableClone(
+                                campaignsCachedData.createdBy,
+                            );
+                        }
+
+                        utils.campaign.get.setData(queryInput, clonedData);
+                    },
+                },
                 user: {
                     friends: {
                         upsertPending(queryInput, data) {

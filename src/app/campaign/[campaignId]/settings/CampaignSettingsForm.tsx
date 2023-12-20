@@ -5,10 +5,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { trpc } from "@/app/api/lib/client/trpc";
-import { DateInput } from "@/app/components/DateInput";
 import { Form } from "@/app/components/Form";
 import { useCampaign } from "@/app/providers/CampaignProvider";
-import { RepeatInterval } from "@/db/enums/RepeatInterval";
 
 const formSchema = z.object({
     name: z.string().min(5),
@@ -45,11 +43,7 @@ export function CampaignSettingsForm() {
         },
     });
 
-    console.log(form.watch());
-
     const onSubmit = async (values: FormValues) => {
-        console.log(values);
-
         const updatedCampaign = await updateCampaign.mutateAsync({
             id: campaign.id,
             name: values.name,

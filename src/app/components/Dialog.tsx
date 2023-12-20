@@ -148,7 +148,7 @@ const DialogContent = Object.assign(
                     ref={ref}
                     className={clsx(
                         className,
-                        "relative left-1/2 top-1/2 flex h-fit w-full -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-md bg-gray-800 p-4 shadow-lg",
+                        "absolute left-1/2 top-1/2 flex h-fit w-full -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-md bg-gray-800 p-4 shadow-lg",
                     )}
                     {...props}
                 >
@@ -197,8 +197,9 @@ export const Dialog = Object.assign(
             open?: boolean;
             modal?: boolean;
             closable?: boolean;
+            onOpenChange?: (open: boolean) => void;
         }>
-    >(({ children, open: propsOpen, closable = true }, ref) => {
+    >(({ children, open: propsOpen, closable = true, onOpenChange }, ref) => {
         const [open, setOpen] = useState(propsOpen ?? false);
 
         useEffect(() => {
@@ -213,7 +214,11 @@ export const Dialog = Object.assign(
         return (
             <RUIDialog.Root
                 open={open}
-                onOpenChange={(open) => (closable || open) && setOpen(open)}
+                onOpenChange={(open) => {
+                    onOpenChange?.(open);
+
+                    (closable || open) && setOpen(open);
+                }}
                 defaultOpen={propsOpen === true}
                 modal={true}
             >

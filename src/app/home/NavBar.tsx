@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { EventHandler, MouseEvent } from "react";
+import { EventHandler, MouseEvent, useEffect, useState } from "react";
 
 import { Icon } from "@/app/components/Icon";
 
@@ -18,14 +18,19 @@ function NavLink({
     onClick?: EventHandler<MouseEvent<HTMLButtonElement>>;
     children: string;
 }) {
+    const [active, setActive] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setActive(window.location.pathname === link);
+        }
+    }, [link]);
+
     const button = (
         <button
             className={clsx(
                 "flex w-fit select-none items-center gap-1 p-2 hover:bg-white/5",
-                typeof window !== "undefined" && {
-                    "cursor-default bg-white/5":
-                        window.location.pathname === link,
-                },
+                active && "cursor-default bg-white/5",
             )}
             onClick={onClick}
         >

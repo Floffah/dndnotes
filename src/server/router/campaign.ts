@@ -1,17 +1,15 @@
+import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
 import { RepeatInterval } from "@/db/enums/RepeatInterval";
 import { CampaignAPIModel } from "@/db/models/Campaign/consumers";
+import { CampaignError } from "@/db/models/Campaign/error";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
+import { SessionError } from "@/db/models/Session/error";
 import { CampaignFilter } from "@/server/enums/CampaignFilter";
-import {
-    getNoPermissionError,
-    getNotAuthenticatedError,
-} from "@/server/errors/auth";
-import { getNotFoundError } from "@/server/errors/notFound";
 import { procedure, router } from "@/server/trpc";
 
 export const campaignRouter = router({
@@ -35,7 +33,10 @@ export const campaignRouter = router({
         )
         .query(async (opts) => {
             if (!opts.ctx.session) {
-                throw getNotAuthenticatedError();
+                throw new TRPCError({
+                    code: "UNAUTHORIZED",
+                    message: SessionError.NOT_AUTHENTICATED,
+                });
             }
 
             const campaignMembers = await CampaignMemberModel.find({
@@ -69,7 +70,10 @@ export const campaignRouter = router({
         )
         .mutation(async (opts) => {
             if (!opts.ctx.session) {
-                throw getNotAuthenticatedError();
+                throw new TRPCError({
+                    code: "UNAUTHORIZED",
+                    message: SessionError.NOT_AUTHENTICATED,
+                });
             }
 
             const campaign = await CampaignModel.create({
@@ -108,7 +112,10 @@ export const campaignRouter = router({
         )
         .mutation(async (opts) => {
             if (!opts.ctx.session) {
-                throw getNotAuthenticatedError();
+                throw new TRPCError({
+                    code: "UNAUTHORIZED",
+                    message: SessionError.NOT_AUTHENTICATED,
+                });
             }
 
             const campaign = await CampaignModel.findById(
@@ -116,7 +123,10 @@ export const campaignRouter = router({
             );
 
             if (!campaign) {
-                throw getNotFoundError("Campaign");
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
             }
 
             const campaignMember = await CampaignMemberModel.findOne({
@@ -125,11 +135,17 @@ export const campaignRouter = router({
             });
 
             if (!campaignMember) {
-                throw getNotFoundError("CampaignMember");
+                throw new TRPCError({
+                    code: "FORBIDDEN",
+                    message: CampaignError.NO_CAMPAIGN_MEMBER,
+                });
             }
 
             if (campaignMember.type !== CampaignMemberType.DM) {
-                throw getNoPermissionError();
+                throw new TRPCError({
+                    code: "FORBIDDEN",
+                    message: CampaignError.NO_UPDATE_PERMISSION,
+                });
             }
 
             if (opts.input.name) {
@@ -172,13 +188,19 @@ export const campaignRouter = router({
 
     delete: procedure.input(z.string()).mutation(async (opts) => {
         if (!opts.ctx.session) {
-            throw getNotAuthenticatedError();
+            throw new TRPCError({
+                code: "UNAUTHORIZED",
+                message: SessionError.NOT_AUTHENTICATED,
+            });
         }
 
         const campaign = await CampaignModel.findById(new ObjectId(opts.input));
 
         if (!campaign) {
-            throw getNotFoundError("Campaign");
+            throw new TRPCError({
+                code: "NOT_FOUND",
+                message: CampaignError.NOT_FOUND,
+            });
         }
 
         const campaignMember = await CampaignMemberModel.findOne({
@@ -187,11 +209,17 @@ export const campaignRouter = router({
         });
 
         if (!campaignMember) {
-            throw getNotFoundError("CampaignMember");
+            throw new TRPCError({
+                code: "FORBIDDEN",
+                message: CampaignError.NO_CAMPAIGN_MEMBER,
+            });
         }
 
         if (campaignMember.type !== CampaignMemberType.DM) {
-            throw getNoPermissionError();
+            throw new TRPCError({
+                code: "FORBIDDEN",
+                message: CampaignError.NO_UPDATE_PERMISSION,
+            });
         }
 
         await CampaignMemberModel.deleteMany({

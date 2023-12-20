@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps, useContext } from "react";
 
 import { Button } from "@/app/components/Button";

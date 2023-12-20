@@ -1,11 +1,14 @@
+"use client";
+
 import clsx from "clsx";
-import { PropsWithChildren, useContext, useMemo } from "react";
+import { ComponentProps, PropsWithChildren, useContext, useMemo } from "react";
 
 import { FormContext } from "@/app/components/Form/index";
 
-export interface FormFieldProps {
+export interface FormFieldProps
+    extends Omit<ComponentProps<"div">, "ref" | "children"> {
     name: string;
-    label: string;
+    label?: string;
     description?: string;
     orientation?: "horizontal" | "vertical";
 }
@@ -15,7 +18,9 @@ export function FormField({
     name,
     description,
     orientation = "vertical",
+    className,
     children,
+    ...props
 }: PropsWithChildren<FormFieldProps>) {
     const { form } = useContext(FormContext);
 
@@ -34,13 +39,15 @@ export function FormField({
 
     const renderLabel = () => {
         return (
-            <label
-                className={clsx("font-semibold text-white/80", {
-                    "!text-red-500": errorMessage,
-                })}
-            >
-                {label}
-            </label>
+            label && (
+                <label
+                    className={clsx("font-semibold text-white/80", {
+                        "!text-red-500": errorMessage,
+                    })}
+                >
+                    {label}
+                </label>
+            )
         );
     };
 
@@ -55,13 +62,13 @@ export function FormField({
     const renderErrorMessage = () => {
         return (
             errorMessage && (
-                <p className="text-sm text-red-500">{errorMessage}</p>
+                <p className="-mt-2 text-sm text-red-500">{errorMessage}</p>
             )
         );
     };
 
     return (
-        <div className="flex flex-col space-y-1">
+        <div className={clsx(className, "flex flex-col gap-1")} {...props}>
             {orientation === "vertical" && (
                 <>
                     {renderLabel()}

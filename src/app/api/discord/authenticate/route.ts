@@ -61,6 +61,18 @@ export const POST = async (req: Request) => {
         );
     }
 
+    let username = discordUserJson.username.toLowerCase() as string;
+
+    const existingUsersWithUsername = await UserModel.find({
+        name: {
+            $regex: new RegExp(`^${username}`, "i"),
+        },
+    });
+
+    if (existingUsersWithUsername.length > 0) {
+        username += existingUsersWithUsername.length + 1;
+    }
+
     let user = await UserModel.findOne({
         "providers.discord.id": discordUserJson.id,
     });
@@ -74,7 +86,7 @@ export const POST = async (req: Request) => {
                     email: discordUserJson.email,
                 },
             },
-            name: discordUserJson.username,
+            name: username,
             email: discordUserJson.email,
         });
     }

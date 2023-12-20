@@ -29,6 +29,8 @@ export const UserSchema = decorateSchema(
     new Schema<User>({
         name: {
             type: String,
+            unique: true,
+            index: true,
             required: true,
         },
         email: {

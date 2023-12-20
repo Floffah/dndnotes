@@ -19,7 +19,7 @@ import { Loader } from "@/app/components/Loader";
 interface ButtonProps extends ComponentProps<"button"> {
     asChild?: boolean;
     size: "sm" | "md";
-    color: "primary";
+    color: "primary" | "secondary";
     loading?: boolean;
     icon?: string | ReactNode;
     iconLabel?: string;
@@ -92,7 +92,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                         icon
                     ))}
 
-                <span>
+                <span className="flex items-center gap-2">
                     {propsChildren &&
                     typeof propsChildren === "object" &&
                     "props" in propsChildren &&
@@ -118,9 +118,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                                 disabled,
 
                             "rounded-lg px-2 py-1 text-sm": size === "sm",
-                            "rounded-xl px-3 py-1.5": size === "md",
+                            "rounded-lg px-3 py-1.5": size === "md",
 
                             "bg-blue-700 text-white": color === "primary",
+                            "border border-white/10 bg-white/5 text-white":
+                                color === "secondary",
                         },
                     )}
                     onClick={async (e) => {

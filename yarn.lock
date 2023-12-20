@@ -636,10 +636,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.55.0":
-  version: 8.55.0
-  resolution: "@eslint/js@npm:8.55.0"
-  checksum: 88ab9fc57a651becd2b32ec40a3958db27fae133b1ae77bebd733aa5bbd00a92f325bb02f20ad680d31c731fa49b22f060a4777dd52eb3e27da013d940bd978d
+"@eslint/js@npm:8.56.0":
+  version: 8.56.0
+  resolution: "@eslint/js@npm:8.56.0"
+  checksum: 60b3a1cf240e2479cec9742424224465dc50e46d781da1b7f5ef240501b2d1202c225bd456207faac4b34a64f4765833345bc4ddffd00395e1db40fa8c426f5a
   languageName: node
   linkType: hard
 
@@ -1762,6 +1762,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-roving-focus@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@radix-ui/react-roving-focus@npm:1.0.4"
+  dependencies:
+    "@babel/runtime": "npm:^7.13.10"
+    "@radix-ui/primitive": "npm:1.0.1"
+    "@radix-ui/react-collection": "npm:1.0.3"
+    "@radix-ui/react-compose-refs": "npm:1.0.1"
+    "@radix-ui/react-context": "npm:1.0.1"
+    "@radix-ui/react-direction": "npm:1.0.1"
+    "@radix-ui/react-id": "npm:1.0.1"
+    "@radix-ui/react-primitive": "npm:1.0.3"
+    "@radix-ui/react-use-callback-ref": "npm:1.0.1"
+    "@radix-ui/react-use-controllable-state": "npm:1.0.1"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 61e3ddfd1647e64fba855434ff41e8e7ba707244fe8841f78c450fbdce525383b64259279475615d030dbf1625cbffd8eeebee72d91bf6978794f5dbcf887fc0
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-select@npm:^2.0.0":
   version: 2.0.0
   resolution: "@radix-ui/react-select@npm:2.0.0"
@@ -1861,6 +1889,33 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: e7c65aeedf9d3cd47320fd3759b8c7f3777619cd847a96f2c52841488ad1745fa35335e2877a4f839902942410a7ffe9baf05ec1c249a0401a2b1b9363dbf343
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-tabs@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "@radix-ui/react-tabs@npm:1.0.4"
+  dependencies:
+    "@babel/runtime": "npm:^7.13.10"
+    "@radix-ui/primitive": "npm:1.0.1"
+    "@radix-ui/react-context": "npm:1.0.1"
+    "@radix-ui/react-direction": "npm:1.0.1"
+    "@radix-ui/react-id": "npm:1.0.1"
+    "@radix-ui/react-presence": "npm:1.0.1"
+    "@radix-ui/react-primitive": "npm:1.0.3"
+    "@radix-ui/react-roving-focus": "npm:1.0.4"
+    "@radix-ui/react-use-controllable-state": "npm:1.0.1"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 79699a921f5c2e890e0e496a751d9c2a7c4017eff8e52f094389e993263332881353bdd27b8cc123c906b36743e803eec7f32fdbb4d413328cba0a37d6413339
   languageName: node
   linkType: hard
 
@@ -2502,12 +2557,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.10.4":
-  version: 20.10.4
-  resolution: "@types/node@npm:20.10.4"
+"@types/node@npm:20.10.5":
+  version: 20.10.5
+  resolution: "@types/node@npm:20.10.5"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 2c8b70cba731eb2ae3ae046daa74903bfcbb0e7b9196da767e5895054f6d252296ae7a04fb1dbbcb53bb004c4c658c05eaea2731bc9e2dd9e08f7e88d672f563
+  checksum: be30609aae0bfe492097815f166ccc07f465220cb604647fa4e5ec05a1d16c012a41b82b5f11ecfe2485cbb479d4d20384b95b809ca0bcff6d94d5bbafa645bb
   languageName: node
   linkType: hard
 
@@ -2525,12 +2580,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.2.17":
-  version: 18.2.17
-  resolution: "@types/react-dom@npm:18.2.17"
+"@types/react-dom@npm:^18.2.18":
+  version: 18.2.18
+  resolution: "@types/react-dom@npm:18.2.18"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 33b53078ed7e9e0cfc4dc691e938f7db1cc06353bc345947b41b581c3efe2b980c9e4eb6460dbf5ddc521dd91959194c970221a2bd4bfad9d23ebce338e12938
+  checksum: 74dba11a1b8156f3a763f3fca1fb4ec1dcd349153279b8bf79210024a69f994bf2cf0728198c047f8130c5318420ea56281b0a4ef84c8ae943cd9a0cac705220
   languageName: node
   linkType: hard
 
@@ -2687,10 +2742,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/build-utils@npm:7.3.0":
-  version: 7.3.0
-  resolution: "@vercel/build-utils@npm:7.3.0"
-  checksum: 051df4fd15f8fcaaf2c06193a0e5b4f019753f5a3c4e45ca2e3fda59326aa77cb0680161a62f7a355502dc246cdec2ede2d346dec294ee223a77e1342db34860
+"@vercel/build-utils@npm:7.4.0":
+  version: 7.4.0
+  resolution: "@vercel/build-utils@npm:7.4.0"
+  checksum: a0451988e922d34da864519954ac3769a0b6f36c87ea98b79b837c04eae2aba818e653abbd50e054c638f6a5be5235d6a723a089d062b4c07b67a2ced098f7b9
   languageName: node
   linkType: hard
 
@@ -2738,17 +2793,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/gatsby-plugin-vercel-builder@npm:2.0.12":
-  version: 2.0.12
-  resolution: "@vercel/gatsby-plugin-vercel-builder@npm:2.0.12"
+"@vercel/gatsby-plugin-vercel-builder@npm:2.0.13":
+  version: 2.0.13
+  resolution: "@vercel/gatsby-plugin-vercel-builder@npm:2.0.13"
   dependencies:
     "@sinclair/typebox": "npm:0.25.24"
-    "@vercel/build-utils": "npm:7.3.0"
+    "@vercel/build-utils": "npm:7.4.0"
     "@vercel/routing-utils": "npm:3.1.0"
     esbuild: "npm:0.14.47"
     etag: "npm:1.8.1"
     fs-extra: "npm:11.1.0"
-  checksum: 9289196873a8173c9b9b3b6c030b263e2384cf63f73e3e2c88e660f213bf86ecbf11dee91ec0e391efebc3e324cbac1c63e180240f825ea9d56e4d648e9db4f8
+  checksum: 074d2201ecd5a211ebe33688cd2c0b83d9945f58c88c4cd4b830db9b6d5b1ca17d39d523ba8e965d0edb002f02c7550d20ca2d6c10defc07dfb0dba9f65d6323
   languageName: node
   linkType: hard
 
@@ -2799,15 +2854,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/node@npm:3.0.12":
-  version: 3.0.12
-  resolution: "@vercel/node@npm:3.0.12"
+"@vercel/node@npm:3.0.13":
+  version: 3.0.13
+  resolution: "@vercel/node@npm:3.0.13"
   dependencies:
     "@edge-runtime/node-utils": "npm:2.2.1"
     "@edge-runtime/primitives": "npm:4.0.5"
     "@edge-runtime/vm": "npm:3.1.7"
     "@types/node": "npm:14.18.33"
-    "@vercel/build-utils": "npm:7.3.0"
+    "@vercel/build-utils": "npm:7.4.0"
     "@vercel/error-utils": "npm:2.0.2"
     "@vercel/nft": "npm:0.24.2"
     "@vercel/static-config": "npm:3.0.0"
@@ -2822,7 +2877,7 @@ __metadata:
     ts-node: "npm:10.9.1"
     typescript: "npm:4.9.5"
     undici: "npm:5.26.5"
-  checksum: c60b4d214f3b4cc465526c2b1022f7e82aa6b5cfbd563c277baaf0ab76671286efccfb2881c7432a89baf627b0fcbc1666d12be16c9f4ceacb96bfb359be7102
+  checksum: 4824dcf23e2997d89b7de8fa14953e0eef20615085d556b750f226be730f53c24144a326fc5d5fab1a7f49bb3ced6c85457405c9056363ea71cc5bdb971026ee
   languageName: node
   linkType: hard
 
@@ -2844,14 +2899,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/remix-builder@npm:2.0.14":
-  version: 2.0.14
-  resolution: "@vercel/remix-builder@npm:2.0.14"
+"@vercel/remix-builder@npm:2.0.15":
+  version: 2.0.15
+  resolution: "@vercel/remix-builder@npm:2.0.15"
   dependencies:
     "@vercel/nft": "npm:0.24.2"
     "@vercel/static-config": "npm:3.0.0"
     ts-morph: "npm:12.0.0"
-  checksum: 6e65eb03e32b6d5758d77d22ab4c0fa33c75ad947772c28576069c3dfea151f9dd14dd527e531682bc0d2c548d1a961ca861261f13b07423d0f99dbb4db50eec
+  checksum: a69d8451ecced4e2b40624ae34a5dddefb4594d5dbbceb6dbde570e6467f41225c62480bc612a0d35cd89e80fd295da7d61d29d1a1bc7d3fe7c42de2cb688164
   languageName: node
   linkType: hard
 
@@ -2875,15 +2930,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/static-build@npm:2.0.14":
-  version: 2.0.14
-  resolution: "@vercel/static-build@npm:2.0.14"
+"@vercel/static-build@npm:2.0.15":
+  version: 2.0.15
+  resolution: "@vercel/static-build@npm:2.0.15"
   dependencies:
     "@vercel/gatsby-plugin-vercel-analytics": "npm:1.0.11"
-    "@vercel/gatsby-plugin-vercel-builder": "npm:2.0.12"
+    "@vercel/gatsby-plugin-vercel-builder": "npm:2.0.13"
     "@vercel/static-config": "npm:3.0.0"
     ts-morph: "npm:12.0.0"
-  checksum: 8203c33b583ff6144d6d8200a713c34c5e621833ab1a148aed898e6a501daaa2bcf0165cc8b1546138638638c1c44773f57a9ad861a1c2798bb6cd784f1eb3ba
+  checksum: 8681b42a16fee94c2f160a213b3f52cc77a95a864faf271a5ba2dba9e26d78e978725392c008a15a690ab02c08349e56780c6e67db8a67291582751884af1d2e
   languageName: node
   linkType: hard
 
@@ -5161,14 +5216,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.55.0":
-  version: 8.55.0
-  resolution: "eslint@npm:8.55.0"
+"eslint@npm:^8.56.0":
+  version: 8.56.0
+  resolution: "eslint@npm:8.56.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.2.0"
     "@eslint-community/regexpp": "npm:^4.6.1"
     "@eslint/eslintrc": "npm:^2.1.4"
-    "@eslint/js": "npm:8.55.0"
+    "@eslint/js": "npm:8.56.0"
     "@humanwhocodes/config-array": "npm:^0.11.13"
     "@humanwhocodes/module-importer": "npm:^1.0.1"
     "@nodelib/fs.walk": "npm:^1.2.8"
@@ -5205,7 +5260,7 @@ __metadata:
     text-table: "npm:^0.2.0"
   bin:
     eslint: bin/eslint.js
-  checksum: d28c0b60f19bb7d355cb8393e77b018c8f548dba3f820b799c89bb2e0c436ee26084e700c5e57e1e97e7972ec93065277849141b82e7b0c0d02c2dc1e553a2a1
+  checksum: 2be598f7da1339d045ad933ffd3d4742bee610515cd2b0d9a2b8b729395a01d4e913552fff555b559fccaefd89d7b37632825789d1b06470608737ae69ab43fb
   languageName: node
   linkType: hard
 
@@ -8946,6 +9001,7 @@ __metadata:
     "@radix-ui/react-separator": "npm:^1.0.3"
     "@radix-ui/react-slot": "npm:^1.0.2"
     "@radix-ui/react-switch": "npm:^1.0.3"
+    "@radix-ui/react-tabs": "npm:^1.0.4"
     "@radix-ui/react-tooltip": "npm:^1.0.7"
     "@radix-ui/react-visually-hidden": "npm:^1.0.3"
     "@tanstack/react-query": "npm:4.36.1"
@@ -8957,17 +9013,17 @@ __metadata:
     "@types/cookie": "npm:^0.6.0"
     "@types/jest": "npm:^29.5.11"
     "@types/mdx": "npm:^2.0.10"
-    "@types/node": "npm:20.10.4"
+    "@types/node": "npm:20.10.5"
     "@types/pubnub": "npm:^7"
     "@types/react": "npm:^18.2.45"
-    "@types/react-dom": "npm:^18.2.17"
+    "@types/react-dom": "npm:^18.2.18"
     autoprefixer: "npm:^10.4.16"
     clsx: "npm:^2.0.0"
     cookie: "npm:^0.6.0"
     crypto-random-string: "npm:^5.0.0"
     date-fns: "npm:^2.30.0"
     dotenv: "npm:^16.3.1"
-    eslint: "npm:^8.55.0"
+    eslint: "npm:^8.56.0"
     eslint-config-next: "npm:^14.0.4"
     jest: "npm:^29.7.0"
     mongoose: "npm:^8.0.3"
@@ -8983,11 +9039,11 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.49.2"
     remark-gfm: "npm:^4.0.0"
-    tailwindcss: "npm:3.3.6"
+    tailwindcss: "npm:3.4.0"
     ts-jest: "npm:^29.1.1"
     typescript: "npm:5.3.3"
     unique-username-generator: "npm:^1.2.0"
-    vercel: "npm:^32.7.2"
+    vercel: "npm:^33.0.0"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
@@ -11481,9 +11537,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.3.6":
-  version: 3.3.6
-  resolution: "tailwindcss@npm:3.3.6"
+"tailwindcss@npm:3.4.0":
+  version: 3.4.0
+  resolution: "tailwindcss@npm:3.4.0"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
     arg: "npm:^5.0.2"
@@ -11510,7 +11566,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 69caade773249cb963c33e81f85b7fc423dcb74b416727483f434f4e12874187f633970c9de864fa96736289abaf71189314a53589ada0be6c09ccb0e8b78391
+  checksum: 0a1cef7468e6d17c2857d0b3c4017af2cb37ed8ba27dfb14780c517b8a74f6786970227c400ac1325fc8bcfc09099d8e990fa7c60924bf945f3d0a912d63f546
   languageName: node
   linkType: hard
 
@@ -12273,26 +12329,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vercel@npm:^32.7.2":
-  version: 32.7.2
-  resolution: "vercel@npm:32.7.2"
+"vercel@npm:^33.0.0":
+  version: 33.0.0
+  resolution: "vercel@npm:33.0.0"
   dependencies:
-    "@vercel/build-utils": "npm:7.3.0"
+    "@vercel/build-utils": "npm:7.4.0"
     "@vercel/fun": "npm:1.1.0"
     "@vercel/go": "npm:3.0.4"
     "@vercel/hydrogen": "npm:1.0.1"
     "@vercel/next": "npm:4.0.15"
-    "@vercel/node": "npm:3.0.12"
+    "@vercel/node": "npm:3.0.13"
     "@vercel/python": "npm:4.1.0"
     "@vercel/redwood": "npm:2.0.5"
-    "@vercel/remix-builder": "npm:2.0.14"
+    "@vercel/remix-builder": "npm:2.0.15"
     "@vercel/ruby": "npm:2.0.4"
-    "@vercel/static-build": "npm:2.0.14"
+    "@vercel/static-build": "npm:2.0.15"
     chokidar: "npm:3.3.1"
   bin:
     vc: dist/index.js
     vercel: dist/index.js
-  checksum: 61362f2e7a5cf60f48683c3813d83655c22e59f6c692e4c4dd44af7d04cb6543fea53e09fb1687ea6ae6d41657e1d6f3f54491ad09a9f5c63f4c7786041e6c8f
+  checksum: dee3789a878e61b19354c29e6b745fb1aa4d9f68927c2a80b31d2cafc12ac356d18d76a341353e89d856238d271d9dc7931b9f301e1b0c028cbff9e13b273bf4
   languageName: node
   linkType: hard
 

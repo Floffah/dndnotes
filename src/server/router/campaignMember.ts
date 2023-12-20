@@ -1,10 +1,11 @@
 import { procedure, router } from "../trpc";
+import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 import { CampaignMemberAPIModel } from "@/db/models/CampaignMember/consumers";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
-import { getNotAuthenticatedError } from "@/server/errors/auth";
+import { SessionError } from "@/db/models/Session/error";
 
 export const campaignMemberRouter = router({
     list: procedure
@@ -15,7 +16,10 @@ export const campaignMemberRouter = router({
         )
         .query(async (opts) => {
             if (!opts.ctx.session) {
-                throw getNotAuthenticatedError();
+                throw new TRPCError({
+                    code: "UNAUTHORIZED",
+                    message: SessionError.NOT_AUTHENTICATED,
+                });
             }
 
             const campaignMembers = await CampaignMemberModel.find({

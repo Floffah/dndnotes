@@ -1,6 +1,6 @@
 import * as RUITooltip from "@radix-ui/react-tooltip";
 import clsx from "clsx";
-import { ComponentProps, forwardRef } from "react";
+import { forwardRef } from "react";
 
 interface TooltipProps
     extends Omit<RUITooltip.TooltipContentProps, "title" | "ref"> {
@@ -24,7 +24,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
                         sideOffset={1.5}
                         className={clsx(
                             className,
-                            "data-[state=delayed-open]:animate-fadeIn select-none rounded bg-gray-900 px-2 py-1 text-white/80 shadow-lg transition-opacity duration-150 will-change-[transform,opacity]",
+                            "select-none rounded bg-gray-900 px-2 py-1 text-white/80 shadow-lg transition-opacity duration-150 will-change-[transform,opacity] data-[state=delayed-open]:animate-fadeIn",
                         )}
                         {...props}
                     >

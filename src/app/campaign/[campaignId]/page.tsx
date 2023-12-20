@@ -1,6 +1,6 @@
 "use client";
 
-import { formatRelative, subDays } from "date-fns";
+import { formatRelative } from "date-fns";
 import Link from "next/link";
 
 import { CampaignNavBar } from "@/app/campaign/[campaignId]/CampaignNavBar";
@@ -63,13 +63,12 @@ export default function CampaignPage() {
                             ) : (
                                 <>
                                     <Tooltip
-                                        title={Intl.DateTimeFormat(
-                                            navigator.language,
-                                            {
-                                                dateStyle: "long",
-                                                timeStyle: "short",
-                                            },
-                                        ).format(campaign.schedule.nextSession)}
+                                        title={Intl.DateTimeFormat("en-GB", {
+                                            dateStyle: "long",
+                                            timeStyle: "short",
+                                        }).format(
+                                            campaign.schedule.nextSession,
+                                        )}
                                         side="bottom"
                                     >
                                         <span className="indicate-action indicate-white/50">

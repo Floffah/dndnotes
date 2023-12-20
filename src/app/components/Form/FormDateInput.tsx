@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps, useContext } from "react";
 import { useController } from "react-hook-form";
 

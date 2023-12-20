@@ -1,19 +1,9 @@
 import * as Popover from "@radix-ui/react-popover";
 import clsx from "clsx";
-import {
-    ComponentProps,
-    PropsWithChildren,
-    forwardRef,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import { ComponentProps, forwardRef, useEffect, useRef, useState } from "react";
 
-import { Divider } from "@/app/components/Divider";
 import { Icon } from "@/app/components/Icon";
 import { Input } from "@/app/components/Input";
-import { Select } from "@/app/components/Select";
 
 interface DateInputProps
     extends Omit<ComponentProps<typeof Input>, "value" | "children" | "ref"> {
@@ -118,7 +108,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
 
                         <div className="relative flex w-full flex-col">
                             <button
-                                className="right-2.25 top-2.25 fixed items-center rounded bg-white/10 px-1 py-0.5 text-xs"
+                                className="fixed right-2.25 top-2.25 items-center rounded bg-white/10 px-1 py-0.5 text-xs"
                                 onClick={() => {
                                     setValue(new Date());
                                 }}

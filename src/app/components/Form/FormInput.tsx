@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps, useContext } from "react";
 
 import { FormField } from "@/app/components/Form/FormField";
@@ -6,8 +8,9 @@ import { Input } from "@/app/components/Input";
 
 interface FormInputProps extends ComponentProps<typeof Input> {
     name: string;
-    label: string;
+    label?: string;
     description?: string;
+    fieldClassName?: string;
 }
 
 export function FormInput({
@@ -15,6 +18,7 @@ export function FormInput({
     label,
     description,
     disabled,
+    fieldClassName,
     ...props
 }: FormInputProps) {
     const { form } = useContext(FormContext);
@@ -22,7 +26,12 @@ export function FormInput({
     const error = form.formState.errors[name];
 
     return (
-        <FormField name={name} label={label} description={description}>
+        <FormField
+            name={name}
+            label={label}
+            description={description}
+            className={fieldClassName}
+        >
             <Input
                 {...props}
                 {...form.register(name)}

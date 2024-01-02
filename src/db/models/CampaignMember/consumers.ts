@@ -23,7 +23,7 @@ import { ModelLike, OmitAPI, ToObjectType } from "@/db/models/types";
 
 export class CampaignMemberAPIModel
     extends BaseAPIModel
-    implements Omit<CampaignMember, "campaign" | "user" | "character">
+    implements Omit<CampaignMember, "character">
 {
     type: CampaignMemberType;
     campaign: Campaign;

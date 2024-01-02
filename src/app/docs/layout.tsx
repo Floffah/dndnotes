@@ -1,5 +1,3 @@
-"use client";
-
 import "./docs.css";
 import clsx from "clsx";
 import { JetBrains_Mono } from "next/font/google";

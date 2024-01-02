@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 
 import { DocumentType } from "@/db/enums/DocumentType";
+import { CampaignModel } from "@/db/models/Campaign/model";
 import { Document } from "@/db/models/Document/index";
 import { UserModel } from "@/db/models/User/model";
 import { decorateSchema } from "@/db/models/decorateSchema";
@@ -23,7 +24,7 @@ export const DocumentSchema = decorateSchema(
         },
         campaign: {
             type: Schema.Types.ObjectId,
-            ref: "Campaign",
+            ref: CampaignModel,
             required: true,
         },
         notionId: {

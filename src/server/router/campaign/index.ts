@@ -10,9 +10,12 @@ import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
 import { SessionError } from "@/db/models/Session/error";
 import { CampaignFilter } from "@/server/enums/CampaignFilter";
+import { campaignMemberRouter } from "@/server/router/campaign/member";
 import { procedure, router } from "@/server/trpc";
 
 export const campaignRouter = router({
+    member: campaignMemberRouter,
+
     get: procedure.input(z.string()).query(async (opts) => {
         const campaign = await CampaignModel.findById(new ObjectId(opts.input))
             .populate("createdBy")

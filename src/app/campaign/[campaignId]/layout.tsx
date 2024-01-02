@@ -31,7 +31,7 @@ export default async function CampaignLayout({
     const helpers = await getTRPCServerHelpers();
 
     await helpers.campaign.get.prefetch(campaignId);
-    await helpers.campaignMember.list.prefetch({
+    await helpers.campaign.member.list.prefetch({
         campaignId,
     });
 

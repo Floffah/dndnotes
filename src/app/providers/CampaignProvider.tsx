@@ -30,7 +30,7 @@ export function CampaignProvider({
     const user = useUser();
 
     const campaign = trpc.campaign.get.useQuery(campaignId);
-    const campaignMembers = trpc.campaignMember.list.useQuery({
+    const campaignMembers = trpc.campaign.member.list.useQuery({
         campaignId,
     });
 

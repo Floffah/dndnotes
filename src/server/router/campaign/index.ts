@@ -106,7 +106,6 @@ export const campaignRouter = router({
                         manual: z.optional(z.boolean()),
                         start: z.optional(z.string()),
                         repeat: z.optional(z.nativeEnum(RepeatInterval)),
-                        dayOfWeek: z.optional(z.array(z.number())),
 
                         nextSession: z.optional(z.string()),
                     }),
@@ -160,25 +159,27 @@ export const campaignRouter = router({
                     campaign.schedule = {} as any;
                 }
 
-                if (opts.input.schedule.manual) {
+                if (typeof opts.input.schedule.manual === "boolean") {
                     campaign.schedule.manual = opts.input.schedule.manual;
-                }
-                if (opts.input.schedule.start) {
-                    campaign.schedule.start = new Date(
-                        opts.input.schedule.start,
-                    );
-                }
-                if (opts.input.schedule.repeat) {
-                    campaign.schedule.repeat = opts.input.schedule.repeat;
-                }
-                if (opts.input.schedule.dayOfWeek) {
-                    campaign.schedule.dayOfWeek = opts.input.schedule.dayOfWeek;
-                }
 
-                if (opts.input.schedule.nextSession) {
-                    campaign.schedule.nextSession = new Date(
-                        opts.input.schedule.nextSession,
-                    );
+                    if (opts.input.schedule.manual) {
+                        if (opts.input.schedule.nextSession) {
+                            campaign.schedule.nextSession = new Date(
+                                opts.input.schedule.nextSession,
+                            );
+                        }
+                    } else {
+                        if (opts.input.schedule.repeat) {
+                            campaign.schedule.repeat =
+                                opts.input.schedule.repeat;
+                        }
+
+                        if (opts.input.schedule.start) {
+                            campaign.schedule.start = new Date(
+                                opts.input.schedule.start,
+                            );
+                        }
+                    }
                 }
             }
 

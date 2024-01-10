@@ -13,6 +13,7 @@ import { FormButton } from "@/app/components/Form/FormButton";
 import { FormDateInput } from "@/app/components/Form/FormDateInput";
 import { FormField } from "@/app/components/Form/FormField";
 import { FormInput } from "@/app/components/Form/FormInput";
+import { FormSelect } from "@/app/components/Form/FormSelect";
 import { FormSwitch } from "@/app/components/Form/FormSwitch";
 
 interface FormProps extends ComponentProps<"form"> {
@@ -50,9 +51,10 @@ export const Form = Object.assign(
     ),
     {
         Button: FormButton,
+        DateInput: FormDateInput,
         Field: FormField,
         Input: FormInput,
+        Select: FormSelect,
         Switch: FormSwitch,
-        DateInput: FormDateInput,
     },
 );

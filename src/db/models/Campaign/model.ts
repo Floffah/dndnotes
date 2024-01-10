@@ -1,3 +1,4 @@
+import { addDays, addMonths } from "date-fns";
 import { Document, Schema, model } from "mongoose";
 
 import { RepeatInterval } from "@/db/enums/RepeatInterval";
@@ -19,10 +20,6 @@ const CampaignSessionScheduleSchema = new Schema<Campaign["schedule"]>({
         enum: RepeatInterval,
         required: false,
     },
-    dayOfWeek: {
-        type: [Number],
-        required: false,
-    },
 });
 
 CampaignSessionScheduleSchema.virtual("nextSession")
@@ -36,24 +33,43 @@ CampaignSessionScheduleSchema.virtual("nextSession")
         }
 
         if (this.start) {
-            const sessionsHeld = (
-                this.$parent() as Document<unknown, {}, Campaign> & Campaign
-            ).sessionsHeldSinceScheduleStart;
+            let sessionsSinceStart = 0;
 
-            const nextSession = new Date(this.start);
             switch (this.repeat) {
                 case RepeatInterval.WEEKLY:
-                    nextSession.setDate(
-                        nextSession.getDate() + sessionsHeld * 7,
-                    );
+                    sessionsSinceStart =
+                        Math.ceil(
+                            (Date.now() - this.start.getTime()) /
+                                (7 * 24 * 60 * 60 * 1000),
+                        ) ?? 0;
                     break;
                 case RepeatInterval.FORTNIGHTLY:
-                    nextSession.setDate(
-                        nextSession.getDate() + sessionsHeld * 14,
-                    );
+                    sessionsSinceStart =
+                        Math.ceil(
+                            (Date.now() - this.start.getTime()) /
+                                (14 * 24 * 60 * 60 * 1000),
+                        ) ?? 0;
                     break;
                 case RepeatInterval.MONTHLY:
-                    nextSession.setMonth(nextSession.getMonth() + sessionsHeld);
+                    sessionsSinceStart =
+                        Math.ceil(
+                            (Date.now() - this.start.getTime()) /
+                                (30 * 24 * 60 * 60 * 1000),
+                        ) ?? 0;
+                    break;
+            }
+
+            let nextSession = new Date(this.start);
+
+            switch (this.repeat) {
+                case RepeatInterval.WEEKLY:
+                    nextSession = addDays(nextSession, sessionsSinceStart * 7);
+                    break;
+                case RepeatInterval.FORTNIGHTLY:
+                    nextSession = addDays(nextSession, sessionsSinceStart * 14);
+                    break;
+                case RepeatInterval.MONTHLY:
+                    nextSession = addMonths(nextSession, sessionsSinceStart);
                     break;
             }
 
@@ -86,16 +102,13 @@ export const CampaignSchema = decorateSchema(
             required: true,
             default: {},
         },
+        totalSessions: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
     }),
 );
-
-CampaignSchema.virtual("totalSessionsHeld").get(function () {
-    return 0;
-});
-
-CampaignSchema.virtual("sessionsHeldSinceScheduleStart").get(function () {
-    return 0;
-});
 
 export const CampaignModel = model("Campaign", CampaignSchema, undefined, {
     overwriteModels: true,

@@ -21,7 +21,7 @@ export class CampaignAPIModel
             Campaign,
             | "createdBy"
             | "schedule"
-            | "totalSessionsHeld"
+            | "totalSessions"
             | "sessionsHeldSinceScheduleStart"
         >
 {

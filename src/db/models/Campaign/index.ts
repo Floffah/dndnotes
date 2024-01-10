@@ -9,11 +9,9 @@ export interface Campaign extends IBaseModel {
         manual: boolean;
         start?: Date;
         repeat?: RepeatInterval;
-        dayOfWeek?: number[]; // 0-6
 
         nextSession?: Date; // virtual
     };
 
-    totalSessionsHeld: number;
-    sessionsHeldSinceScheduleStart: number;
+    totalSessions: number;
 }

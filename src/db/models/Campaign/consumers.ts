@@ -116,7 +116,10 @@ export class CampaignClientModel
     toObject(
         opts: {
             currentUser?: ModelLike<User>;
-            currentMember?: ModelLike<CampaignMember>;
+            currentMember?: Omit<
+                ModelLike<CampaignMember>,
+                "campaign" | "user"
+            >;
         } = {},
     ) {
         return {

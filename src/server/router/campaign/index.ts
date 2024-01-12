@@ -1,5 +1,4 @@
 import { TRPCError } from "@trpc/server";
-import kind_of from "kind-of";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
@@ -9,7 +8,6 @@ import { CampaignAPIModel } from "@/db/models/Campaign/consumers";
 import { CampaignError } from "@/db/models/Campaign/error";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
-import { UserSessionError } from "@/db/models/UserSession/error";
 import { CampaignFilter } from "@/server/enums/CampaignFilter";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 import { campaignMemberRouter } from "@/server/router/campaign/member";

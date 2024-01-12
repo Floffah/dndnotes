@@ -12,7 +12,6 @@ import {
 } from "@/db/models/FriendshipRequest/model";
 import { UserError } from "@/db/models/User/error";
 import { UserModel } from "@/db/models/User/model";
-import { UserSessionError } from "@/db/models/UserSession/error";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 import { procedure, router } from "@/server/trpc";
 

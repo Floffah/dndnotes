@@ -10,7 +10,6 @@ import { CampaignInviteError } from "@/db/models/CampaignInvite/error";
 import { CampaignInviteModel } from "@/db/models/CampaignInvite/model";
 import { CampaignMemberAPIModel } from "@/db/models/CampaignMember/consumers";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
-import { UserSessionError } from "@/db/models/UserSession/error";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 
 export const campaignMemberRouter = router({

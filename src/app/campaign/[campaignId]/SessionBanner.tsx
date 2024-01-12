@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { formatRelative } from "date-fns";
+import { formatDistance, formatRelative } from "date-fns";
 import Link from "next/link";
 
 import { Button } from "@/app/components/Button";
@@ -36,6 +36,7 @@ function NextSession() {
 
     // if session time was within the last 2 hours
     if (
+        campaign.schedule.nextSession &&
         Date.now() > campaign.schedule.nextSession.getTime() &&
         Date.now() - campaign.schedule.nextSession.getTime() <
             2 * 60 * 60 * 1000
@@ -51,8 +52,17 @@ function NextSession() {
                         Start Session
                     </Button>
                 )}
-                {campaign.currentMember?.type !== CampaignMemberType.DM &&
-                    "Waiting for your DM to start the session..."}
+                {campaign.currentMember?.type !== CampaignMemberType.DM && (
+                    <span>Waiting for your DM to start the session...</span>
+                )}
+
+                <span className="text-xs uppercase text-white/60">
+                    (Started{" "}
+                    {formatDistance(campaign.schedule.nextSession, new Date(), {
+                        addSuffix: true,
+                    })}
+                    )
+                </span>
             </>
         );
     }
@@ -80,7 +90,7 @@ export function SessionBanner() {
     const campaign = useCampaign();
 
     return (
-        <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
             <NextSession />
         </div>
     );

@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { formatDistance, formatRelative } from "date-fns";
 import Link from "next/link";
 
+import { StartSessionDialog } from "@/app/campaign/[campaignId]/StartSessionDialog";
 import { Button } from "@/app/components/Button";
 import { Tooltip } from "@/app/components/Tooltip";
 import { useCampaign } from "@/app/providers/CampaignProvider";
@@ -37,9 +38,10 @@ function NextSession() {
     // if session time was within the last 2 hours
     if (
         campaign.schedule.nextSession &&
+        campaign.schedule.length &&
         Date.now() > campaign.schedule.nextSession.getTime() &&
         Date.now() - campaign.schedule.nextSession.getTime() <
-            2 * 60 * 60 * 1000
+            campaign.schedule.length
     ) {
         return (
             <>
@@ -48,9 +50,11 @@ function NextSession() {
                     It&apos;s time for session {campaign.totalSessions + 1}!
                 </span>
                 {campaign.currentMember?.type === CampaignMemberType.DM && (
-                    <Button size="sm" color="primary">
-                        Start Session
-                    </Button>
+                    <StartSessionDialog>
+                        <Button size="sm" color="primary">
+                            Start Session
+                        </Button>
+                    </StartSessionDialog>
                 )}
                 {campaign.currentMember?.type !== CampaignMemberType.DM && (
                     <span>Waiting for your DM to start the session...</span>
@@ -87,8 +91,6 @@ function NextSession() {
 }
 
 export function SessionBanner() {
-    const campaign = useCampaign();
-
     return (
         <div className="flex flex-wrap items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
             <NextSession />

@@ -20,6 +20,11 @@ const CampaignSessionScheduleSchema = new Schema<Campaign["schedule"]>({
         enum: RepeatInterval,
         required: false,
     },
+    length: {
+        type: Number,
+        required: true,
+        default: 2 * 60 * 60 * 1000,
+    },
 });
 
 CampaignSessionScheduleSchema.virtual("nextSession")
@@ -75,8 +80,9 @@ CampaignSessionScheduleSchema.virtual("nextSession")
 
             // 'current session' state - if there is a session scheduled within the previous 2 hours, return that
             if (
+                this.length &&
                 Date.now() > nextSession.getTime() &&
-                Date.now() - nextSession.getTime() < 1000 * 60 * 60 * 2
+                Date.now() - nextSession.getTime() < this.length
             ) {
                 return nextSession;
             }

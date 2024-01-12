@@ -10,6 +10,22 @@ import { useCache } from "@/app/providers/CacheProvider";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 import { RepeatInterval } from "@/db/enums/RepeatInterval";
 
+enum SessionLength {
+    THIRTY_MINUTES = "THIRTY_MINUTES",
+    ONE_HOUR = "ONE_HOUR",
+    TWO_HOURS = "TWO_HOURS",
+    THREE_HOURS = "THREE_HOURS",
+    INDEFINITE = "INDEFINITE",
+}
+
+const sessionLengths = {
+    [SessionLength.THIRTY_MINUTES]: 30 * 60 * 1000,
+    [SessionLength.ONE_HOUR]: 60 * 60 * 1000,
+    [SessionLength.TWO_HOURS]: 2 * 60 * 60 * 1000,
+    [SessionLength.THREE_HOURS]: 3 * 60 * 60 * 1000,
+    [SessionLength.INDEFINITE]: 2 * 60 * 60 * 1000,
+};
+
 const formSchema = z.object({
     name: z.string().min(5),
 
@@ -17,6 +33,7 @@ const formSchema = z.object({
         manual: z.boolean().optional(),
         start: z.date(),
         repeat: z.nativeEnum(RepeatInterval),
+        length: z.string(),
 
         nextSession: z.date(),
     }),
@@ -37,11 +54,18 @@ export function CampaignSettingsForm() {
                 manual: campaign.schedule.manual,
                 start: campaign.schedule.start ?? new Date(),
                 repeat: campaign.schedule.repeat,
+                length: campaign.schedule.length
+                    ? Object.entries(sessionLengths).find(
+                          ([, length]) => length === campaign.schedule.length,
+                      )?.[0]
+                    : SessionLength.TWO_HOURS,
 
                 nextSession: campaign.schedule.nextSession ?? new Date(),
             },
         },
     });
+
+    console.log(form.watch());
 
     const manualSchedule = form.watch("schedule.manual");
 
@@ -53,6 +77,7 @@ export function CampaignSettingsForm() {
                 manual: values.schedule.manual,
                 start: values.schedule.start?.toISOString(),
                 repeat: values.schedule.repeat,
+                length: sessionLengths[values.schedule.length as SessionLength],
                 nextSession: values.schedule.nextSession?.toISOString(),
             },
         });
@@ -112,6 +137,37 @@ export function CampaignSettingsForm() {
                                         value={RepeatInterval.MONTHLY}
                                     >
                                         Monthly
+                                    </Form.Select.Item>
+                                </Form.Select>
+
+                                <Form.Select
+                                    name="schedule.length"
+                                    label="Session length"
+                                >
+                                    <Form.Select.Item
+                                        value={SessionLength.THIRTY_MINUTES}
+                                    >
+                                        30 minutes
+                                    </Form.Select.Item>
+                                    <Form.Select.Item
+                                        value={SessionLength.ONE_HOUR}
+                                    >
+                                        1 hour
+                                    </Form.Select.Item>
+                                    <Form.Select.Item
+                                        value={SessionLength.TWO_HOURS}
+                                    >
+                                        2 hours
+                                    </Form.Select.Item>
+                                    <Form.Select.Item
+                                        value={SessionLength.THREE_HOURS}
+                                    >
+                                        3 hours
+                                    </Form.Select.Item>
+                                    <Form.Select.Item
+                                        value={SessionLength.INDEFINITE}
+                                    >
+                                        Indefinite
                                     </Form.Select.Item>
                                 </Form.Select>
                             </>

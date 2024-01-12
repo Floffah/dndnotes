@@ -9,6 +9,7 @@ export interface Campaign extends IBaseModel {
         manual: boolean;
         start?: Date;
         repeat?: RepeatInterval;
+        length?: number; // millis
 
         nextSession?: Date; // virtual
     };

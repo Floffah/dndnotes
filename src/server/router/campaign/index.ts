@@ -98,6 +98,7 @@ export const campaignRouter = router({
                         manual: z.optional(z.boolean()),
                         start: z.optional(z.string()),
                         repeat: z.optional(z.nativeEnum(RepeatInterval)),
+                        length: z.optional(z.number()),
 
                         nextSession: z.optional(z.string()),
                     }),
@@ -165,6 +166,11 @@ export const campaignRouter = router({
                             campaign.schedule.start = new Date(
                                 opts.input.schedule.start,
                             );
+                        }
+
+                        if (opts.input.schedule.length) {
+                            campaign.schedule.length =
+                                opts.input.schedule.length;
                         }
                     }
                 }

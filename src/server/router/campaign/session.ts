@@ -22,7 +22,7 @@ export const campaignSessionRouter = router({
                 name: z.string(),
             }),
         )
-        .query(async (opts) => {
+        .mutation(async (opts) => {
             await ensureAuthenticated(opts.ctx);
 
             const campaign = await CampaignModel.findById(
@@ -58,12 +58,12 @@ export const campaignSessionRouter = router({
             let startType: CampaignSessionStartType =
                 CampaignSessionStartType.IMMEDIATE;
 
-            // if campaign nextSession was within the last 2 hours
             if (
                 campaign.schedule.nextSession &&
+                campaign.schedule.length &&
                 Date.now() > campaign.schedule.nextSession.getTime() &&
                 Date.now() - campaign.schedule.nextSession.getTime() <
-                    1000 * 60 * 60 * 2
+                    campaign.schedule.length
             ) {
                 startType = CampaignSessionStartType.SCHEDULED;
             }

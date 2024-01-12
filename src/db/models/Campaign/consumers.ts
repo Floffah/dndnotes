@@ -24,6 +24,7 @@ export class CampaignAPIModel
         manual?: boolean;
         start?: Date;
         repeat?: RepeatInterval;
+        length?: number;
 
         nextSession?: Date;
     };
@@ -41,6 +42,7 @@ export class CampaignAPIModel
             manual: campaign.schedule?.manual,
             start: campaign.schedule?.start,
             repeat: campaign.schedule?.repeat,
+            length: campaign.schedule?.length,
             nextSession: campaign.schedule?.nextSession,
         };
         this.totalSessions = campaign.totalSessions;
@@ -61,6 +63,7 @@ export class CampaignAPIModel
                 manual: this.schedule.manual,
                 start: this.schedule.start?.toISOString(),
                 repeat: this.schedule.repeat,
+                length: this.schedule.length,
                 nextSession: this.schedule.nextSession?.toISOString(),
             },
             totalSessions: this.totalSessions,
@@ -71,6 +74,7 @@ export class CampaignAPIModel
                 manual?: boolean;
                 start?: string;
                 repeat?: RepeatInterval;
+                length?: number;
 
                 nextSession: string;
             };
@@ -91,6 +95,7 @@ export class CampaignClientModel
         manual?: boolean;
         start?: Date;
         repeat?: RepeatInterval;
+        length?: number;
 
         nextSession?: Date;
     };
@@ -106,6 +111,7 @@ export class CampaignClientModel
                 ? new Date(campaign.schedule.start)
                 : undefined,
             repeat: campaign.schedule?.repeat,
+            length: campaign.schedule?.length,
             nextSession: campaign.schedule?.nextSession
                 ? new Date(campaign.schedule.nextSession)
                 : undefined,
@@ -132,6 +138,7 @@ export class CampaignClientModel
                 manual: this.schedule.manual,
                 start: this.schedule.start,
                 repeat: this.schedule.repeat,
+                length: this.schedule.length,
                 nextSession: this.schedule.nextSession,
             },
             totalSessions: this.totalSessions,

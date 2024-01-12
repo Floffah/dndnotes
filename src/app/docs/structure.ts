@@ -9,6 +9,7 @@ export const docsStructure: DocsStructure = [
         label: "Docs",
     },
     "roadmap",
+    "acknowledgements",
     "privacyPolicy",
     "termsOfService",
 ];

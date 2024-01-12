@@ -5,7 +5,7 @@ module.exports = {
     content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
     theme: {
         fontFamily: {
-            sans: ["Nunito", "sans-serif"],
+            sans: "var(--font-sans)",
         },
         extend: {
             spacing: {

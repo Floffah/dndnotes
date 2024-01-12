@@ -43,6 +43,10 @@
         font-family: var(--font-mono);
     }
 
+    & pre code {
+        @apply text-sm bg-black/20 rounded-lg p-4 block overflow-auto;
+    }
+
     & ul {
         @apply ml-4 list-disc;
 

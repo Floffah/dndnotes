@@ -45,8 +45,6 @@ export function OutgoingRequestsTab({ dialogOpen }: { dialogOpen: boolean }) {
                                     id: request.id,
                                 });
 
-                            console.log(updatedRequest);
-
                             cache.user.friends.upsertPending(
                                 {
                                     from: user.id,

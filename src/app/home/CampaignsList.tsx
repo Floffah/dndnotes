@@ -2,13 +2,14 @@
 
 import clsx from "clsx";
 import Link from "next/link";
+import { memo } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
 import { Button } from "@/app/components/Button";
 import { Loader } from "@/app/components/Loader";
 import { CampaignFilter } from "@/server/enums/CampaignFilter";
 
-export function CampaignsList() {
+export const CampaignsList = memo(() => {
     const campaigns = trpc.campaign.list.useQuery({
         filter: CampaignFilter.MY_CAMPAIGNS,
     });
@@ -67,4 +68,4 @@ export function CampaignsList() {
             </div>
         </div>
     );
-}
+});

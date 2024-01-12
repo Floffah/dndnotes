@@ -11,11 +11,11 @@ export const metadata = populateMetadata({
     description: "Advanced DND note taking app for both sides of the equation",
 });
 
-const nunito = Nunito({ subsets: ["latin"] });
+const nunito = Nunito({ subsets: ["latin"], variable: "--font-sans" });
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
+        <html lang="en" className={nunito.variable}>
             <body className={nunito.className}>
                 <HydrationProvider>
                     <UserProvider>

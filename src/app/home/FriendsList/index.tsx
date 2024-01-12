@@ -1,5 +1,7 @@
 "use client";
 
+import { memo } from "react";
+
 import { trpc } from "@/app/api/lib/client/trpc";
 import { Button } from "@/app/components/Button";
 import { Divider } from "@/app/components/Divider";
@@ -8,7 +10,7 @@ import { AddFriendForm } from "@/app/home/FriendsList/AddFriendForm";
 import { FriendRequestsDialog } from "@/app/home/FriendsList/FriendRequestsDialog";
 import { useUser } from "@/app/providers/UserProvider";
 
-export function FriendsList() {
+export const FriendsList = memo(() => {
     const user = useUser();
     const friends = trpc.user.friends.getAccepted.useQuery({
         user: user.id,
@@ -75,4 +77,4 @@ export function FriendsList() {
             })}
         </div>
     );
-}
+});

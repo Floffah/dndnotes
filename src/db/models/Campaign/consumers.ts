@@ -32,15 +32,16 @@ export class CampaignAPIModel
     constructor(campaign: Campaign) {
         super(campaign);
         this.name = campaign.name;
+
         this.createdBy =
-            campaign.createdBy && campaign.createdBy.name
+            campaign.createdBy && "db" in campaign.createdBy
                 ? campaign.createdBy
                 : null;
         this.schedule = {
             manual: campaign.schedule?.manual,
             start: campaign.schedule?.start,
             repeat: campaign.schedule?.repeat,
-            nextSession: campaign.schedule.nextSession,
+            nextSession: campaign.schedule?.nextSession,
         };
         this.totalSessions = campaign.totalSessions;
     }
@@ -115,10 +116,7 @@ export class CampaignClientModel
     toObject(
         opts: {
             currentUser?: ModelLike<User>;
-            currentMember?: Omit<
-                ModelLike<CampaignMember>,
-                "user" | "campaign"
-            >;
+            currentMember?: ModelLike<CampaignMember>;
         } = {},
     ) {
         return {

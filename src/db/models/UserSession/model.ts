@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 
-import { Session } from "@/db/models/Session/index";
 import { UserModel } from "@/db/models/User/model";
+import { UserSession } from "@/db/models/UserSession/index";
 import { decorateSchema } from "@/db/models/decorateSchema";
 
-export const SessionSchema = decorateSchema(
-    new Schema<Session>({
+export const UserSessionSchema = decorateSchema(
+    new Schema<UserSession>({
         user: {
             type: Schema.Types.ObjectId,
             ref: UserModel,
@@ -23,6 +23,11 @@ export const SessionSchema = decorateSchema(
     }),
 );
 
-export const SessionModel = model("Session", SessionSchema, undefined, {
-    overwriteModels: true,
-});
+export const UserSessionModel = model(
+    "UserSession",
+    UserSessionSchema,
+    undefined,
+    {
+        overwriteModels: true,
+    },
+);

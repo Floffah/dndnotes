@@ -3,7 +3,7 @@ import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { parse } from "cookie";
 
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
-import { SessionModel } from "@/db/models/Session/model";
+import { UserSessionModel } from "@/db/models/UserSession/model";
 
 export const createContext = async (opts: FetchCreateContextFnOptions) => {
     if (!opts.req.headers.has("cookie")) {
@@ -21,7 +21,7 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
         };
     }
 
-    const session = await SessionModel.findOne({
+    const session = await UserSessionModel.findOne({
         token,
     })
         .populate("user")
@@ -37,6 +37,7 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
         session,
     };
 };
+export type Context = Awaited<ReturnType<typeof createContext>>;
 
 const trpc = initTRPC.context<typeof createContext>().create();
 

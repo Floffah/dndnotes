@@ -15,11 +15,7 @@ export function CampaignNavBar() {
                 href="/"
                 className="flex cursor-pointer select-none items-center justify-center p-1 transition-all duration-150 hover:scale-110"
             >
-                <Icon
-                    label="leave campaign icon"
-                    icon="mi:arrow-left"
-                    className="h-5 w-5"
-                />
+                <Icon label="go home" icon="mdi:home" className="h-5 w-5" />
             </Link>
 
             <Divider orientation="vertical" />

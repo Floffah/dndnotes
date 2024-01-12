@@ -1,9 +1,9 @@
 import { resetDatabase } from "./utils/mongo";
 import { createUser } from "./utils/user";
 import { inferProcedureOutput } from "@trpc/server";
+import { UserSession } from "src/db/models/UserSession";
 
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
-import { Session } from "@/db/models/Session";
 import { User } from "@/db/models/User";
 import {
     TRPCServerCaller,
@@ -14,7 +14,7 @@ import { AppRouter } from "@/server/router";
 describe("User", () => {
     describe("Authentication", () => {
         let user1: User;
-        let session1: Session;
+        let session1: UserSession;
 
         beforeAll(async () => {
             await resetDatabase();
@@ -68,7 +68,7 @@ describe("User", () => {
 
     describe("Fetching", () => {
         let user1: User;
-        let session1: Session;
+        let session1: UserSession;
         let user2: User;
 
         beforeAll(async () => {

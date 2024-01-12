@@ -1,11 +1,11 @@
 import { randomBytes } from "crypto";
 import type { ObjectId } from "mongodb";
 import type { Document } from "mongoose";
+import type { UserSession } from "src/db/models/UserSession";
 import { generateUsername } from "unique-username-generator";
 
-import type { Session } from "@/db/models/Session";
-import { SessionModel } from "@/db/models/Session/model";
 import { UserModel } from "@/db/models/User/model";
+import { UserSessionModel } from "@/db/models/UserSession/model";
 
 export async function createUser<WithSession extends boolean>(
     withSession?: WithSession,
@@ -16,11 +16,11 @@ export async function createUser<WithSession extends boolean>(
         email: `${name}@example.com`,
     });
 
-    let session: Document<unknown, {}, Session> & Session & { _id: ObjectId } =
-        null!;
+    let session: Document<unknown, {}, UserSession> &
+        UserSession & { _id: ObjectId } = null!;
 
     if (withSession) {
-        session = await SessionModel.create({
+        session = await UserSessionModel.create({
             user,
             token: randomBytes(16).toString("hex"),
             expiresAt: new Date(Date.now() + 1000 * 60),

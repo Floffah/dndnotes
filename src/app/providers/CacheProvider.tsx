@@ -77,8 +77,6 @@ export function CacheProvider({ children }: PropsWithChildren) {
                                 ? pendingRequestsCachedData
                                 : [];
 
-                            console.log(data);
-
                             if (
                                 pendingRequests.find(
                                     (request) => request.id === data.id,

@@ -25,9 +25,10 @@ export class CampaignInviteAPIModel
 
     constructor(campaignInvite: CampaignInvite) {
         super(campaignInvite);
-        this.campaign = campaignInvite.campaign
-            ? campaignInvite.campaign
-            : null!;
+        this.campaign =
+            campaignInvite.campaign && "db" in campaignInvite.campaign
+                ? campaignInvite.campaign
+                : null!;
         this.user = campaignInvite.user ? campaignInvite.user : null!;
         this.code = campaignInvite.code;
     }

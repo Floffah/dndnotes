@@ -10,9 +10,10 @@ import {
     FriendshipRequestModel,
     FriendshipRequestSchema,
 } from "@/db/models/FriendshipRequest/model";
-import { SessionError } from "@/db/models/Session/error";
 import { UserError } from "@/db/models/User/error";
 import { UserModel } from "@/db/models/User/model";
+import { UserSessionError } from "@/db/models/UserSession/error";
+import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 import { procedure, router } from "@/server/trpc";
 
 export const userFriendsRouter = router({
@@ -25,14 +26,9 @@ export const userFriendsRouter = router({
             }),
         )
         .query(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
-            const userId = opts.input.user ?? opts.ctx.session.user.id;
+            const userId = opts.input.user ?? opts.ctx.session!.user.id;
 
             const requests = await FriendshipRequestModel.find({
                 $or: [
@@ -60,12 +56,7 @@ export const userFriendsRouter = router({
             }),
         )
         .query(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
             if (!opts.input.to && !opts.input.from) {
                 throw new TRPCError({
@@ -74,7 +65,7 @@ export const userFriendsRouter = router({
                 });
             }
 
-            if (opts.input.to && opts.input.to !== opts.ctx.session.user.id) {
+            if (opts.input.to && opts.input.to !== opts.ctx.session!.user.id) {
                 throw new TRPCError({
                     code: "FORBIDDEN",
                     message: FriendshipRequestError.CANNOT_VIEW_OTHERS_PENDING,
@@ -83,7 +74,7 @@ export const userFriendsRouter = router({
 
             if (
                 opts.input.from &&
-                opts.input.from !== opts.ctx.session.user.id
+                opts.input.from !== opts.ctx.session!.user.id
             ) {
                 throw new TRPCError({
                     code: "FORBIDDEN",
@@ -123,16 +114,11 @@ export const userFriendsRouter = router({
             }),
         )
         .mutation(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
             if (
-                opts.input.to.id === opts.ctx.session.user.id ||
-                opts.input.to.username === opts.ctx.session.user.name
+                opts.input.to.id === opts.ctx.session!.user.id ||
+                opts.input.to.username === opts.ctx.session!.user.name
             ) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
@@ -158,7 +144,7 @@ export const userFriendsRouter = router({
             }
 
             const existingRequest = await FriendshipRequestModel.findOne({
-                sender: new ObjectId(opts.ctx.session.user.id),
+                sender: new ObjectId(opts.ctx.session!.user.id),
                 recipient: recipientId,
             });
 
@@ -170,7 +156,7 @@ export const userFriendsRouter = router({
             }
 
             const request = new FriendshipRequestModel({
-                sender: new ObjectId(opts.ctx.session.user.id),
+                sender: new ObjectId(opts.ctx.session!.user.id),
                 recipient: recipientId,
             });
 
@@ -192,12 +178,7 @@ export const userFriendsRouter = router({
             }),
         )
         .mutation(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
             const request = await FriendshipRequestModel.findById(
                 new ObjectId(opts.input.id),
@@ -219,7 +200,7 @@ export const userFriendsRouter = router({
 
             if (
                 opts.input.state === FriendshipRequestState.ACCEPTED &&
-                request.recipient.toString() !== opts.ctx.session.user.id
+                request.recipient.toString() !== opts.ctx.session!.user.id
             ) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
@@ -229,7 +210,7 @@ export const userFriendsRouter = router({
 
             if (
                 opts.input.state === FriendshipRequestState.DENIED &&
-                request.recipient.toString() !== opts.ctx.session.user.id
+                request.recipient.toString() !== opts.ctx.session!.user.id
             ) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
@@ -239,7 +220,7 @@ export const userFriendsRouter = router({
 
             if (
                 opts.input.state === FriendshipRequestState.DELETED &&
-                request.sender.toString() !== opts.ctx.session.user.id
+                request.sender.toString() !== opts.ctx.session!.user.id
             ) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",

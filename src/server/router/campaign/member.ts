@@ -10,7 +10,8 @@ import { CampaignInviteError } from "@/db/models/CampaignInvite/error";
 import { CampaignInviteModel } from "@/db/models/CampaignInvite/model";
 import { CampaignMemberAPIModel } from "@/db/models/CampaignMember/consumers";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
-import { SessionError } from "@/db/models/Session/error";
+import { UserSessionError } from "@/db/models/UserSession/error";
+import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 
 export const campaignMemberRouter = router({
     list: procedure
@@ -20,12 +21,7 @@ export const campaignMemberRouter = router({
             }),
         )
         .query(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
             const campaignMembers = await CampaignMemberModel.find({
                 campaign: new ObjectId(opts.input.campaignId),
@@ -35,7 +31,7 @@ export const campaignMemberRouter = router({
 
             return campaignMembers.map((campaignMember) =>
                 new CampaignMemberAPIModel(campaignMember).toObject({
-                    currentUser: opts.ctx.session?.user,
+                    currentUser: opts.ctx.session!.user,
                 }),
             );
         }),
@@ -48,12 +44,7 @@ export const campaignMemberRouter = router({
             }),
         )
         .mutation(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
             const campaignMember = await CampaignMemberModel.findOne({
                 campaign: new ObjectId(opts.input.campaignId),
@@ -86,7 +77,7 @@ export const campaignMemberRouter = router({
             });
 
             return new CampaignInviteAPIModel(campaignInvite).toObject({
-                currentUser: opts.ctx.session?.user,
+                currentUser: opts.ctx.session!.user,
             });
         }),
 
@@ -97,12 +88,7 @@ export const campaignMemberRouter = router({
             }),
         )
         .mutation(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
             const campaignInvite = await CampaignInviteModel.findOne({
                 code: opts.input.code,
@@ -110,7 +96,7 @@ export const campaignMemberRouter = router({
 
             if (
                 !campaignInvite ||
-                campaignInvite.user.toString() !== opts.ctx.session.user.id
+                campaignInvite.user.toString() !== opts.ctx.session!.user.id
             ) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",

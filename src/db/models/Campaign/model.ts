@@ -1,5 +1,5 @@
 import { addDays, addMonths } from "date-fns";
-import { Document, Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 import { RepeatInterval } from "@/db/enums/RepeatInterval";
 import { Campaign } from "@/db/models/Campaign/index";
@@ -38,21 +38,21 @@ CampaignSessionScheduleSchema.virtual("nextSession")
             switch (this.repeat) {
                 case RepeatInterval.WEEKLY:
                     sessionsSinceStart =
-                        Math.ceil(
+                        Math.floor(
                             (Date.now() - this.start.getTime()) /
                                 (7 * 24 * 60 * 60 * 1000),
                         ) ?? 0;
                     break;
                 case RepeatInterval.FORTNIGHTLY:
                     sessionsSinceStart =
-                        Math.ceil(
+                        Math.floor(
                             (Date.now() - this.start.getTime()) /
                                 (14 * 24 * 60 * 60 * 1000),
                         ) ?? 0;
                     break;
                 case RepeatInterval.MONTHLY:
                     sessionsSinceStart =
-                        Math.ceil(
+                        Math.floor(
                             (Date.now() - this.start.getTime()) /
                                 (30 * 24 * 60 * 60 * 1000),
                         ) ?? 0;
@@ -71,6 +71,32 @@ CampaignSessionScheduleSchema.virtual("nextSession")
                 case RepeatInterval.MONTHLY:
                     nextSession = addMonths(nextSession, sessionsSinceStart);
                     break;
+            }
+
+            // 'current session' state - if there is a session scheduled within the previous 2 hours, return that
+            if (
+                Date.now() > nextSession.getTime() &&
+                Date.now() - nextSession.getTime() < 1000 * 60 * 60 * 2
+            ) {
+                return nextSession;
+            }
+
+            // but otherwise return the next session
+            switch (this.repeat) {
+                case RepeatInterval.WEEKLY:
+                    nextSession = addDays(nextSession, 7);
+                    break;
+                case RepeatInterval.FORTNIGHTLY:
+                    nextSession = addDays(nextSession, 14);
+                    break;
+                case RepeatInterval.MONTHLY:
+                    nextSession = addMonths(nextSession, 1);
+                    break;
+            }
+
+            // unless the schedule state is invalid - in which case return null
+            if (Date.now() > nextSession.getTime()) {
+                return null;
             }
 
             return nextSession;

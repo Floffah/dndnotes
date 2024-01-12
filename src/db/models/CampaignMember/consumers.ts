@@ -33,10 +33,14 @@ export class CampaignMemberAPIModel
     constructor(campaignMember: CampaignMember) {
         super(campaignMember);
         this.type = campaignMember.type;
-        this.campaign = campaignMember.campaign?.name
-            ? campaignMember.campaign
-            : null!;
-        this.user = campaignMember.user?.name ? campaignMember.user : null!;
+        this.campaign =
+            campaignMember.campaign && "db" in campaignMember.campaign
+                ? campaignMember.campaign
+                : null!;
+        this.user =
+            campaignMember.user && "db" in campaignMember.user
+                ? campaignMember.user
+                : null!;
         this.character = null;
     }
 

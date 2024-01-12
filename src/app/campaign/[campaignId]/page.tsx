@@ -6,6 +6,7 @@ import Link from "next/link";
 import { CampaignNavBar } from "@/app/campaign/[campaignId]/CampaignNavBar";
 import { MembersList } from "@/app/campaign/[campaignId]/MembersList";
 import { NoCampaignPermissionDialog } from "@/app/campaign/[campaignId]/NoCampaignPermissionDialog";
+import { SessionBanner } from "@/app/campaign/[campaignId]/SessionBanner";
 import { SessionList } from "@/app/campaign/[campaignId]/SessionList";
 import { Divider } from "@/app/components/Divider";
 import { Loader } from "@/app/components/Loader";
@@ -38,51 +39,9 @@ export default function CampaignPage() {
                     </div>
                 ) : (
                     <div className="flex flex-auto flex-col gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
-                        <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-                            <span className="text-lg font-semibold">
-                                Next session at:
-                            </span>
-                            {!campaign.schedule.nextSession ? (
-                                <>
-                                    {campaign.currentMember?.type ===
-                                    CampaignMemberType.DM ? (
-                                        <>
-                                            You haven&apos;t set a session time
-                                            yet!
-                                            <Link
-                                                href={`/campaign/${campaign.id}/settings`}
-                                                className="text-blue-400 underline decoration-blue-400/75 underline-offset-2"
-                                            >
-                                                Set one
-                                            </Link>
-                                        </>
-                                    ) : (
-                                        "Your DM has not set a session time yet! Tell them to set one!"
-                                    )}
-                                </>
-                            ) : (
-                                <>
-                                    <Tooltip
-                                        title={Intl.DateTimeFormat("en-GB", {
-                                            dateStyle: "long",
-                                            timeStyle: "short",
-                                        }).format(
-                                            campaign.schedule.nextSession,
-                                        )}
-                                        side="bottom"
-                                    >
-                                        <span className="indicate-action indicate-white/50">
-                                            {formatRelative(
-                                                campaign.schedule.nextSession,
-                                                new Date(),
-                                            )}
-                                        </span>
-                                    </Tooltip>
-                                </>
-                            )}
-                        </div>
-
+                        <SessionBanner />
                         <SessionList />
+
                         <Divider />
                     </div>
                 )}

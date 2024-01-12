@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import kind_of from "kind-of";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
@@ -8,13 +9,16 @@ import { CampaignAPIModel } from "@/db/models/Campaign/consumers";
 import { CampaignError } from "@/db/models/Campaign/error";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
-import { SessionError } from "@/db/models/Session/error";
+import { UserSessionError } from "@/db/models/UserSession/error";
 import { CampaignFilter } from "@/server/enums/CampaignFilter";
+import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 import { campaignMemberRouter } from "@/server/router/campaign/member";
+import { campaignSessionRouter } from "@/server/router/campaign/session";
 import { procedure, router } from "@/server/trpc";
 
 export const campaignRouter = router({
     member: campaignMemberRouter,
+    session: campaignSessionRouter,
 
     get: procedure.input(z.string()).query(async (opts) => {
         const campaign = await CampaignModel.findById(new ObjectId(opts.input))
@@ -35,15 +39,10 @@ export const campaignRouter = router({
             }),
         )
         .query(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
             const campaignMembers = await CampaignMemberModel.find({
-                user: new ObjectId(opts.ctx.session.user.id),
+                user: new ObjectId(opts.ctx.session!.user.id),
             });
 
             const campaigns = await CampaignModel.find({
@@ -72,26 +71,21 @@ export const campaignRouter = router({
             }),
         )
         .mutation(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
             const campaign = await CampaignModel.create({
                 name: opts.input.name,
-                createdBy: new ObjectId(opts.ctx.session.user.id),
+                createdBy: new ObjectId(opts.ctx.session!.user.id),
             });
 
             const campaignMember = await CampaignMemberModel.create({
                 campaign: campaign,
-                user: opts.ctx.session.user,
+                user: opts.ctx.session!.user,
                 type: CampaignMemberType.DM,
             });
 
             return new CampaignAPIModel(campaign).toObject({
-                currentUser: opts.ctx.session.user,
+                currentUser: opts.ctx.session!.user,
                 currentMember: campaignMember,
             });
         }),
@@ -113,12 +107,7 @@ export const campaignRouter = router({
             }),
         )
         .mutation(async (opts) => {
-            if (!opts.ctx.session) {
-                throw new TRPCError({
-                    code: "UNAUTHORIZED",
-                    message: SessionError.NOT_AUTHENTICATED,
-                });
-            }
+            await ensureAuthenticated(opts.ctx);
 
             const campaign = await CampaignModel.findById(
                 new ObjectId(opts.input.id),
@@ -133,7 +122,7 @@ export const campaignRouter = router({
 
             const campaignMember = await CampaignMemberModel.findOne({
                 campaign: campaign._id,
-                user: new ObjectId(opts.ctx.session.user.id),
+                user: new ObjectId(opts.ctx.session!.user.id),
             });
 
             if (!campaignMember) {
@@ -186,17 +175,12 @@ export const campaignRouter = router({
             const updatedCampaign = await campaign.save();
 
             return new CampaignAPIModel(updatedCampaign).toObject({
-                currentUser: opts.ctx.session.user,
+                currentUser: opts.ctx.session!.user,
             });
         }),
 
     delete: procedure.input(z.string()).mutation(async (opts) => {
-        if (!opts.ctx.session) {
-            throw new TRPCError({
-                code: "UNAUTHORIZED",
-                message: SessionError.NOT_AUTHENTICATED,
-            });
-        }
+        await ensureAuthenticated(opts.ctx);
 
         const campaign = await CampaignModel.findById(new ObjectId(opts.input));
 
@@ -209,7 +193,7 @@ export const campaignRouter = router({
 
         const campaignMember = await CampaignMemberModel.findOne({
             campaign: campaign._id,
-            user: new ObjectId(opts.ctx.session.user.id),
+            user: new ObjectId(opts.ctx.session!.user.id),
         });
 
         if (!campaignMember) {

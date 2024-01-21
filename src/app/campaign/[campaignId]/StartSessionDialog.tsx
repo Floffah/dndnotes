@@ -19,28 +19,20 @@ export const StartSessionDialog = forwardRef<DialogRef, PropsWithChildren>(
     ({ children }, ref) => {
         const campaign = useCampaign();
 
-        const isSessionNow =
-            campaign.schedule.nextSession &&
-            Date.now() > campaign.schedule.nextSession.getTime();
-
         const form = useForm({
             resolver: zodResolver(formSchema),
             defaultValues: {
                 name: `Session ${campaign.totalSessions + 1}`,
-                type: isSessionNow
-                    ? CampaignSessionType.ONGOING
-                    : CampaignSessionType.ONE_SHOT,
             },
         });
 
         const createSessionMutation =
-            trpc.campaign.session.create.useMutation();
+            trpc.campaign.session.startSchedule.useMutation();
 
         const onSubmit = async (values: FormValues) => {
             await createSessionMutation.mutateAsync({
                 campaignId: campaign.id,
                 name: values.name,
-                type: values.type,
             });
         };
 
@@ -54,14 +46,6 @@ export const StartSessionDialog = forwardRef<DialogRef, PropsWithChildren>(
                     <Dialog.Content.Body>
                         <Form form={form} onSubmit={onSubmit}>
                             <Form.Input name="name" label="Session name" />
-                            <Form.Select name="type" label="Session type">
-                                <option value={CampaignSessionType.ONE_SHOT}>
-                                    One Shot
-                                </option>
-                                <option value={CampaignSessionType.ONGOING}>
-                                    Ongoing
-                                </option>
-                            </Form.Select>
 
                             <Form.Button size="md" color="primary">
                                 Start Session

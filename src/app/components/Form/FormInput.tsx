@@ -2,42 +2,31 @@
 
 import { ComponentProps, useContext } from "react";
 
-import { FormField } from "@/app/components/Form/FormField";
+import {
+    FormField,
+    FormFieldBaseProps,
+    useFormField,
+} from "@/app/components/Form/FormField";
 import { FormContext } from "@/app/components/Form/index";
 import { Input } from "@/app/components/Input";
 
-interface FormInputProps extends ComponentProps<typeof Input> {
-    name: string;
-    label?: string;
-    description?: string;
-    fieldClassName?: string;
-}
+interface FormInputProps
+    extends Omit<
+        ComponentProps<typeof Input> & FormFieldBaseProps,
+        "children"
+    > {}
 
-export function FormInput({
-    name,
-    label,
-    description,
-    disabled,
-    fieldClassName,
-    ...props
-}: FormInputProps) {
+export function FormInput({ ...props }: FormInputProps) {
     const { form } = useContext(FormContext);
 
-    const error = form.formState.errors[name];
+    const {
+        fieldProps,
+        controlProps: { name, ...controlProps },
+    } = useFormField(props);
 
     return (
-        <FormField
-            name={name}
-            label={label}
-            description={description}
-            className={fieldClassName}
-        >
-            <Input
-                {...props}
-                {...form.register(name)}
-                disabled={form.formState?.isSubmitting || disabled}
-                error={!!error}
-            />
+        <FormField {...fieldProps}>
+            <Input {...controlProps} {...form.register(name)} name={name} />
         </FormField>
     );
 }

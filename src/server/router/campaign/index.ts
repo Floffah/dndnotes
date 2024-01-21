@@ -142,40 +142,6 @@ export const campaignRouter = router({
                 campaign.name = opts.input.name;
             }
 
-            if (opts.input.schedule) {
-                if (!campaign.schedule) {
-                    campaign.schedule = {} as any;
-                }
-
-                if (typeof opts.input.schedule.manual === "boolean") {
-                    campaign.schedule.manual = opts.input.schedule.manual;
-
-                    if (opts.input.schedule.manual) {
-                        if (opts.input.schedule.nextSession) {
-                            campaign.schedule.nextSession = new Date(
-                                opts.input.schedule.nextSession,
-                            );
-                        }
-                    } else {
-                        if (opts.input.schedule.repeat) {
-                            campaign.schedule.repeat =
-                                opts.input.schedule.repeat;
-                        }
-
-                        if (opts.input.schedule.start) {
-                            campaign.schedule.start = new Date(
-                                opts.input.schedule.start,
-                            );
-                        }
-
-                        if (opts.input.schedule.length) {
-                            campaign.schedule.length =
-                                opts.input.schedule.length;
-                        }
-                    }
-                }
-            }
-
             const updatedCampaign = await campaign.save();
 
             return new CampaignAPIModel(updatedCampaign).toObject({

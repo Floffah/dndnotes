@@ -1,6 +1,6 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
-export function decorateSchema<S extends Schema>(schema: S) {
+export function createModel<S extends Schema>(name: string, schema: S) {
     schema.virtual("id").get(function (this: any) {
         return this._id.toHexString();
     });
@@ -23,5 +23,7 @@ export function decorateSchema<S extends Schema>(schema: S) {
         },
     });
 
-    return schema as S;
+    return model(name, schema, undefined, {
+        overwriteModels: process.env.NODE_ENV === "development",
+    });
 }

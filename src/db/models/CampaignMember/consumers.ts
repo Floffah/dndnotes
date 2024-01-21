@@ -18,8 +18,8 @@ import {
     BaseAPIModel,
     BaseClientModel,
     BaseClientType,
-} from "@/db/models/baseModel";
-import { ModelLike, OmitAPI, ToObjectType } from "@/db/models/types";
+} from "@/db/types/baseModel";
+import { ModelLike, OmitAPI, ToObjectType } from "@/db/types/utils";
 
 export class CampaignMemberAPIModel
     extends BaseAPIModel

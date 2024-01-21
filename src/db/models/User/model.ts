@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 
+import { createModel } from "@/db/lib/createModel";
 import { User } from "@/db/models/User/index";
-import { decorateSchema } from "@/db/models/decorateSchema";
 
 const DiscordProviderSchema = new Schema({
     id: {
@@ -25,27 +25,23 @@ const UserProvidersSchema = new Schema({
     },
 });
 
-export const UserSchema = decorateSchema(
-    new Schema<User>({
-        name: {
-            type: String,
-            unique: true,
-            index: true,
-            required: true,
-        },
-        email: {
-            type: String,
-            index: true,
-            unique: true,
-            required: true,
-        },
-        providers: {
-            type: UserProvidersSchema,
-            required: false,
-        },
-    }),
-);
-
-export const UserModel = model("User", UserSchema, undefined, {
-    overwriteModels: true,
+export const UserSchema = new Schema<User>({
+    name: {
+        type: String,
+        unique: true,
+        index: true,
+        required: true,
+    },
+    email: {
+        type: String,
+        index: true,
+        unique: true,
+        required: true,
+    },
+    providers: {
+        type: UserProvidersSchema,
+        required: false,
+    },
 });
+
+export const UserModel = createModel("User", UserSchema);

@@ -3,7 +3,7 @@ import { Nunito } from "next/font/google";
 import "@/app/globals.css";
 import { populateMetadata } from "@/app/lib/populateMetadata";
 import { CacheProvider } from "@/app/providers/CacheProvider";
-import { HydrationProvider } from "@/app/providers/HydrationProvider";
+import { RootHydrationProvider } from "@/app/providers/RootHydrationProvider";
 import { UserProvider } from "@/app/providers/UserProvider";
 
 export const metadata = populateMetadata({
@@ -17,11 +17,11 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en" className={nunito.variable}>
             <body className={nunito.className}>
-                <HydrationProvider>
+                <RootHydrationProvider>
                     <UserProvider>
                         <CacheProvider>{children}</CacheProvider>
                     </UserProvider>
-                </HydrationProvider>
+                </RootHydrationProvider>
             </body>
         </html>
     );

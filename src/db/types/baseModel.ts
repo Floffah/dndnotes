@@ -1,6 +1,6 @@
 import type { ObjectId } from "mongoose";
 
-import { ToObjectType } from "@/db/models/types";
+import { ToObjectType } from "@/db/types/utils";
 
 export interface IBaseModel {
     id: string;
@@ -29,6 +29,7 @@ export class BaseAPIModel implements IBaseModel {
         };
     }
 }
+
 export type BaseAPIType = ToObjectType<BaseAPIModel>;
 
 export class BaseClientModel implements IBaseModel {
@@ -55,4 +56,5 @@ export class BaseClientModel implements IBaseModel {
         };
     }
 }
+
 export type BaseClientType = ToObjectType<BaseClientModel>;

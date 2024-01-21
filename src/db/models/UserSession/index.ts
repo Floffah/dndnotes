@@ -1,5 +1,5 @@
 import { User } from "@/db/models/User";
-import { IBaseModel } from "@/db/models/baseModel";
+import { IBaseModel } from "@/db/types/baseModel";
 
 export interface UserSession extends IBaseModel {
     user: User;

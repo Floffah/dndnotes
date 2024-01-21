@@ -1,50 +1,38 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 
-import { CampaignSessionStartType } from "@/db/enums/CampaignSessionStartType";
 import { CampaignSessionType } from "@/db/enums/CampaignSessionType";
+import { createModel } from "@/db/lib/createModel";
 import { CampaignModel } from "@/db/models/Campaign/model";
-import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
 import { CampaignSession } from "@/db/models/CampaignSession/index";
-import { decorateSchema } from "@/db/models/decorateSchema";
+import { CampaignSessionScheduleModel } from "@/db/models/CampaignSessionSchedule/model";
 
-export const CampaignSessionSchema = decorateSchema(
-    new Schema<CampaignSession>({
-        name: {
-            type: String,
-            required: true,
-        },
-        type: {
-            type: String,
-            enum: CampaignSessionType,
-            required: true,
-        },
-        campaign: {
-            type: Schema.Types.ObjectId,
-            ref: CampaignModel,
-            required: true,
-        },
-        startedBy: {
-            type: Schema.Types.ObjectId,
-            ref: CampaignMemberModel,
-            required: true,
-        },
-        startedAt: {
-            type: Date,
-            required: true,
-        },
-        startType: {
-            type: String,
-            enum: CampaignSessionStartType,
-            required: true,
-        },
-    }),
-);
+export const CampaignSessionSchema = new Schema<CampaignSession>({
+    name: {
+        type: String,
+        required: true,
+    },
+    type: {
+        type: String,
+        enum: CampaignSessionType,
+        required: true,
+    },
+    campaign: {
+        type: Schema.Types.ObjectId,
+        ref: CampaignModel,
+        required: true,
+    },
+    startedAt: {
+        type: Date,
+        required: true,
+    },
+    schedule: {
+        type: Schema.Types.ObjectId,
+        ref: CampaignSessionScheduleModel,
+        required: false,
+    },
+});
 
-export const CampaignSessionModel = model(
+export const CampaignSessionModel = createModel(
     "CampaignSession",
     CampaignSessionSchema,
-    undefined,
-    {
-        overwriteModels: true,
-    },
 );

@@ -1,4 +1,3 @@
-import { RepeatInterval } from "@/db/enums/RepeatInterval";
 import { Campaign } from "@/db/models/Campaign/index";
 import { CampaignMember } from "@/db/models/CampaignMember";
 import { User } from "@/db/models/User";
@@ -7,27 +6,15 @@ import {
     UserAPIType,
     UserClientModel,
 } from "@/db/models/User/consumers";
-import {
-    BaseAPIModel,
-    BaseAPIType,
-    BaseClientModel,
-} from "@/db/models/baseModel";
-import { ModelLike, OmitAPI, ToObjectType } from "@/db/models/types";
+import { BaseAPIModel, BaseClientModel } from "@/db/types/baseModel";
+import { ModelLike, RemoveAPIFields, ToObjectType } from "@/db/types/utils";
 
 export class CampaignAPIModel
     extends BaseAPIModel
     implements Omit<Campaign, "createdBy" | "schedule">
 {
     name: string;
-    createdBy: User | null;
-    schedule: {
-        manual?: boolean;
-        start?: Date;
-        repeat?: RepeatInterval;
-        length?: number;
-
-        nextSession?: Date;
-    };
+    createdBy: User;
     totalSessions: number;
 
     constructor(campaign: Campaign) {
@@ -37,14 +24,7 @@ export class CampaignAPIModel
         this.createdBy =
             campaign.createdBy && "db" in campaign.createdBy
                 ? campaign.createdBy
-                : null;
-        this.schedule = {
-            manual: campaign.schedule?.manual,
-            start: campaign.schedule?.start,
-            repeat: campaign.schedule?.repeat,
-            length: campaign.schedule?.length,
-            nextSession: campaign.schedule?.nextSession,
-        };
+                : null!;
         this.totalSessions = campaign.totalSessions;
     }
 
@@ -58,27 +38,8 @@ export class CampaignAPIModel
             name: this.name,
             createdBy: this.createdBy
                 ? new UserAPIModel(this.createdBy).toObject(opts)
-                : null,
-            schedule: {
-                manual: this.schedule.manual,
-                start: this.schedule.start?.toISOString(),
-                repeat: this.schedule.repeat,
-                length: this.schedule.length,
-                nextSession: this.schedule.nextSession?.toISOString(),
-            },
+                : null!,
             totalSessions: this.totalSessions,
-        } as BaseAPIType & {
-            name: string;
-            createdBy: UserAPIType | null;
-            schedule: {
-                manual?: boolean;
-                start?: string;
-                repeat?: RepeatInterval;
-                length?: number;
-
-                nextSession: string;
-            };
-            totalSessions: number;
         };
     }
 }
@@ -87,35 +48,16 @@ export type CampaignAPIType = ToObjectType<CampaignAPIModel>;
 
 export class CampaignClientModel
     extends BaseClientModel
-    implements OmitAPI<CampaignAPIModel, "createdBy">
+    implements RemoveAPIFields<CampaignAPIType>
 {
     name: string;
-    createdBy: UserAPIType | null;
-    schedule: {
-        manual?: boolean;
-        start?: Date;
-        repeat?: RepeatInterval;
-        length?: number;
-
-        nextSession?: Date;
-    };
+    createdBy: UserAPIType;
     totalSessions: number;
 
     constructor(campaign: CampaignAPIType) {
         super(campaign);
         this.name = campaign.name;
-        this.createdBy = campaign.createdBy ? campaign.createdBy : null;
-        this.schedule = {
-            manual: campaign.schedule?.manual,
-            start: campaign.schedule?.start
-                ? new Date(campaign.schedule.start)
-                : undefined,
-            repeat: campaign.schedule?.repeat,
-            length: campaign.schedule?.length,
-            nextSession: campaign.schedule?.nextSession
-                ? new Date(campaign.schedule.nextSession)
-                : undefined,
-        };
+        this.createdBy = campaign.createdBy ? campaign.createdBy : null!;
         this.totalSessions = campaign.totalSessions;
     }
 
@@ -133,14 +75,7 @@ export class CampaignClientModel
             name: this.name,
             createdBy: this.createdBy
                 ? new UserClientModel(this.createdBy).toObject(opts)
-                : null,
-            schedule: {
-                manual: this.schedule.manual,
-                start: this.schedule.start,
-                repeat: this.schedule.repeat,
-                length: this.schedule.length,
-                nextSession: this.schedule.nextSession,
-            },
+                : null!,
             totalSessions: this.totalSessions,
         };
     }

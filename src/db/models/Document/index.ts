@@ -1,7 +1,7 @@
 import { DocumentType } from "@/db/enums/DocumentType";
 import { Campaign } from "@/db/models/Campaign";
 import { User } from "@/db/models/User";
-import { IBaseModel } from "@/db/models/baseModel";
+import { IBaseModel } from "@/db/types/baseModel";
 
 export interface Document extends IBaseModel {
     name: string;

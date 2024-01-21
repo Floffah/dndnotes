@@ -1,6 +1,7 @@
 import { initTRPC } from "@trpc/server";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { parse } from "cookie";
+import superjson from "superjson";
 
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
 import { UserSessionModel } from "@/db/models/UserSession/model";
@@ -39,6 +40,8 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
 };
 export type Context = Awaited<ReturnType<typeof createContext>>;
 
-const trpc = initTRPC.context<typeof createContext>().create();
+const trpc = initTRPC.context<typeof createContext>().create({
+    transformer: superjson,
+});
 
 export const { router, procedure } = trpc;

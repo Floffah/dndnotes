@@ -1,39 +1,49 @@
 import { ComponentProps, useContext } from "react";
 import { Controller } from "react-hook-form";
 
-import { FormField } from "@/app/components/Form/FormField";
+import {
+    FormField,
+    FormFieldBaseProps,
+    useFormField,
+} from "@/app/components/Form/FormField";
 import { FormContext } from "@/app/components/Form/index";
 import { Select } from "@/app/components/Select";
 
-interface FormSelectProps extends ComponentProps<typeof Select> {
-    name: string;
-    label: string;
+type Base = ComponentProps<typeof Select> & FormFieldBaseProps;
+interface FormSelectProps extends Base {
     placeholder?: string;
-    description?: string;
 }
 
 export const FormSelect = Object.assign(
-    ({ name, label, description, placeholder, ...props }: FormSelectProps) => {
+    ({ placeholder, ...props }: FormSelectProps) => {
         const { form } = useContext(FormContext);
 
+        const {
+            fieldProps,
+            controlProps: { name, disabled, ...controlProps },
+        } = useFormField(props);
+
         return (
-            <FormField name={name} label={label} description={description}>
+            <FormField {...fieldProps}>
                 <Controller
                     render={({ field: { ref, value, onChange, ...field } }) => (
                         <Select
-                            {...props}
+                            {...controlProps}
                             {...field}
                             ref={ref}
+                            name={name}
                             value={value}
                             onValueChange={(value) => onChange(value)}
                         >
                             <Select.Button>
-                                {placeholder ?? `Select ${label.toLowerCase()}`}
+                                {placeholder ??
+                                    `Select ${props.label?.toLowerCase()}`}
                             </Select.Button>
                             <Select.Panel>{props.children}</Select.Panel>
                         </Select>
                     )}
                     name={name}
+                    disabled={disabled}
                     control={form.control}
                 />
             </FormField>

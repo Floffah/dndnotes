@@ -4,6 +4,7 @@ import {
     HTTPBatchLinkOptions,
     httpBatchLink,
 } from "@trpc/client";
+import superjson from "superjson";
 
 import type { AppRouter } from "@/server/router";
 
@@ -15,6 +16,7 @@ export const trpcOptions = (headers?: HTTPBatchLinkOptions["headers"]) =>
                 headers,
             }),
         ],
+        transformer: superjson,
     }) satisfies CreateTRPCClientOptions<AppRouter>;
 
 export const trpcQueryClientConfig = {

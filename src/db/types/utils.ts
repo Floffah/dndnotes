@@ -1,9 +1,8 @@
-import { BaseAPIModel, BaseClientModel } from "@/db/models/baseModel";
+import { BaseAPIModel, BaseClientModel } from "@/db/types/baseModel";
 
 export type ToObjectType<T extends BaseAPIModel | BaseClientModel> = ReturnType<
     T["toObject"]
 >;
-
 export type OmitAPI<
     Object,
     Fields extends keyof Omit<Object, "toObject" | "createdAt" | "updatedAt">,

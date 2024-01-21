@@ -1,26 +1,57 @@
-import { Icon } from "@iconify/react";
+import { StartSessionDialog } from "./StartSessionDialog";
 import { formatDistance, formatRelative } from "date-fns";
 import Link from "next/link";
+import { useMemo } from "react";
 
-import { StartSessionDialog } from "@/app/campaign/[campaignId]/StartSessionDialog";
+import { trpc } from "@/app/api/lib/client/trpc";
 import { Button } from "@/app/components/Button";
+import { Icon } from "@/app/components/Icon";
+import { Loader } from "@/app/components/Loader";
 import { Tooltip } from "@/app/components/Tooltip";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
+import { CampaignSessionSchedule } from "@/db/models/CampaignSessionSchedule";
 
 function NextSession() {
     const campaign = useCampaign();
 
-    if (!campaign.schedule.nextSession) {
+    const schedules = trpc.campaign.session.getSchedules.useQuery({
+        campaignId: campaign.id,
+    });
+
+    const nextSchedule = useMemo(() => {
+        if (!schedules.data) return null;
+
+        let schedule: CampaignSessionSchedule | null = null;
+
+        for (const s of schedules.data) {
+            if (
+                s.nextSessionAt &&
+                (!schedule ||
+                    s.nextSessionAt.getTime() <
+                        schedule.nextSessionAt.getTime())
+            ) {
+                schedule = s;
+            }
+        }
+
+        return schedule;
+    }, [schedules]);
+
+    if (!nextSchedule) {
         return (
             <>
-                <Icon icon="mdi:clock-alert-outline" className="text-red-300" />
+                <Icon
+                    icon="mdi:clock-alert-outline"
+                    className="text-red-300"
+                    label="no schedule"
+                />
 
                 <span className="text-lg font-semibold">Next session at:</span>
 
                 {campaign.currentMember?.type === CampaignMemberType.DM && (
                     <>
-                        You haven&apos;t set a session time yet!
+                        You haven&apos;t created a session schedule yet!
                         <Link
                             href={`/campaign/${campaign.id}/settings`}
                             className="text-blue-400 underline decoration-blue-400/75 underline-offset-2"
@@ -37,15 +68,18 @@ function NextSession() {
 
     // if session time was within the last 2 hours
     if (
-        campaign.schedule.nextSession &&
-        campaign.schedule.length &&
-        Date.now() > campaign.schedule.nextSession.getTime() &&
-        Date.now() - campaign.schedule.nextSession.getTime() <
-            campaign.schedule.length
+        nextSchedule.nextSessionAt &&
+        nextSchedule.length &&
+        Date.now() > nextSchedule.nextSessionAt.getTime() &&
+        Date.now() - nextSchedule.nextSessionAt.getTime() < nextSchedule.length
     ) {
         return (
             <>
-                <Icon icon="mdi:alarm" className="text-red-300" />
+                <Icon
+                    icon="mdi:alarm"
+                    className="text-red-300"
+                    label="start session"
+                />
                 <span className="text-lg font-semibold">
                     It&apos;s time for session {campaign.totalSessions + 1}!
                 </span>
@@ -62,7 +96,7 @@ function NextSession() {
 
                 <span className="text-xs uppercase text-white/60">
                     (Started{" "}
-                    {formatDistance(campaign.schedule.nextSession, new Date(), {
+                    {formatDistance(nextSchedule.nextSessionAt, new Date(), {
                         addSuffix: true,
                     })}
                     )
@@ -73,17 +107,17 @@ function NextSession() {
 
     return (
         <>
-            <Icon icon="mdi:clock-outline" />
+            <Icon icon="mdi:clock-outline" label="session soon" />
             <span className="text-lg font-semibold">Next session at:</span>
             <Tooltip
                 title={Intl.DateTimeFormat("en-GB", {
                     dateStyle: "long",
                     timeStyle: "short",
-                }).format(campaign.schedule.nextSession)}
+                }).format(nextSchedule.nextSessionAt)}
                 side="bottom"
             >
                 <span className="indicate-action indicate-white/50">
-                    {formatRelative(campaign.schedule.nextSession, new Date())}
+                    {formatRelative(nextSchedule.nextSessionAt, new Date())}
                 </span>
             </Tooltip>
         </>
@@ -91,9 +125,46 @@ function NextSession() {
 }
 
 export function SessionBanner() {
+    const campaign = useCampaign();
+
+    const schedules = trpc.campaign.session.getSchedules.useQuery({
+        campaignId: campaign.id,
+    });
+
+    const scheduleWithNextSession = useMemo(() => {
+        if (!schedules.data) return null;
+
+        let schedule: CampaignSessionSchedule | null = null;
+
+        for (const s of schedules.data) {
+            if (
+                s.nextSessionAt &&
+                (!schedule ||
+                    s.nextSessionAt.getTime() <
+                        schedule.nextSessionAt.getTime())
+            ) {
+                schedule = s;
+            }
+        }
+
+        return schedule;
+    }, [schedules]);
+
+    if (!schedules.isLoading && schedules.data?.length === 0) {
+        return (
+            <div className="flex flex-wrap items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+                No session schedules have been set up yet!
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-wrap items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-            <NextSession />
+            {schedules.isLoading ? (
+                <Loader className="h-5 w-5 text-white/50" />
+            ) : (
+                <NextSession />
+            )}
         </div>
     );
 }

@@ -6,8 +6,8 @@ import {
     BaseAPIModel,
     BaseClientModel,
     BaseClientType,
-} from "@/db/models/baseModel";
-import type { ModelLike, OmitAPI, ToObjectType } from "@/db/models/types";
+} from "@/db/types/baseModel";
+import { ModelLike, OmitAPI, ToObjectType } from "@/db/types/utils";
 
 export class UserAPIModel extends BaseAPIModel implements Omit<User, "email"> {
     email: string | null;

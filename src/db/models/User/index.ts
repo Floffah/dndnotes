@@ -1,4 +1,4 @@
-import { IBaseModel } from "@/db/models/baseModel";
+import { IBaseModel } from "@/db/types/baseModel";
 
 export interface User extends IBaseModel {
     email: string;

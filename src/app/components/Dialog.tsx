@@ -3,14 +3,17 @@
 import * as RUIDialog from "@radix-ui/react-dialog";
 import { Icon } from "@iconify/react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { animated, useTransition } from "@react-spring/web";
 import clsx from "clsx";
 import {
     ComponentProps,
+    Fragment,
     MouseEvent,
     PropsWithChildren,
     ReactNode,
     createContext,
     forwardRef,
+    startTransition,
     useContext,
     useEffect,
     useImperativeHandle,
@@ -132,40 +135,86 @@ const DialogContentFooter = Object.assign(
         Button: DialogContentFooterButton,
     },
 );
+
 const DialogContent = Object.assign(
     forwardRef<
         HTMLDivElement,
         {
-            children: ReactNode | ((ctx: { close: () => void }) => ReactNode);
+            children: ReactNode | ((ctx: DialogContextValue) => ReactNode);
         } & Omit<ComponentProps<"div">, "children" | "ref">
-    >(({ children, className, ...props }, ref) => {
+    >(({ children, className, style, ...props }, ref) => {
         const ctx = useContext(DialogContext);
 
-        return (
-            <RUIDialog.Portal>
-                <RUIDialog.Overlay className="fixed inset-0 bg-black/20" />
-                <RUIDialog.Content
-                    ref={ref}
-                    className={clsx(
-                        className,
-                        "absolute left-1/2 top-1/2 flex h-fit w-full -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-md bg-gray-800 p-4 shadow-lg",
-                    )}
-                    {...props}
-                >
-                    {ctx.closable && (
-                        <RUIDialog.Close asChild>
-                            <Icon
-                                icon="mdi:close"
-                                className="absolute right-0 top-0 m-2 cursor-pointer"
-                                width="24"
-                                height="24"
-                            />
-                        </RUIDialog.Close>
-                    )}
+        const transition = useTransition(ctx.isOpen, {
+            from: {
+                opacity: 0,
+                scale: 0.5,
+                y: -20,
+            },
+            enter: {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+            },
+            leave: {
+                opacity: 0,
+                scale: 0.5,
+                y: -20,
+            },
+            config: {
+                tension: 500,
+                friction: 30,
+            },
+        });
 
-                    {typeof children === "function" ? children(ctx) : children}
-                </RUIDialog.Content>
-            </RUIDialog.Portal>
+        const Container = ctx.portal ? RUIDialog.Portal : Fragment;
+
+        return transition(
+            (transitionStyle, isOpen) =>
+                isOpen && (
+                    <Container forceMount>
+                        <RUIDialog.Overlay asChild forceMount>
+                            <animated.div
+                                className="fixed inset-0 bg-black/20"
+                                style={{
+                                    opacity: transitionStyle.opacity,
+                                }}
+                            />
+                        </RUIDialog.Overlay>
+
+                        <div className="pointer-events-none fixed inset-0 flex max-h-screen items-center justify-center overflow-y-auto py-2">
+                            <RUIDialog.Content asChild forceMount>
+                                <animated.div
+                                    ref={ref}
+                                    className={clsx(
+                                        className,
+                                        "pointer-events-auto relative flex h-fit max-h-full w-full flex-col gap-2 rounded-md bg-gray-800 p-4 shadow-lg",
+                                    )}
+                                    {...props}
+                                    style={{
+                                        ...style,
+                                        ...transitionStyle,
+                                    }}
+                                >
+                                    {ctx.closable && (
+                                        <RUIDialog.Close asChild>
+                                            <Icon
+                                                icon="mdi:close"
+                                                className="absolute right-0 top-0 m-2 cursor-pointer"
+                                                width="24"
+                                                height="24"
+                                            />
+                                        </RUIDialog.Close>
+                                    )}
+
+                                    {typeof children === "function"
+                                        ? children(ctx)
+                                        : children}
+                                </animated.div>
+                            </RUIDialog.Content>
+                        </div>
+                    </Container>
+                ),
         );
     }),
     {
@@ -184,6 +233,7 @@ export interface DialogRef {
 interface DialogContextValue {
     isOpen: boolean;
     closable: boolean;
+    portal?: boolean;
     open: () => void;
     close: () => void;
 }
@@ -197,44 +247,58 @@ export const Dialog = Object.assign(
             open?: boolean;
             modal?: boolean;
             closable?: boolean;
+            portal?: boolean;
             onOpenChange?: (open: boolean) => void;
         }>
-    >(({ children, open: propsOpen, closable = true, onOpenChange }, ref) => {
-        const [open, setOpen] = useState(propsOpen ?? false);
+    >(
+        (
+            {
+                children,
+                open: propsOpen,
+                closable = true,
+                portal = true,
+                onOpenChange,
+            },
+            ref,
+        ) => {
+            const [open, setOpen] = useState(propsOpen ?? false);
 
-        useEffect(() => {
-            setOpen(propsOpen ?? false);
-        }, [propsOpen]);
+            useEffect(() => {
+                startTransition(() => setOpen(propsOpen ?? false));
+            }, [propsOpen]);
 
-        useImperativeHandle(ref, () => ({
-            open: () => setOpen(true),
-            close: () => setOpen(false),
-        }));
+            useImperativeHandle(ref, () => ({
+                open: () => startTransition(() => setOpen(true)),
+                close: () => startTransition(() => setOpen(false)),
+            }));
 
-        return (
-            <RUIDialog.Root
-                open={open}
-                onOpenChange={(open) => {
-                    onOpenChange?.(open);
+            return (
+                <RUIDialog.Root
+                    open={open}
+                    onOpenChange={(open) => {
+                        onOpenChange?.(open);
 
-                    (closable || open) && setOpen(open);
-                }}
-                defaultOpen={propsOpen === true}
-                modal={true}
-            >
-                <DialogContext.Provider
-                    value={{
-                        isOpen: open,
-                        closable,
-                        open: () => setOpen(true),
-                        close: () => setOpen(false),
+                        (open || closable) &&
+                            startTransition(() => setOpen(open));
                     }}
+                    defaultOpen={propsOpen === true}
+                    modal={true}
                 >
-                    {children}
-                </DialogContext.Provider>
-            </RUIDialog.Root>
-        );
-    }),
+                    <DialogContext.Provider
+                        value={{
+                            isOpen: open,
+                            closable,
+                            portal,
+                            open: () => setOpen(true),
+                            close: () => setOpen(false),
+                        }}
+                    >
+                        {children}
+                    </DialogContext.Provider>
+                </RUIDialog.Root>
+            );
+        },
+    ),
     {
         Trigger: RUIDialog.Trigger,
         Content: DialogContent,

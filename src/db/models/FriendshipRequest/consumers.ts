@@ -9,8 +9,8 @@ import {
     UserAPIType,
     UserClientModel,
 } from "@/db/models/User/consumers";
-import { BaseAPIModel, BaseClientModel } from "@/db/models/baseModel";
-import { ModelLike, RemoveAPIFields, ToObjectType } from "@/db/models/types";
+import { BaseAPIModel, BaseClientModel } from "@/db/types/baseModel";
+import { ModelLike, RemoveAPIFields, ToObjectType } from "@/db/types/utils";
 
 export class FriendshipRequestAPIModel
     extends BaseAPIModel

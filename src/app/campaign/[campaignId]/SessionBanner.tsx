@@ -131,25 +131,6 @@ export function SessionBanner() {
         campaignId: campaign.id,
     });
 
-    const scheduleWithNextSession = useMemo(() => {
-        if (!schedules.data) return null;
-
-        let schedule: CampaignSessionSchedule | null = null;
-
-        for (const s of schedules.data) {
-            if (
-                s.nextSessionAt &&
-                (!schedule ||
-                    s.nextSessionAt.getTime() <
-                        schedule.nextSessionAt.getTime())
-            ) {
-                schedule = s;
-            }
-        }
-
-        return schedule;
-    }, [schedules]);
-
     if (!schedules.isLoading && schedules.data?.length === 0) {
         return (
             <div className="flex flex-wrap items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">

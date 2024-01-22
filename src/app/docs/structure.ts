@@ -8,7 +8,6 @@ export const docsStructure: DocsStructure = [
         link: "/",
         label: "Docs",
     },
-    "roadmap",
     "acknowledgements",
     "privacyPolicy",
     "termsOfService",

@@ -7,7 +7,7 @@ import { trpc } from "@/app/api/lib/client/trpc";
 import { serializableClone } from "@/app/lib/serializableClone";
 import { useUser } from "@/app/providers/UserProvider";
 import { FriendshipRequestState } from "@/db/enums/FriendshipRequestState";
-import { FriendshipRequestAPIType } from "@/db/models/FriendshipRequest/consumers";
+import { FriendshipRequest } from "@/db/models/FriendshipRequest";
 
 export interface CacheContextValue {
     campaign: {
@@ -22,13 +22,13 @@ export interface CacheContextValue {
                 queryInput: InferQueryLikeInput<
                     typeof trpc.user.friends.getPending
                 >,
-                data: FriendshipRequestAPIType,
+                data: FriendshipRequest,
             ) => void;
             upsertAccepted: (
                 queryInput: InferQueryLikeInput<
                     typeof trpc.user.friends.getAccepted
                 >,
-                data: FriendshipRequestAPIType,
+                data: FriendshipRequest,
             ) => void;
         };
     };

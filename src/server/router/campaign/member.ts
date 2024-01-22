@@ -28,10 +28,11 @@ export const campaignMemberRouter = router({
                 .populate("user")
                 .exec();
 
-            return campaignMembers.map((campaignMember) =>
-                new CampaignMemberAPIModel(campaignMember).toObject({
-                    currentUser: opts.ctx.session!.user,
-                }),
+            return campaignMembers.map(
+                (campaignMember) =>
+                    new CampaignMemberAPIModel(campaignMember, {
+                        user: opts.ctx.session!.user,
+                    }),
             );
         }),
 
@@ -75,8 +76,8 @@ export const campaignMemberRouter = router({
                 code: nanoid(16),
             });
 
-            return new CampaignInviteAPIModel(campaignInvite).toObject({
-                currentUser: opts.ctx.session!.user,
+            return new CampaignInviteAPIModel(campaignInvite, {
+                user: opts.ctx.session!.user,
             });
         }),
 

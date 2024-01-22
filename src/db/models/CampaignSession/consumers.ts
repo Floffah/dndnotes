@@ -1,21 +1,12 @@
 import { CampaignSessionType } from "@/db/enums/CampaignSessionType";
+import { isPopulated } from "@/db/lib/isPopulated";
 import { Campaign } from "@/db/models/Campaign";
-import {
-    CampaignAPIModel,
-    CampaignAPIType,
-    CampaignClientModel,
-} from "@/db/models/Campaign/consumers";
-import { CampaignMember } from "@/db/models/CampaignMember";
+import { CampaignAPIModel } from "@/db/models/Campaign/consumers";
 import { CampaignSession } from "@/db/models/CampaignSession/index";
 import { CampaignSessionSchedule } from "@/db/models/CampaignSessionSchedule";
-import {
-    CampaignSessionScheduleAPIModel,
-    CampaignSessionScheduleAPIType,
-    CampaignSessionScheduleClientModel,
-} from "@/db/models/CampaignSessionSchedule/consumers";
-import { User } from "@/db/models/User";
-import { BaseAPIModel, BaseClientModel } from "@/db/types/baseModel";
-import { ModelLike, RemoveAPIFields, ToObjectType } from "@/db/types/utils";
+import { CampaignSessionScheduleAPIModel } from "@/db/models/CampaignSessionSchedule/consumers";
+import { BaseAPIModel } from "@/db/types/baseModel";
+import { ConsumerContext } from "@/db/types/consumerContext";
 
 export class CampaignSessionAPIModel
     extends BaseAPIModel
@@ -27,91 +18,20 @@ export class CampaignSessionAPIModel
     startedAt: Date;
     schedule?: CampaignSessionSchedule;
 
-    constructor(campaignSession: CampaignSession) {
-        super(campaignSession);
+    constructor(campaignSession: CampaignSession, ctx: ConsumerContext) {
+        super(campaignSession, ctx);
 
         this.name = campaignSession.name;
         this.type = campaignSession.type;
-        this.campaign =
-            campaignSession.campaign && "db" in campaignSession.campaign
-                ? campaignSession.campaign
-                : null!;
-        this.startedAt = campaignSession.startedAt;
-        this.schedule =
-            campaignSession.schedule && "db" in campaignSession.schedule
-                ? campaignSession.schedule
-                : null!;
-    }
-
-    toObject(
-        opts: {
-            currentUser?: User;
-            currentMember?: CampaignMember;
-        } = {},
-    ) {
-        const base = super.toObject();
-
-        return {
-            ...base,
-            name: this.name,
-            type: this.type,
-            campaign: this.campaign
-                ? new CampaignAPIModel(this.campaign).toObject(opts)
-                : null,
-            startedAt: this.startedAt,
-            schedule: this.schedule
-                ? new CampaignSessionScheduleAPIModel(this.schedule).toObject(
-                      opts,
-                  )
-                : null,
-        };
-    }
-}
-export type CampaignSessionAPIType = ToObjectType<CampaignSessionAPIModel>;
-
-export class CampaignSessionClientModel
-    extends BaseClientModel
-    implements RemoveAPIFields<CampaignSessionAPIType>
-{
-    name: string;
-    type: CampaignSessionType;
-    campaign: CampaignAPIType;
-    startedAt: Date;
-    schedule?: CampaignSessionScheduleAPIType;
-
-    constructor(campaignSession: CampaignSessionAPIType) {
-        super(campaignSession);
-
-        this.name = campaignSession.name;
-        this.type = campaignSession.type;
-        this.campaign = campaignSession.campaign
-            ? campaignSession.campaign
+        this.campaign = isPopulated(campaignSession.campaign)
+            ? new CampaignAPIModel(campaignSession.campaign, ctx)
             : null!;
         this.startedAt = campaignSession.startedAt;
-        this.schedule = campaignSession.schedule
-            ? campaignSession.schedule
+        this.schedule = isPopulated(campaignSession.schedule)
+            ? new CampaignSessionScheduleAPIModel(
+                  campaignSession.schedule!,
+                  ctx,
+              )
             : null!;
-    }
-
-    toObject(
-        opts: {
-            currentUser?: ModelLike<User>;
-            currentMember?: ModelLike<CampaignMember>;
-        } = {},
-    ) {
-        return {
-            ...super.toObject(),
-            name: this.name,
-            type: this.type,
-            campaign: this.campaign
-                ? new CampaignClientModel(this.campaign).toObject(opts)
-                : null,
-            startedAt: this.startedAt,
-            schedule: this.schedule
-                ? new CampaignSessionScheduleClientModel(
-                      this.schedule,
-                  ).toObject(opts)
-                : null,
-        };
     }
 }

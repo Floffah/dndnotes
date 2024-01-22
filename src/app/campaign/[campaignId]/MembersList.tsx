@@ -4,9 +4,9 @@ import { Icon } from "@/app/components/Icon";
 import { Loader } from "@/app/components/Loader";
 import { CampaignContextValue } from "@/app/providers/CampaignProvider";
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
-import { CampaignMemberClientType } from "@/db/models/CampaignMember/consumers";
+import { CampaignMember } from "@/db/models/CampaignMember";
 
-function Member({ member }: { member: CampaignMemberClientType }) {
+function Member({ member }: { member: CampaignMember }) {
     return (
         <div
             key={member.id}

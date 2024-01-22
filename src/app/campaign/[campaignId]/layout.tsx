@@ -1,10 +1,10 @@
-import { Hydrate } from "@tanstack/react-query";
 import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
 
 import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
 import { populateMetadata } from "@/app/lib/populateMetadata";
 import { serializableClone } from "@/app/lib/serializableClone";
 import { CampaignProvider } from "@/app/providers/CampaignProvider";
+import { Hydrate } from "@/app/providers/Hydrate";
 
 export async function generateMetadata(
     { params: { campaignId } },
@@ -30,7 +30,7 @@ export default async function CampaignLayout({
 }) {
     const helpers = await getTRPCServerHelpers();
 
-    await helpers.campaign.get.prefetch(campaignId);
+    await helpers.campaign.get.fetch(campaignId);
     await helpers.campaign.member.list.prefetch({
         campaignId,
     });

@@ -6,7 +6,10 @@ import {
 } from "@trpc/client";
 import superjson from "superjson";
 
+import { registerTransformerTypes } from "@/db/lib/registerTransformerTypes";
 import type { AppRouter } from "@/server/router";
+
+registerTransformerTypes();
 
 export const trpcOptions = (headers?: HTTPBatchLinkOptions["headers"]) =>
     ({

@@ -1,10 +1,10 @@
 "use client";
 
 import { DehydratedState } from "@tanstack/query-core";
-import { Hydrate } from "@tanstack/react-query";
 import { FunctionComponent, PropsWithChildren } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
+import { Hydrate } from "@/app/providers/Hydrate";
 
 export const TRPCProvider = trpc.withTRPC(
     ({ state, children }: PropsWithChildren<{ state?: DehydratedState }>) => {

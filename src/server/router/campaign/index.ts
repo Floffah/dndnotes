@@ -25,8 +25,8 @@ export const campaignRouter = router({
 
         if (!campaign) return null;
 
-        return new CampaignAPIModel(campaign).toObject({
-            currentUser: opts.ctx.session?.user,
+        return new CampaignAPIModel(campaign, {
+            user: opts.ctx.session?.user,
         });
     }),
 
@@ -51,14 +51,16 @@ export const campaignRouter = router({
                 .populate("createdBy")
                 .exec();
 
-            return campaigns.map((campaign) =>
-                new CampaignAPIModel(campaign).toObject({
-                    currentUser: opts.ctx.session?.user,
-                    currentMember: campaignMembers.find(
-                        (cm) =>
-                            cm.campaign.toString() === campaign._id.toString(),
-                    ),
-                }),
+            return campaigns.map(
+                (campaign) =>
+                    new CampaignAPIModel(campaign, {
+                        user: opts.ctx.session?.user,
+                        campaignMember: campaignMembers.find(
+                            (cm) =>
+                                cm.campaign.toString() ===
+                                campaign._id.toString(),
+                        ),
+                    }),
             );
         }),
 
@@ -82,9 +84,9 @@ export const campaignRouter = router({
                 type: CampaignMemberType.DM,
             });
 
-            return new CampaignAPIModel(campaign).toObject({
-                currentUser: opts.ctx.session!.user,
-                currentMember: campaignMember,
+            return new CampaignAPIModel(campaign, {
+                user: opts.ctx.session!.user,
+                campaignMember: campaignMember,
             });
         }),
 
@@ -144,8 +146,8 @@ export const campaignRouter = router({
 
             const updatedCampaign = await campaign.save();
 
-            return new CampaignAPIModel(updatedCampaign).toObject({
-                currentUser: opts.ctx.session!.user,
+            return new CampaignAPIModel(updatedCampaign, {
+                user: opts.ctx.session!.user,
             });
         }),
 

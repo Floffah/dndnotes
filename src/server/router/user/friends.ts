@@ -40,10 +40,11 @@ export const userFriendsRouter = router({
                 .populate("recipient")
                 .exec();
 
-            return requests.map((request) =>
-                new FriendshipRequestAPIModel(request).toObject({
-                    currentUser: opts.ctx.session!.user,
-                }),
+            return requests.map(
+                (request) =>
+                    new FriendshipRequestAPIModel(request, {
+                        user: opts.ctx.session!.user,
+                    }),
             );
         }),
 
@@ -96,10 +97,11 @@ export const userFriendsRouter = router({
                 .populate("recipient")
                 .exec();
 
-            return requests.map((request) =>
-                new FriendshipRequestAPIModel(request).toObject({
-                    currentUser: opts.ctx.session!.user,
-                }),
+            return requests.map(
+                (request) =>
+                    new FriendshipRequestAPIModel(request, {
+                        user: opts.ctx.session!.user,
+                    }),
             );
         }),
 
@@ -164,8 +166,8 @@ export const userFriendsRouter = router({
 
             await request.save();
 
-            return new FriendshipRequestAPIModel(request).toObject({
-                currentUser: opts.ctx.session!.user,
+            return new FriendshipRequestAPIModel(request, {
+                user: opts.ctx.session!.user,
             });
         }),
 
@@ -238,8 +240,8 @@ export const userFriendsRouter = router({
                 await request.save();
             }
 
-            return new FriendshipRequestAPIModel(request).toObject({
-                currentUser: opts.ctx.session!.user,
+            return new FriendshipRequestAPIModel(request, {
+                user: opts.ctx.session!.user,
             });
         }),
 });

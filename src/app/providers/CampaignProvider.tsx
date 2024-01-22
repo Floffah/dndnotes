@@ -4,19 +4,13 @@ import { PropsWithChildren, createContext, useContext } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
 import { useUser } from "@/app/providers/UserProvider";
-import {
-    CampaignClientModel,
-    CampaignClientType,
-} from "@/db/models/Campaign/consumers";
-import {
-    CampaignMemberClientModel,
-    CampaignMemberClientType,
-} from "@/db/models/CampaignMember/consumers";
+import { Campaign } from "@/db/models/Campaign";
+import { CampaignMember } from "@/db/models/CampaignMember";
 
-export interface CampaignContextValue extends CampaignClientType {
+export interface CampaignContextValue extends Campaign {
     loading: boolean;
-    members: CampaignMemberClientType[];
-    currentMember: CampaignMemberClientType;
+    members: CampaignMember[];
+    currentMember: CampaignMember;
 }
 
 export const CampaignContext = createContext<CampaignContextValue>(null!);
@@ -38,37 +32,17 @@ export function CampaignProvider({
         (member) => member.user?.id === user.id,
     );
 
-    let contextValue: Partial<CampaignContextValue> = {};
-
-    contextValue.loading = campaign.isLoading || campaignMembers.isLoading;
-
-    if (campaign.data) {
-        contextValue = {
-            ...contextValue,
-            ...new CampaignClientModel(campaign.data!).toObject({
-                currentUser: user,
-                currentMember,
-            }),
-        };
-    }
-
-    if (campaignMembers.data) {
-        contextValue.members = campaignMembers.data!.map((member) =>
-            new CampaignMemberClientModel(member).toObject({
-                currentUser: user,
-                currentMember,
-            }),
-        );
-        contextValue.currentMember = new CampaignMemberClientModel(
-            currentMember!,
-        ).toObject({
-            currentUser: user,
-            currentMember: currentMember,
-        });
-    }
-
     return (
-        <CampaignContext.Provider value={contextValue as CampaignContextValue}>
+        <CampaignContext.Provider
+            value={
+                {
+                    loading: campaign.isLoading || campaignMembers.isLoading,
+                    ...(campaign.data ?? {}),
+                    members: campaignMembers.data ?? [],
+                    currentMember: currentMember ?? {},
+                } as CampaignContextValue
+            }
+        >
             {children}
         </CampaignContext.Provider>
     );

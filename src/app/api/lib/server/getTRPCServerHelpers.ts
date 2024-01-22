@@ -1,5 +1,6 @@
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { cache } from "react";
+import superjson from "superjson";
 
 import { trpcQueryClientConfig } from "@/app/api/lib/trpcOptions";
 import { createNextTRPCContext } from "@/server/lib/createNextTRPCContext";
@@ -10,5 +11,6 @@ export const getTRPCServerHelpers = cache(async () => {
         ctx: await createNextTRPCContext(),
         router: appRouter,
         queryClientConfig: trpcQueryClientConfig,
+        transformer: superjson,
     });
 });

@@ -4,6 +4,7 @@ import { parse } from "cookie";
 import superjson from "superjson";
 
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
+import { registerTransformerTypes } from "@/db/lib/registerTransformerTypes";
 import { UserSessionModel } from "@/db/models/UserSession/model";
 
 export const createContext = async (opts: FetchCreateContextFnOptions) => {
@@ -39,6 +40,8 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
     };
 };
 export type Context = Awaited<ReturnType<typeof createContext>>;
+
+registerTransformerTypes();
 
 const trpc = initTRPC.context<typeof createContext>().create({
     transformer: superjson,

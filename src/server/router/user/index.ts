@@ -11,8 +11,8 @@ export const userRouter = router({
     me: procedure.query((opts) => {
         if (!opts.ctx.session) return null;
 
-        return new UserAPIModel(opts.ctx.session.user).toObject({
-            currentUser: opts.ctx.session.user,
+        return new UserAPIModel(opts.ctx.session.user, {
+            user: opts.ctx.session?.user,
         });
     }),
     get: procedure
@@ -26,8 +26,6 @@ export const userRouter = router({
 
             if (!user) return null;
 
-            return new UserAPIModel(user).toObject({
-                currentUser: opts.ctx.session?.user,
-            });
+            return new UserAPIModel(user, { user: opts.ctx.session?.user });
         }),
 });

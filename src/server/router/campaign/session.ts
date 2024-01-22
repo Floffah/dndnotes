@@ -54,11 +54,12 @@ export const campaignSessionRouter = router({
                 campaign: campaign._id,
             });
 
-            return schedules.map((schedule) =>
-                new CampaignSessionScheduleAPIModel(schedule).toObject({
-                    currentUser: opts.ctx.session!.user,
-                    currentMember: campaignMember,
-                }),
+            return schedules.map(
+                (schedule) =>
+                    new CampaignSessionScheduleAPIModel(schedule, {
+                        user: opts.ctx.session!.user,
+                        campaignMember: campaignMember,
+                    }),
             );
         }),
     createSchedule: procedure
@@ -117,10 +118,7 @@ export const campaignSessionRouter = router({
 
             await schedule.save();
 
-            return new CampaignSessionScheduleAPIModel(schedule).toObject({
-                currentUser: opts.ctx.session!.user,
-                currentMember: campaignMember,
-            });
+            return;
         }),
     startSchedule: procedure
         .input(
@@ -184,9 +182,9 @@ export const campaignSessionRouter = router({
 
             await session.save();
 
-            return new CampaignSessionAPIModel(session).toObject({
-                currentUser: opts.ctx.session!.user,
-                currentMember: campaignMember,
+            return new CampaignSessionAPIModel(session, {
+                user: opts.ctx.session!.user,
+                campaignMember: campaignMember,
             });
         }),
 });

@@ -1,13 +1,13 @@
 import { getDiscordRedirectURL } from "@/app/lib/getDiscordRedirectURL";
-import type { UserAPIType } from "@/db/models/User/consumers";
+import { User } from "@/db/models/User";
 
 declare global {
     interface Window {
-        callback: (user: UserAPIType) => void;
+        callback: (user: User) => void;
     }
 }
 
-export function authenticateUser(onSuccess: (user: UserAPIType) => void) {
+export function authenticateUser(onSuccess: (user: User) => void) {
     return new Promise<void>((resolve, reject) => {
         window.callback = onSuccess;
 

@@ -3,10 +3,9 @@
 import { createContext, useContext } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
-import type { UserClientType } from "@/db/models/User/consumers";
-import { UserClientModel } from "@/db/models/User/consumers";
+import { User } from "@/db/models/User";
 
-export interface UserContextValue extends UserClientType {
+export interface UserContextValue extends User {
     loading: boolean;
     authenticated: boolean;
 }
@@ -18,15 +17,11 @@ export const useUser = () => useContext(UserContext);
 export function UserProvider({ children }: { children: React.ReactNode }) {
     const userQuery = trpc.user.me.useQuery();
 
-    const user = userQuery.data
-        ? new UserClientModel(userQuery.data).toObject()
-        : {};
-
     return (
         <UserContext.Provider
             value={
                 {
-                    ...user,
+                    ...(userQuery.data ?? {}),
                     loading: userQuery.isLoading,
                     authenticated: !userQuery.isLoading && !!userQuery.data?.id,
                 } as UserContextValue

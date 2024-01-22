@@ -107,7 +107,7 @@ export const POST = async (req: Request) => {
     );
 
     const response = createSuccessResponse({
-        user: new UserAPIModel(user).toObject({ currentUser: user }),
+        user: new UserAPIModel(user, { user }),
     });
 
     response.cookies.set({

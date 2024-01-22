@@ -9,11 +9,15 @@ import { FriendshipRequestAPIModel } from "@/db/models/FriendshipRequest/consume
 import { UserAPIModel } from "@/db/models/User/consumers";
 
 export function registerTransformerTypes() {
-    registerClass(CampaignAPIModel);
-    registerClass(CampaignInviteAPIModel);
-    registerClass(CampaignMemberAPIModel);
-    registerClass(CampaignSessionAPIModel);
-    registerClass(CampaignSessionScheduleAPIModel);
-    registerClass(FriendshipRequestAPIModel);
-    registerClass(UserAPIModel);
+    registerClass(CampaignAPIModel, { identifier: "Campaign" });
+    registerClass(CampaignInviteAPIModel, { identifier: "CampaignInvite" });
+    registerClass(CampaignMemberAPIModel, { identifier: "CampaignMember" });
+    registerClass(CampaignSessionAPIModel, { identifier: "CampaignSession" });
+    registerClass(CampaignSessionScheduleAPIModel, {
+        identifier: "CampaignSessionSchedule",
+    });
+    registerClass(FriendshipRequestAPIModel, {
+        identifier: "FriendshipRequest",
+    });
+    registerClass(UserAPIModel, { identifier: "User" });
 }

@@ -3,6 +3,7 @@ import { cache } from "react";
 import superjson from "superjson";
 
 import { trpcQueryClientConfig } from "@/app/api/lib/trpcOptions";
+import { registerTransformerTypes } from "@/db/lib/registerTransformerTypes";
 import { createNextTRPCContext } from "@/server/lib/createNextTRPCContext";
 import { appRouter } from "@/server/router";
 

@@ -2,7 +2,7 @@ import { Nunito } from "next/font/google";
 
 import "@/app/globals.css";
 import { populateMetadata } from "@/app/lib/populateMetadata";
-import { CacheProvider } from "@/app/providers/CacheProvider";
+import { DialogProvider } from "@/app/providers/DialogProvider";
 import { RootHydrationProvider } from "@/app/providers/RootHydrationProvider";
 import { UserProvider } from "@/app/providers/UserProvider";
 
@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
             <body className={nunito.className}>
                 <RootHydrationProvider>
                     <UserProvider>
-                        <CacheProvider>{children}</CacheProvider>
+                        <DialogProvider>{children}</DialogProvider>
                     </UserProvider>
                 </RootHydrationProvider>
             </body>

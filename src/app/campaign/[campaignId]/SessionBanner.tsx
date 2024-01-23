@@ -15,16 +15,10 @@ import { CampaignSessionSchedule } from "@/db/models/CampaignSessionSchedule";
 function NextSession() {
     const campaign = useCampaign();
 
-    const schedules = trpc.campaign.session.getSchedules.useQuery({
-        campaignId: campaign.id,
-    });
-
     const nextSchedule = useMemo(() => {
-        if (!schedules.data) return null;
-
         let schedule: CampaignSessionSchedule | null = null;
 
-        for (const s of schedules.data) {
+        for (const s of campaign.schedules) {
             if (
                 s.nextSessionAt &&
                 (!schedule ||
@@ -36,7 +30,7 @@ function NextSession() {
         }
 
         return schedule;
-    }, [schedules]);
+    }, [campaign]);
 
     if (!nextSchedule) {
         return (
@@ -127,11 +121,7 @@ function NextSession() {
 export function SessionBanner() {
     const campaign = useCampaign();
 
-    const schedules = trpc.campaign.session.getSchedules.useQuery({
-        campaignId: campaign.id,
-    });
-
-    if (!schedules.isLoading && schedules.data?.length === 0) {
+    if (!campaign.loading && campaign.schedules.length === 0) {
         return (
             <div className="flex flex-wrap items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
                 No session schedules have been set up yet!
@@ -141,7 +131,7 @@ export function SessionBanner() {
 
     return (
         <div className="flex flex-wrap items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-            {schedules.isLoading ? (
+            {campaign.loading ? (
                 <Loader className="h-5 w-5 text-white/50" />
             ) : (
                 <NextSession />

@@ -92,19 +92,26 @@ const DialogContentFooterButton = forwardRef<
             onClick?: (
                 close: () => void,
                 event: MouseEvent<HTMLButtonElement>,
-            ) => void;
+            ) => void | Promise<void>;
         } & Omit<ComponentProps<typeof Button>, "children" | "ref" | "onClick">
     >
 >(({ children, className, onClick, ...props }, ref) => {
     const { close } = useContext(DialogContext);
 
+    const [loading, setLoading] = useState(false);
+
     return (
         <Button
             ref={ref}
             className={clsx(className, "px-5")}
-            onClick={(e) => {
+            loading={loading}
+            onClick={async (e) => {
                 if (onClick) {
-                    onClick(close, e);
+                    setLoading(true);
+
+                    await onClick(close, e);
+
+                    setLoading(false);
                 } else {
                     close();
                 }
@@ -124,7 +131,10 @@ const DialogContentFooter = Object.assign(
         return (
             <div
                 ref={ref}
-                className={clsx(className, "flex justify-end gap-2")}
+                className={clsx(
+                    className,
+                    "flex w-full justify-end gap-2 *:flex-grow",
+                )}
                 {...props}
             >
                 {children}
@@ -135,6 +145,56 @@ const DialogContentFooter = Object.assign(
         Button: DialogContentFooterButton,
     },
 );
+
+const DialogOverlay = forwardRef<
+    HTMLDivElement,
+    Omit<ComponentProps<"div">, "children" | "ref">
+>(({ style, className, ...props }, ref) => {
+    const ctx = useContext(DialogContext);
+
+    const transition = useTransition(ctx.isOpen, {
+        from: {
+            opacity: 0,
+        },
+        enter: {
+            opacity: 1,
+        },
+        leave: {
+            opacity: 0,
+        },
+        config: {
+            tension: 500,
+            friction: 30,
+        },
+    });
+
+    if (!ctx.standalone) {
+        return null;
+    }
+
+    const Container = ctx.portal ? RUIDialog.Portal : Fragment;
+
+    return transition(
+        (transitionStyle, isOpen) =>
+            isOpen && (
+                <Container forceMount>
+                    <RUIDialog.Overlay asChild forceMount>
+                        <animated.div
+                            {...props}
+                            className={clsx(
+                                className,
+                                "fixed inset-0 bg-black/20",
+                            )}
+                            style={{
+                                ...style,
+                                opacity: transitionStyle.opacity,
+                            }}
+                        />
+                    </RUIDialog.Overlay>
+                </Container>
+            ),
+    );
+});
 
 const DialogContent = Object.assign(
     forwardRef<
@@ -165,6 +225,9 @@ const DialogContent = Object.assign(
                 tension: 500,
                 friction: 30,
             },
+            onRest: (_r, _s, isOpen) => {
+                ctx.onAfterOpenChange?.(isOpen);
+            },
         });
 
         const Container = ctx.portal ? RUIDialog.Portal : Fragment;
@@ -173,16 +236,7 @@ const DialogContent = Object.assign(
             (transitionStyle, isOpen) =>
                 isOpen && (
                     <Container forceMount>
-                        <RUIDialog.Overlay asChild forceMount>
-                            <animated.div
-                                className="fixed inset-0 bg-black/20"
-                                style={{
-                                    opacity: transitionStyle.opacity,
-                                }}
-                            />
-                        </RUIDialog.Overlay>
-
-                        <div className="pointer-events-none fixed inset-0 flex max-h-screen items-center justify-center overflow-y-auto py-2">
+                        <div className="pointer-events-none fixed inset-0 z-10 flex max-h-screen items-center justify-center overflow-y-auto py-2">
                             <RUIDialog.Content asChild forceMount>
                                 <animated.div
                                     ref={ref}
@@ -234,8 +288,10 @@ interface DialogContextValue {
     isOpen: boolean;
     closable: boolean;
     portal?: boolean;
+    standalone?: boolean; // true if called as a standalone component rather than part of the dialog provider
     open: () => void;
     close: () => void;
+    onAfterOpenChange?: (open: boolean) => void;
 }
 
 const DialogContext = createContext<DialogContextValue>(null!);
@@ -248,7 +304,9 @@ export const Dialog = Object.assign(
             modal?: boolean;
             closable?: boolean;
             portal?: boolean;
+            standalone?: boolean;
             onOpenChange?: (open: boolean) => void;
+            onAfterOpenChange?: (open: boolean) => void;
         }>
     >(
         (
@@ -257,19 +315,23 @@ export const Dialog = Object.assign(
                 open: propsOpen,
                 closable = true,
                 portal = true,
+                standalone = true,
                 onOpenChange,
+                onAfterOpenChange,
             },
             ref,
         ) => {
-            const [open, setOpen] = useState(propsOpen ?? false);
+            const [open, _setOpen] = useState(propsOpen ?? false);
+            const setOpen = (open: boolean) =>
+                startTransition(() => _setOpen(open));
 
             useEffect(() => {
-                startTransition(() => setOpen(propsOpen ?? false));
+                setOpen(propsOpen ?? false);
             }, [propsOpen]);
 
             useImperativeHandle(ref, () => ({
-                open: () => startTransition(() => setOpen(true)),
-                close: () => startTransition(() => setOpen(false)),
+                open: () => setOpen(true),
+                close: () => setOpen(false),
             }));
 
             return (
@@ -278,8 +340,7 @@ export const Dialog = Object.assign(
                     onOpenChange={(open) => {
                         onOpenChange?.(open);
 
-                        (open || closable) &&
-                            startTransition(() => setOpen(open));
+                        (open || closable) && setOpen(open);
                     }}
                     defaultOpen={propsOpen === true}
                     modal={true}
@@ -289,8 +350,16 @@ export const Dialog = Object.assign(
                             isOpen: open,
                             closable,
                             portal,
-                            open: () => setOpen(true),
-                            close: () => setOpen(false),
+                            standalone,
+                            open: () => {
+                                setOpen(true);
+                                onOpenChange?.(true);
+                            },
+                            close: () => {
+                                setOpen(false);
+                                onOpenChange?.(false);
+                            },
+                            onAfterOpenChange,
                         }}
                     >
                         {children}
@@ -301,6 +370,7 @@ export const Dialog = Object.assign(
     ),
     {
         Trigger: RUIDialog.Trigger,
+        Overlay: DialogOverlay,
         Content: DialogContent,
     },
 );

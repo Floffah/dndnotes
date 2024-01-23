@@ -19,7 +19,7 @@ import { Loader } from "@/app/components/Loader";
 interface ButtonProps extends ComponentProps<"button"> {
     asChild?: boolean;
     size: "sm" | "md";
-    color: "primary" | "secondary";
+    color: "primary" | "secondary" | "danger";
     loading?: boolean;
     icon?: string | ReactNode;
     iconLabel?: string;
@@ -123,6 +123,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                             "bg-blue-700 text-white": color === "primary",
                             "border border-white/10 bg-white/5 text-white":
                                 color === "secondary",
+                            "border border-red-600 bg-red-800 text-white":
+                                color === "danger",
                         },
                     )}
                     onClick={async (e) => {

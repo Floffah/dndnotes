@@ -3,9 +3,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { trpc } from "@/app/api/lib/client/trpc";
 import { Form } from "@/app/components/Form";
-import { useCache } from "@/app/providers/CacheProvider";
 import { useUser } from "@/app/providers/UserProvider";
 import { FriendshipRequestError } from "@/db/models/FriendshipRequest/error";
 import { UserError } from "@/db/models/User/error";
@@ -17,9 +15,6 @@ type AddFriendFormValues = z.infer<typeof addFriendFormSchema>;
 
 export function AddFriendForm() {
     const user = useUser();
-    const cache = useCache();
-
-    const addFriend = trpc.user.friends.sendRequest.useMutation();
 
     const addFriendForm = useForm<AddFriendFormValues>({
         resolver: zodResolver(addFriendFormSchema),
@@ -31,13 +26,7 @@ export function AddFriendForm() {
         values,
     ) => {
         try {
-            const request = await addFriend.mutateAsync({
-                to: {
-                    username: values.friendName,
-                },
-            });
-
-            cache.user.friends.upsertPending({ from: user.id }, request);
+            await user.addFriend(values.friendName);
         } catch (e: any) {
             switch (e.message) {
                 case UserError.NOT_FOUND:

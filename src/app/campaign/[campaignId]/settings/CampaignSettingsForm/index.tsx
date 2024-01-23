@@ -4,10 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { trpc } from "@/app/api/lib/client/trpc";
 import { CampaignSchedules } from "@/app/campaign/[campaignId]/settings/CampaignSettingsForm/CampaignSchedules";
 import { Form } from "@/app/components/Form";
-import { useCache } from "@/app/providers/CacheProvider";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 
 const formSchema = z.object({
@@ -17,9 +15,6 @@ type FormValues = z.infer<typeof formSchema>;
 
 export function CampaignSettingsForm() {
     const campaign = useCampaign();
-    const cache = useCache();
-
-    const updateCampaign = trpc.campaign.update.useMutation();
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -29,12 +24,9 @@ export function CampaignSettingsForm() {
     });
 
     const onSubmit = async (values: FormValues) => {
-        const updatedCampaign = await updateCampaign.mutateAsync({
-            id: campaign.id,
+        await campaign.update(campaign.id, {
             name: values.name,
         });
-
-        cache.campaign.upsertCampaign(campaign.id, updatedCampaign);
     };
 
     return (

@@ -16,8 +16,7 @@ const formSchema = z.object({
     type: z.nativeEnum(CampaignSessionType),
 
     firstSessionAt: z.date(),
-    doesRepeat: z.boolean(),
-    repeat: z.nativeEnum(RepeatInterval).optional(),
+    repeat: z.enum(["NONE", ...Object.keys(RepeatInterval)]).optional(),
     length: z.number().min(0).max(60).optional(), // millis
     lengthUnit: z.enum(["minutes", "hours"]).optional(),
 });
@@ -26,22 +25,17 @@ type FormValues = z.infer<typeof formSchema>;
 export function AddScheduleDialog({ children }: PropsWithChildren) {
     const campaign = useCampaign();
 
-    const createSchedule = trpc.campaign.session.createSchedule.useMutation();
-
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "Main Schedule",
             type: CampaignSessionType.ONGOING,
             firstSessionAt: new Date(),
-            doesRepeat: false,
-            repeat: RepeatInterval.WEEKLY,
+            repeat: "NONE",
             length: 2,
             lengthUnit: "hours",
         } as FormValues,
     });
-
-    const doesRepeat = form.watch("doesRepeat");
 
     const dialogRef = useRef<DialogRef>(null);
 
@@ -51,23 +45,24 @@ export function AddScheduleDialog({ children }: PropsWithChildren) {
             name: values.name,
             type: values.type,
             firstSessionAt: values.firstSessionAt,
-            repeat: values.doesRepeat ? values.repeat : undefined,
+            repeat:
+                values.repeat !== "NONE"
+                    ? (values.repeat as RepeatInterval)
+                    : undefined,
             length: 0,
         };
 
-        if (values.doesRepeat) {
-            let length = values.length!;
+        let length = values.length!;
 
-            if (values.lengthUnit === "hours") {
-                length *= 60 * 60 * 1000;
-            } else {
-                length *= 60 * 1000;
-            }
-
-            createScheduleInput.length = length;
+        if (values.lengthUnit === "hours") {
+            length *= 60 * 60 * 1000;
+        } else {
+            length *= 60 * 1000;
         }
 
-        const schedule = await createSchedule.mutateAsync(createScheduleInput);
+        createScheduleInput.length = length;
+
+        await campaign.createSchedule(createScheduleInput);
 
         form.reset();
         dialogRef.current?.close();
@@ -76,6 +71,7 @@ export function AddScheduleDialog({ children }: PropsWithChildren) {
     return (
         <Dialog ref={dialogRef}>
             <Dialog.Trigger asChild>{children}</Dialog.Trigger>
+            <Dialog.Overlay />
             <Dialog.Content className="max-w-md">
                 <Dialog.Content.Title>Add Schedule</Dialog.Content.Title>
                 <Dialog.Content.Description>
@@ -112,58 +108,47 @@ export function AddScheduleDialog({ children }: PropsWithChildren) {
                             description="The date of the first session. Repeats will be calculated from this date."
                         />
 
-                        <Form.Switch
-                            name="doesRepeat"
-                            label="Does repeat"
-                            description="If enabled, the schedule will automatically repeat."
-                        />
+                        <div className="flex gap-2">
+                            <Form.Input
+                                name="length"
+                                label="Length"
+                                className="flex-1"
+                            />
 
-                        {doesRepeat && (
-                            <>
-                                <Form.Select
-                                    name="repeat"
-                                    label="Repeat"
-                                    description="The interval at which the schedule will repeat."
-                                >
-                                    <Form.Select.Item
-                                        value={RepeatInterval.WEEKLY}
-                                    >
-                                        Weekly
-                                    </Form.Select.Item>
-                                    <Form.Select.Item
-                                        value={RepeatInterval.FORTNIGHTLY}
-                                    >
-                                        Fortnightly
-                                    </Form.Select.Item>
-                                    <Form.Select.Item
-                                        value={RepeatInterval.MONTHLY}
-                                    >
-                                        Monthly
-                                    </Form.Select.Item>
-                                </Form.Select>
+                            <Form.Select
+                                name="lengthUnit"
+                                label="Unit"
+                                fieldClassName="flex-1"
+                            >
+                                <Form.Select.Item value="minutes">
+                                    Minutes
+                                </Form.Select.Item>
+                                <Form.Select.Item value="hours">
+                                    Hours
+                                </Form.Select.Item>
+                            </Form.Select>
+                        </div>
 
-                                <div className="flex gap-2">
-                                    <Form.Input
-                                        name="length"
-                                        label="Length"
-                                        className="flex-1"
-                                    />
-
-                                    <Form.Select
-                                        name="lengthUnit"
-                                        label="Unit"
-                                        fieldClassName="flex-1"
-                                    >
-                                        <Form.Select.Item value="minutes">
-                                            Minutes
-                                        </Form.Select.Item>
-                                        <Form.Select.Item value="hours">
-                                            Hours
-                                        </Form.Select.Item>
-                                    </Form.Select>
-                                </div>
-                            </>
-                        )}
+                        <Form.Select
+                            name="repeat"
+                            label="Repeat"
+                            description="The interval at which the schedule will repeat."
+                        >
+                            <Form.Select.Item value={"NONE"}>
+                                No repeat
+                            </Form.Select.Item>
+                            <Form.Select.Item value={RepeatInterval.WEEKLY}>
+                                Weekly
+                            </Form.Select.Item>
+                            <Form.Select.Item
+                                value={RepeatInterval.FORTNIGHTLY}
+                            >
+                                Fortnightly
+                            </Form.Select.Item>
+                            <Form.Select.Item value={RepeatInterval.MONTHLY}>
+                                Monthly
+                            </Form.Select.Item>
+                        </Form.Select>
                     </Form>
                 </Dialog.Content.Body>
 

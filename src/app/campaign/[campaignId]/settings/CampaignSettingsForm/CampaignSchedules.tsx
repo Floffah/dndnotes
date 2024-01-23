@@ -5,13 +5,11 @@ import { AddScheduleDialog } from "@/app/campaign/[campaignId]/settings/Campaign
 import { Icon } from "@/app/components/Icon";
 import { Tooltip } from "@/app/components/Tooltip";
 import { useCampaign } from "@/app/providers/CampaignProvider";
+import { useDialogs } from "@/app/providers/DialogProvider";
 
 export function CampaignSchedules() {
     const campaign = useCampaign();
-
-    const schedules = trpc.campaign.session.getSchedules.useQuery({
-        campaignId: campaign.id,
-    });
+    const dialogs = useDialogs();
 
     return (
         <>
@@ -20,7 +18,7 @@ export function CampaignSchedules() {
             </h2>
 
             <div className="flex flex-col gap-2">
-                {schedules.data?.map((schedule) => {
+                {campaign.schedules.map((schedule) => {
                     const infos = [
                         ["mdi:book", schedule.type],
                         [
@@ -45,41 +43,71 @@ export function CampaignSchedules() {
                     return (
                         <div
                             key={schedule.id}
-                            className="rounded-lg border-2 border-white/10 p-2"
+                            className="flex items-center gap-1 rounded-lg border-2 border-white/10 p-2"
                         >
-                            <div className="flex items-center gap-2">
-                                <p className="text-lg font-semibold">
-                                    {schedule.name}
-                                </p>
-                                <p className="text-sm text-white/80">&bull;</p>
-                                <Tooltip
-                                    title={formatRelative(
-                                        schedule.nextSessionAt,
-                                        new Date(),
-                                    )}
-                                >
-                                    <p className="indicate-action text-sm text-white/80 indicate-white/50">
-                                        {formatDate(
-                                            schedule.nextSessionAt,
-                                            "PPPPp",
-                                        )}
+                            <div className="flex-auto">
+                                <div className="flex items-center gap-2">
+                                    <p className="text-lg font-semibold">
+                                        {schedule.name}
                                     </p>
-                                </Tooltip>
-                            </div>
-
-                            <div className="flex gap-2">
-                                {infos.map(([icon, text], index) => (
-                                    <div
-                                        key={index}
-                                        className="flex items-center gap-0.5 text-xs font-semibold uppercase text-white/60"
+                                    <p className="text-sm text-white/80">
+                                        &bull;
+                                    </p>
+                                    <Tooltip
+                                        title={formatRelative(
+                                            schedule.nextSessionAt,
+                                            new Date(),
+                                        )}
                                     >
-                                        <Icon
-                                            label={icon.split(":")[1]}
-                                            icon={icon}
-                                        />
-                                        <p>{text}</p>
-                                    </div>
-                                ))}
+                                        <p className="indicate-action text-sm text-white/80 indicate-white/50">
+                                            {formatDate(
+                                                schedule.nextSessionAt,
+                                                "PPPPp",
+                                            )}
+                                        </p>
+                                    </Tooltip>
+                                </div>
+
+                                <div className="flex gap-2">
+                                    {infos.map(([icon, text], index) => (
+                                        <div
+                                            key={index}
+                                            className="flex items-center gap-0.5 text-xs font-semibold uppercase text-white/60"
+                                        >
+                                            <Icon
+                                                label={icon.split(":")[1]}
+                                                icon={icon}
+                                            />
+                                            <p>{text}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="flex flex-shrink-0 flex-grow-0 gap-1">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        dialogs.showConfirmation({
+                                            title: "Delete Schedule",
+                                            description:
+                                                "Are you sure you want to delete this schedule? This action is irreversible.",
+                                            confirmText: "Delete",
+                                            color: "danger",
+                                            onConfirm: async () => {
+                                                await campaign.deleteSchedule({
+                                                    campaignId: campaign.id,
+                                                    scheduleId: schedule.id,
+                                                });
+                                            },
+                                        });
+                                    }}
+                                >
+                                    <Icon
+                                        label="delete"
+                                        icon="mdi:delete-outline"
+                                        className="h-5 w-5 text-red-600/50 transition-[transform,color] duration-150 hover:scale-110 hover:text-red-600/75"
+                                    />
+                                </button>
                             </div>
                         </div>
                     );

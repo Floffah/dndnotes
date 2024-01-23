@@ -62,6 +62,7 @@ export const campaignSessionRouter = router({
                     }),
             );
         }),
+
     createSchedule: procedure
         .input(
             z.object({
@@ -118,8 +119,12 @@ export const campaignSessionRouter = router({
 
             await schedule.save();
 
-            return;
+            return new CampaignSessionScheduleAPIModel(schedule, {
+                user: opts.ctx.session!.user,
+                campaignMember: campaignMember,
+            });
         }),
+
     startSchedule: procedure
         .input(
             z.object({
@@ -186,5 +191,61 @@ export const campaignSessionRouter = router({
                 user: opts.ctx.session!.user,
                 campaignMember: campaignMember,
             });
+        }),
+
+    deleteSchedule: procedure
+        .input(
+            z.object({
+                campaignId: z.string(),
+                scheduleId: z.string(),
+            }),
+        )
+        .mutation(async (opts) => {
+            await ensureAuthenticated(opts.ctx);
+
+            const campaign = await CampaignModel.findById(
+                new ObjectId(opts.input.campaignId),
+            );
+
+            if (!campaign) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            const campaignMember = await CampaignMemberModel.findOne({
+                campaign: campaign._id,
+                user: new ObjectId(opts.ctx.session!.user.id),
+            });
+
+            if (!campaignMember) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignError.NO_CAMPAIGN_MEMBER,
+                });
+            }
+
+            if (campaignMember.type !== CampaignMemberType.DM) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignMemberError.NOT_OWNER,
+                });
+            }
+
+            const schedule = await CampaignSessionScheduleModel.findById(
+                new ObjectId(opts.input.scheduleId),
+            );
+
+            if (!schedule) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignSessionScheduleError.NOT_FOUND,
+                });
+            }
+
+            await schedule.deleteOne();
+
+            return;
         }),
 });

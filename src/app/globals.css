@@ -36,7 +36,7 @@ body {
     }
 
     .indicate-action {
-        @apply relative after:absolute after:bottom-0 after:left-0 after:z-10 after:mb-1 after:w-3 after:border-b after:border-dashed;
+        @apply relative after:absolute after:bottom-0 after:left-0 after:mb-1 after:w-3 after:border-b after:border-dashed;
 
         &::after {
             border-color: var(--indicate-color);

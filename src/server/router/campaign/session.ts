@@ -27,6 +27,13 @@ export const campaignSessionRouter = router({
         .query(async (opts) => {
             await ensureAuthenticated(opts.ctx);
 
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
             const campaign = await CampaignModel.findById(
                 new ObjectId(opts.input.campaignId),
             );
@@ -77,6 +84,13 @@ export const campaignSessionRouter = router({
         )
         .mutation(async (opts) => {
             await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
 
             const campaign = await CampaignModel.findById(
                 new ObjectId(opts.input.campaignId),
@@ -135,6 +149,23 @@ export const campaignSessionRouter = router({
         )
         .mutation(async (opts) => {
             await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            if (
+                opts.input.scheduleId &&
+                !ObjectId.isValid(opts.input.scheduleId)
+            ) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignSessionScheduleError.NOT_FOUND,
+                });
+            }
 
             const campaign = await CampaignModel.findById(
                 new ObjectId(opts.input.campaignId),
@@ -202,6 +233,20 @@ export const campaignSessionRouter = router({
         )
         .mutation(async (opts) => {
             await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            if (!ObjectId.isValid(opts.input.scheduleId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignSessionScheduleError.NOT_FOUND,
+                });
+            }
 
             const campaign = await CampaignModel.findById(
                 new ObjectId(opts.input.campaignId),

@@ -1,10 +1,14 @@
 import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 
 import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
 import { populateMetadata } from "@/app/lib/populateMetadata";
 import { serializableClone } from "@/app/lib/serializableClone";
 import { CampaignProvider } from "@/app/providers/CampaignProvider";
 import { Hydrate } from "@/app/providers/Hydrate";
+import { Campaign } from "@/db/models/Campaign";
+import { CampaignError } from "@/db/models/Campaign/error";
+import { ValidationError } from "@/server/errors/ValidationError";
 
 export async function generateMetadata(
     { params: { campaignId } },
@@ -12,9 +16,11 @@ export async function generateMetadata(
 ): Promise<Metadata | ResolvedMetadata> {
     const helpers = await getTRPCServerHelpers();
 
-    const campaign = await helpers.campaign.get.fetch(campaignId);
+    let campaign: Campaign;
 
-    if (!campaign) {
+    try {
+        campaign = await helpers.campaign.get.fetch(campaignId);
+    } catch (e: any) {
         return await parent;
     }
 
@@ -30,7 +36,17 @@ export default async function CampaignLayout({
 }) {
     const helpers = await getTRPCServerHelpers();
 
-    await helpers.campaign.get.prefetch(campaignId);
+    try {
+        await helpers.campaign.get.fetch(campaignId);
+    } catch (e: any) {
+        switch (e.message) {
+            case ValidationError.INVALID_ID:
+                return notFound();
+            case CampaignError.NOT_FOUND:
+                return notFound();
+        }
+    }
+
     await helpers.campaign.member.list.prefetch({
         campaignId,
     });

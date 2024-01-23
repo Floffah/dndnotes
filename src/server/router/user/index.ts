@@ -1,6 +1,9 @@
+import { TRPCError } from "@trpc/server";
+import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 import { UserAPIModel } from "@/db/models/User/consumers";
+import { UserError } from "@/db/models/User/error";
 import { UserModel } from "@/db/models/User/model";
 import { userFriendsRouter } from "@/server/router/user/friends";
 import { procedure, router } from "@/server/trpc";
@@ -23,6 +26,13 @@ export const userRouter = router({
         )
         .query(async (opts) => {
             const user = await UserModel.findById(new Object(opts.input.id));
+
+            if (opts.input.id && !ObjectId.isValid(opts.input.id)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: UserError.NOT_FOUND,
+                });
+            }
 
             if (!user) return null;
 

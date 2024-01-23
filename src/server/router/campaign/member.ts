@@ -5,11 +5,13 @@ import { nanoid } from "nanoid";
 import { z } from "zod";
 
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
+import { CampaignError } from "@/db/models/Campaign/error";
 import { CampaignInviteAPIModel } from "@/db/models/CampaignInvite/consumers";
 import { CampaignInviteError } from "@/db/models/CampaignInvite/error";
 import { CampaignInviteModel } from "@/db/models/CampaignInvite/model";
 import { CampaignMemberAPIModel } from "@/db/models/CampaignMember/consumers";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
+import { UserError } from "@/db/models/User/error";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 
 export const campaignMemberRouter = router({
@@ -21,6 +23,13 @@ export const campaignMemberRouter = router({
         )
         .query(async (opts) => {
             await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
 
             const campaignMembers = await CampaignMemberModel.find({
                 campaign: new ObjectId(opts.input.campaignId),
@@ -45,6 +54,20 @@ export const campaignMemberRouter = router({
         )
         .mutation(async (opts) => {
             await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            if (!ObjectId.isValid(opts.input.userId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: UserError.NOT_FOUND,
+                });
+            }
 
             const campaignMember = await CampaignMemberModel.findOne({
                 campaign: new ObjectId(opts.input.campaignId),

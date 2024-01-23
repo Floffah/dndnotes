@@ -4,6 +4,8 @@ import { FilterQuery } from "mongoose";
 import { z } from "zod";
 
 import { FriendshipRequestState } from "@/db/enums/FriendshipRequestState";
+import { CampaignError } from "@/db/models/Campaign/error";
+import { CampaignSessionScheduleError } from "@/db/models/CampaignSessionSchedule/error";
 import { FriendshipRequestAPIModel } from "@/db/models/FriendshipRequest/consumers";
 import { FriendshipRequestError } from "@/db/models/FriendshipRequest/error";
 import {
@@ -20,12 +22,17 @@ export const userFriendsRouter = router({
         .input(
             z.object({
                 user: z.string().optional(),
-                // TODO: implement sorting (default, last active, name, etc)
-                // TODO: implement pagination
             }),
         )
         .query(async (opts) => {
             await ensureAuthenticated(opts.ctx);
+
+            if (opts.input.user && !ObjectId.isValid(opts.input.user)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: UserError.NOT_FOUND,
+                });
+            }
 
             const userId = opts.input.user ?? opts.ctx.session!.user.id;
 
@@ -69,6 +76,20 @@ export const userFriendsRouter = router({
                 throw new TRPCError({
                     code: "FORBIDDEN",
                     message: FriendshipRequestError.CANNOT_VIEW_OTHERS_PENDING,
+                });
+            }
+
+            if (opts.input.to && !ObjectId.isValid(opts.input.to)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: UserError.NOT_FOUND,
+                });
+            }
+
+            if (opts.input.from && !ObjectId.isValid(opts.input.from)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: UserError.NOT_FOUND,
                 });
             }
 
@@ -116,6 +137,13 @@ export const userFriendsRouter = router({
         )
         .mutation(async (opts) => {
             await ensureAuthenticated(opts.ctx);
+
+            if (opts.input.to.id && !ObjectId.isValid(opts.input.to.id)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: UserError.NOT_FOUND,
+                });
+            }
 
             if (
                 opts.input.to.id === opts.ctx.session!.user.id ||
@@ -180,6 +208,13 @@ export const userFriendsRouter = router({
         )
         .mutation(async (opts) => {
             await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.id)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: UserError.NOT_FOUND,
+                });
+            }
 
             const request = await FriendshipRequestModel.findById(
                 new ObjectId(opts.input.id),

@@ -19,11 +19,23 @@ export const campaignRouter = router({
     session: campaignSessionRouter,
 
     get: procedure.input(z.string()).query(async (opts) => {
+        if (!ObjectId.isValid(opts.input)) {
+            throw new TRPCError({
+                code: "NOT_FOUND",
+                message: CampaignError.NOT_FOUND,
+            });
+        }
+
         const campaign = await CampaignModel.findById(new ObjectId(opts.input))
             .populate("createdBy")
             .exec();
 
-        if (!campaign) return null;
+        if (!campaign) {
+            throw new TRPCError({
+                code: "NOT_FOUND",
+                message: CampaignError.NOT_FOUND,
+            });
+        }
 
         return new CampaignAPIModel(campaign, {
             user: opts.ctx.session?.user,
@@ -95,20 +107,17 @@ export const campaignRouter = router({
             z.object({
                 id: z.string(),
                 name: z.optional(z.string()),
-                schedule: z.optional(
-                    z.object({
-                        manual: z.optional(z.boolean()),
-                        start: z.optional(z.string()),
-                        repeat: z.optional(z.nativeEnum(RepeatInterval)),
-                        length: z.optional(z.number()),
-
-                        nextSession: z.optional(z.string()),
-                    }),
-                ),
             }),
         )
         .mutation(async (opts) => {
             await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.id)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
 
             const campaign = await CampaignModel.findById(
                 new ObjectId(opts.input.id),
@@ -153,6 +162,13 @@ export const campaignRouter = router({
 
     delete: procedure.input(z.string()).mutation(async (opts) => {
         await ensureAuthenticated(opts.ctx);
+
+        if (!ObjectId.isValid(opts.input)) {
+            throw new TRPCError({
+                code: "NOT_FOUND",
+                message: CampaignError.NOT_FOUND,
+            });
+        }
 
         const campaign = await CampaignModel.findById(new ObjectId(opts.input));
 

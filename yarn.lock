@@ -2799,7 +2799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:20.11.5":
+"@types/node@npm:*":
   version: 20.11.5
   resolution: "@types/node@npm:20.11.5"
   dependencies:
@@ -2812,6 +2812,15 @@ __metadata:
   version: 14.18.33
   resolution: "@types/node@npm:14.18.33"
   checksum: 10cfbb5f66ff7117e9f4cf36d2cafb05c5a0c90d12af03f439a0aca4d3992897698c49aec4a4c591e3260a8356335a4fb0fbfb46980f60a17fe0cd2a0327b5b5
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:20.11.6":
+  version: 20.11.6
+  resolution: "@types/node@npm:20.11.6"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 922bc1e78076bb79fd168902c80321b54487181e3be3386e183fc535d102d91c8902da25148eaec841410fab7fb872fd4a93ec9ac9299cedf0ebcbf16b442aa1
   languageName: node
   linkType: hard
 
@@ -9391,7 +9400,7 @@ __metadata:
     "@types/cookie": "npm:^0.6.0"
     "@types/jest": "npm:^29.5.11"
     "@types/mdx": "npm:^2.0.10"
-    "@types/node": "npm:20.11.5"
+    "@types/node": "npm:20.11.6"
     "@types/pubnub": "npm:^7"
     "@types/react": "npm:^18.2.48"
     "@types/react-dom": "npm:^18.2.18"

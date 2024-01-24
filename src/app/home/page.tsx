@@ -1,9 +1,9 @@
 "use client";
 
 import { DiscordLoginButton } from "@/app/components/DiscordLoginButton";
+import { NavBar } from "@/app/components/NavBar";
 import { CampaignsList } from "@/app/home/CampaignsList";
 import { FriendsList } from "@/app/home/FriendsList";
-import { NavBar } from "@/app/home/NavBar";
 import { useUser } from "@/app/providers/UserProvider";
 
 export default function HomePage() {

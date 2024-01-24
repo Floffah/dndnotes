@@ -65,7 +65,7 @@ const FormRoot = forwardRef<HTMLFormElement, ComponentProps<"form">>(
 export const Form = Object.assign(
     forwardRef<
         HTMLFormElement,
-        Omit<ComponentProps<"form">, "onSubmit"> & FormProps
+        Omit<ComponentProps<"form">, "onSubmit" | "ref"> & FormProps
     >(({ form, onSubmit, onSubmitError, children, ...props }, ref) => {
         return (
             <FormProvider
@@ -73,7 +73,9 @@ export const Form = Object.assign(
                 onSubmit={onSubmit}
                 onSubmitError={onSubmitError}
             >
-                <FormRoot ref={ref}>{children}</FormRoot>
+                <FormRoot ref={ref} {...props}>
+                    {children}
+                </FormRoot>
             </FormProvider>
         );
     }),

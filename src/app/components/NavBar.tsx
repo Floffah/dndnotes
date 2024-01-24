@@ -39,23 +39,34 @@ function NavLink({
     );
 
     if (link) {
-        return <Link href={link}>{button}</Link>;
+        return (
+            <Link
+                href={link}
+                target={link.startsWith("/") ? undefined : "_blank"}
+            >
+                {button}
+            </Link>
+        );
     }
 
     return button;
 }
 
 export function NavBar() {
-    const router = useRouter();
-
     return (
-        <div className="flex overflow-hidden rounded-lg border border-white/10 bg-white/5">
+        <div className="flex flex-shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/5">
             <NavLink icon="mdi:home" link="/home">
                 Home
             </NavLink>
 
             <div className="flex-1" />
 
+            <NavLink
+                icon="mdi:github"
+                link="https://github.com/floffah/dndnotes"
+            >
+                GitHub
+            </NavLink>
             <NavLink icon="mdi:book" link="/docs">
                 Docs
             </NavLink>

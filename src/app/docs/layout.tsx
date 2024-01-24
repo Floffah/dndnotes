@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { JetBrains_Mono } from "next/font/google";
 import { PropsWithChildren } from "react";
 
+import { NavBar } from "@/app/components/NavBar";
 import { NavList } from "@/app/docs/NavList";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -12,16 +13,19 @@ const jetbrainsMono = JetBrains_Mono({
 
 export default function Layout({ children }: PropsWithChildren) {
     return (
-        <div className="flex h-full w-full flex-col gap-4 p-4 md:flex-row md:justify-center">
-            <NavList />
-            <main
-                className={clsx(
-                    jetbrainsMono.variable,
-                    "docs-root-layout w-full flex-auto overflow-y-auto overflow-x-hidden px-4 py-4",
-                )}
-            >
-                {children}
-            </main>
+        <div className="flex h-full w-full flex-col gap-4 p-4">
+            <NavBar />
+            <div className="flex flex-1 flex-col md:flex-row">
+                <NavList />
+                <main
+                    className={clsx(
+                        jetbrainsMono.variable,
+                        "docs-root-layout w-full flex-auto overflow-y-auto overflow-x-hidden px-4 py-4",
+                    )}
+                >
+                    {children}
+                </main>
+            </div>
         </div>
     );
 }

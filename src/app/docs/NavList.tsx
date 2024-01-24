@@ -26,12 +26,6 @@ function NavLinksList({
                 "ml-3 border-l-2 border-white/10 pl-3": isChild,
             })}
         >
-            {parentLink === "/docs" && (
-                <li className="m-0 flex w-fit select-none items-center text-white/75 transition-colors duration-150 hover:text-white">
-                    <Link href="/">Home</Link>
-                </li>
-            )}
-
             {list.map((item, key) => {
                 const name = typeof item === "string" ? item : item.link;
                 const link = parentLink + "/" + name;

@@ -131,10 +131,10 @@ const DialogContentFooter = Object.assign(
         return (
             <div
                 ref={ref}
-                className={clsx(
-                    className,
-                    "flex w-full justify-end gap-2 *:flex-grow",
-                )}
+                className={clsx(className, "flex w-full justify-end gap-2", {
+                    "*:flex-grow": Array.isArray(children),
+                    "*:w-1/2": !Array.isArray(children),
+                })}
                 {...props}
             >
                 {children}

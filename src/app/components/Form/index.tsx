@@ -1,8 +1,14 @@
 "use client";
 
-import { ComponentProps, createContext, forwardRef } from "react";
 import {
-    FormProvider,
+    ComponentProps,
+    PropsWithChildren,
+    createContext,
+    forwardRef,
+    useContext,
+} from "react";
+import {
+    FormProvider as RHFProvider,
     SubmitErrorHandler,
     SubmitHandler,
     UseFormReturn,
@@ -16,40 +22,64 @@ import { FormInput } from "@/app/components/Form/FormInput";
 import { FormSelect } from "@/app/components/Form/FormSelect";
 import { FormSwitch } from "@/app/components/Form/FormSwitch";
 
-interface FormProps extends ComponentProps<"form"> {
+interface FormProps {
     form: UseFormReturn<any, any, any>;
     onSubmit: SubmitHandler<any>;
     onSubmitError?: SubmitErrorHandler<any>;
 }
 
-interface FormContextValue {
-    form: ReturnType<typeof useForm>;
-}
+interface FormContextValue extends FormProps {}
 
 export const FormContext = createContext<FormContextValue>(null!);
 
+const FormProvider = ({
+    children,
+    ...value
+}: PropsWithChildren<FormContextValue>) => {
+    return (
+        <FormContext.Provider value={value}>
+            <RHFProvider {...value.form}>{children}</RHFProvider>
+        </FormContext.Provider>
+    );
+};
+
+const FormRoot = forwardRef<HTMLFormElement, ComponentProps<"form">>(
+    ({ children, ...props }, ref) => {
+        const form = useContext(FormContext);
+
+        return (
+            <form
+                {...props}
+                ref={ref}
+                onSubmit={form.form.handleSubmit(
+                    form.onSubmit,
+                    form.onSubmitError,
+                )}
+            >
+                {children}
+            </form>
+        );
+    },
+);
+
 export const Form = Object.assign(
-    forwardRef<HTMLFormElement, FormProps>(
-        ({ form, onSubmit, onSubmitError, children, ...props }, ref) => {
-            return (
-                <FormContext.Provider value={{ form }}>
-                    <FormProvider {...form}>
-                        <form
-                            {...props}
-                            ref={ref}
-                            onSubmit={form.handleSubmit(
-                                onSubmit,
-                                onSubmitError,
-                            )}
-                        >
-                            {children}
-                        </form>
-                    </FormProvider>
-                </FormContext.Provider>
-            );
-        },
-    ),
+    forwardRef<
+        HTMLFormElement,
+        Omit<ComponentProps<"form">, "onSubmit"> & FormProps
+    >(({ form, onSubmit, onSubmitError, children, ...props }, ref) => {
+        return (
+            <FormProvider
+                form={form}
+                onSubmit={onSubmit}
+                onSubmitError={onSubmitError}
+            >
+                <FormRoot ref={ref}>{children}</FormRoot>
+            </FormProvider>
+        );
+    }),
     {
+        Provider: FormProvider,
+        Root: FormRoot,
         Button: FormButton,
         DateInput: FormDateInput,
         Field: FormField,

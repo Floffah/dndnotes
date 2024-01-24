@@ -8,7 +8,6 @@ import { CampaignProvider } from "@/app/providers/CampaignProvider";
 import { Hydrate } from "@/app/providers/Hydrate";
 import { Campaign } from "@/db/models/Campaign";
 import { CampaignError } from "@/db/models/Campaign/error";
-import { ValidationError } from "@/server/errors/ValidationError";
 
 export async function generateMetadata(
     { params: { campaignId } },
@@ -40,8 +39,6 @@ export default async function CampaignLayout({
         await helpers.campaign.get.fetch(campaignId);
     } catch (e: any) {
         switch (e.message) {
-            case ValidationError.INVALID_ID:
-                return notFound();
             case CampaignError.NOT_FOUND:
                 return notFound();
         }

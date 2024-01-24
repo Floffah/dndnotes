@@ -60,7 +60,6 @@ function NextSession() {
         );
     }
 
-    // if session time was within the last 2 hours
     if (
         nextSchedule.nextSessionAt &&
         nextSchedule.length &&
@@ -75,10 +74,12 @@ function NextSession() {
                     label="start session"
                 />
                 <span className="text-lg font-semibold">
-                    It&apos;s time for session {campaign.totalSessions + 1}!
+                    It&apos;s time for{" "}
+                    {nextSchedule.repeat ? "the next session in" : ""}{" "}
+                    {nextSchedule.name}!
                 </span>
                 {campaign.currentMember?.type === CampaignMemberType.DM && (
-                    <StartSessionDialog>
+                    <StartSessionDialog schedule={nextSchedule}>
                         <Button size="sm" color="primary">
                             Start Session
                         </Button>

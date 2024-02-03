@@ -2,11 +2,11 @@
 
 import { memo } from "react";
 
+import { AddFriendForm } from "@/app/(authRoutes)/home/FriendsList/AddFriendForm";
+import { FriendRequestsDialog } from "@/app/(authRoutes)/home/FriendsList/FriendRequestsDialog";
 import { Button } from "@/app/components/Button";
 import { Divider } from "@/app/components/Divider";
 import { Loader } from "@/app/components/Loader";
-import { AddFriendForm } from "@/app/home/FriendsList/AddFriendForm";
-import { FriendRequestsDialog } from "@/app/home/FriendsList/FriendRequestsDialog";
 import { useUser } from "@/app/providers/UserProvider";
 
 export const FriendsList = memo(() => {

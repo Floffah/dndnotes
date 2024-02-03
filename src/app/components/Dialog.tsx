@@ -232,11 +232,20 @@ const DialogContent = Object.assign(
 
         const Container = ctx.portal ? RUIDialog.Portal : Fragment;
 
+        const zClasses = (className ?? "")
+            .split(" ")
+            .filter((c) => c.startsWith("z-"));
+
         return transition(
             (transitionStyle, isOpen) =>
                 isOpen && (
                     <Container forceMount>
-                        <div className="pointer-events-none fixed inset-0 z-10 flex max-h-screen items-center justify-center overflow-y-auto py-2">
+                        <div
+                            className={clsx(
+                                "pointer-events-none fixed inset-0 flex max-h-screen items-center justify-center overflow-y-auto py-2",
+                                zClasses,
+                            )}
+                        >
                             <RUIDialog.Content asChild forceMount>
                                 <animated.div
                                     ref={ref}

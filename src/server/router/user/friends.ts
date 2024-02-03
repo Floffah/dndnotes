@@ -4,8 +4,6 @@ import { FilterQuery } from "mongoose";
 import { z } from "zod";
 
 import { FriendshipRequestState } from "@/db/enums/FriendshipRequestState";
-import { CampaignError } from "@/db/models/Campaign/error";
-import { CampaignSessionScheduleError } from "@/db/models/CampaignSessionSchedule/error";
 import { FriendshipRequestAPIModel } from "@/db/models/FriendshipRequest/consumers";
 import { FriendshipRequestError } from "@/db/models/FriendshipRequest/error";
 import {

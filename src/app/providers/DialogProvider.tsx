@@ -95,6 +95,7 @@ export function DialogProvider({ children }: PropsWithChildren) {
             <Dialog open={!!activeDialog}>
                 <Dialog.Overlay className="z-0" />
             </Dialog>
+
             {dialogs.map(({ id, element }) => {
                 const props = isValidElement(element)
                     ? (element.props as any)

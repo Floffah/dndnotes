@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { CampaignSchedules } from "@/app/campaign/[campaignId]/settings/CampaignSettingsForm/CampaignSchedules";
+import { CampaignSchedules } from "@/app/(authRoutes)/campaign/[campaignId]/settings/CampaignSettingsForm/CampaignSchedules";
 import { Form } from "@/app/components/Form";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 

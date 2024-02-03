@@ -1,9 +1,8 @@
-import { StartSessionDialog } from "./StartSessionDialog";
 import { formatDistance, formatRelative } from "date-fns";
 import Link from "next/link";
 import { useMemo } from "react";
 
-import { trpc } from "@/app/api/lib/client/trpc";
+import { StartSessionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/StartSessionDialog";
 import { Button } from "@/app/components/Button";
 import { Icon } from "@/app/components/Icon";
 import { Loader } from "@/app/components/Loader";

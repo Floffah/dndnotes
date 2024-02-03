@@ -13,14 +13,14 @@ const jetbrainsMono = JetBrains_Mono({
 
 export default function Layout({ children }: PropsWithChildren) {
     return (
-        <div className="flex h-full w-full flex-col gap-4 p-4">
+        <div className="flex h-full w-full flex-col gap-3 p-3">
             <NavBar />
             <div className="flex flex-1 flex-col md:flex-row">
                 <NavList />
                 <main
                     className={clsx(
                         jetbrainsMono.variable,
-                        "docs-root-layout w-full flex-auto overflow-y-auto overflow-x-hidden px-4 py-4",
+                        "prose prose-sky prose-invert w-full max-w-none flex-auto overflow-y-auto overflow-x-hidden px-3 py-3",
                     )}
                 >
                     {children}

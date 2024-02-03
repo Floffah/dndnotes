@@ -1,4 +1,6 @@
 const plugin = require("tailwindcss/plugin");
+const flattenColorPalette =
+    require("tailwindcss/lib/util/flattenColorPalette").default;
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -24,6 +26,7 @@ module.exports = {
         },
     },
     plugins: [
+        require("@tailwindcss/typography"),
         plugin(({ matchUtilities, theme }) =>
             matchUtilities(
                 {
@@ -32,7 +35,7 @@ module.exports = {
                     }),
                 },
                 {
-                    values: theme("colors"),
+                    values: flattenColorPalette(theme("colors")),
                     type: "color",
                 },
             ),

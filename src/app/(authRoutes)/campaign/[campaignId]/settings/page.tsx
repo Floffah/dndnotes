@@ -1,5 +1,5 @@
-import { CampaignNavBar } from "@/app/campaign/[campaignId]/CampaignNavBar";
-import { CampaignSettingsForm } from "@/app/campaign/[campaignId]/settings/CampaignSettingsForm";
+import { CampaignNavBar } from "@/app/(authRoutes)/campaign/[campaignId]/CampaignNavBar";
+import { CampaignSettingsForm } from "@/app/(authRoutes)/campaign/[campaignId]/settings/CampaignSettingsForm";
 
 export default function CampaignSettingsPage() {
     return (

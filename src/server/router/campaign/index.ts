@@ -3,7 +3,6 @@ import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
-import { RepeatInterval } from "@/db/enums/RepeatInterval";
 import { CampaignAPIModel } from "@/db/models/Campaign/consumers";
 import { CampaignError } from "@/db/models/Campaign/error";
 import { CampaignModel } from "@/db/models/Campaign/model";

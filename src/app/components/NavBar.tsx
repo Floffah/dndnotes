@@ -2,7 +2,6 @@
 
 import clsx from "clsx";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { EventHandler, MouseEvent, useEffect, useState } from "react";
 
 import { Icon } from "@/app/components/Icon";

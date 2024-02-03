@@ -1,6 +1,7 @@
 "use client";
 
 import { inferProcedureInput } from "@trpc/server";
+import { addMilliseconds } from "date-fns";
 import { PropsWithChildren, createContext, useContext } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
@@ -50,9 +51,15 @@ export function CampaignProvider({
         (member) => member.user?.id === user.id,
     );
 
-    const schedules = trpc.campaign.session.getSchedules.useQuery({
+    const schedulesQuery = trpc.campaign.session.getSchedules.useQuery({
         campaignId,
     });
+    const schedules =
+        schedulesQuery.data?.filter(
+            (schedule) =>
+                addMilliseconds(schedule.nextSessionAt, schedule.length) >
+                new Date(),
+        ) ?? [];
 
     const updateCampaign = trpc.campaign.update.useMutation();
     const createScheduleMutation =
@@ -145,11 +152,11 @@ export function CampaignProvider({
                     loading:
                         campaign.isLoading ||
                         campaignMembers.isLoading ||
-                        schedules.isLoading,
+                        schedulesQuery.isLoading,
                     ...(campaign.data ?? {}),
                     members: campaignMembers.data ?? [],
                     currentMember: currentMember ?? {},
-                    schedules: schedules.data ?? [],
+                    schedules: schedules,
 
                     update,
                     createSchedule,

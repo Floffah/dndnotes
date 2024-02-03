@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { addDays } from "date-fns";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
@@ -14,6 +15,7 @@ import { CampaignSessionModel } from "@/db/models/CampaignSession/model";
 import { CampaignSessionScheduleAPIModel } from "@/db/models/CampaignSessionSchedule/consumers";
 import { CampaignSessionScheduleError } from "@/db/models/CampaignSessionSchedule/error";
 import { CampaignSessionScheduleModel } from "@/db/models/CampaignSessionSchedule/model";
+import { CampaignSessionScheduleFilter } from "@/server/enums/CampaignSessionScheduleFilter";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 import { procedure, router } from "@/server/trpc";
 
@@ -22,6 +24,10 @@ export const campaignSessionRouter = router({
         .input(
             z.object({
                 campaignId: z.string(),
+                filter: z
+                    .nativeEnum(CampaignSessionScheduleFilter)
+                    .optional()
+                    .default(CampaignSessionScheduleFilter.ALL),
             }),
         )
         .query(async (opts) => {
@@ -57,9 +63,24 @@ export const campaignSessionRouter = router({
                 });
             }
 
-            const schedules = await CampaignSessionScheduleModel.find({
+            const scheduleFilter = {
                 campaign: campaign._id,
-            });
+            };
+
+            if (opts.input.filter === CampaignSessionScheduleFilter.PAST) {
+                scheduleFilter["firstSessionAt"] = {
+                    $lte: addDays(new Date(), 1),
+                };
+            } else if (
+                opts.input.filter === CampaignSessionScheduleFilter.UPCOMING
+            ) {
+                scheduleFilter["firstSessionAt"] = {
+                    $gte: new Date(),
+                };
+            }
+
+            const schedules =
+                await CampaignSessionScheduleModel.find(scheduleFilter);
 
             return schedules.map(
                 (schedule) =>

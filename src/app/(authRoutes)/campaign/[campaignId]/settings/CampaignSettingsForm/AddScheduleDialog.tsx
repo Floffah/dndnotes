@@ -3,7 +3,6 @@ import { PropsWithChildren, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { trpc } from "@/app/api/lib/client/trpc";
 import { Button } from "@/app/components/Button";
 import { Dialog, DialogRef } from "@/app/components/Dialog";
 import { Form } from "@/app/components/Form";

@@ -42,7 +42,7 @@ export const CampaignsList = memo(() => {
                         You are part of no campaigns - create one!
                     </p>
                 ) : (
-                    <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                    <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                         {campaigns.data.map((campaign) => (
                             <Link
                                 href={`/campaign/${campaign.id}`}

@@ -103,7 +103,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                     />
                 </Popover.Trigger>
                 <Popover.Portal>
-                    <Popover.Content className="rounded-lg bg-gray-700 shadow-xl">
+                    <Popover.Content className="rounded-lg border border-white/10 bg-gray-700 shadow-xl">
                         <Popover.Arrow className="fill-gray-700" />
 
                         <div className="relative flex w-full flex-col">

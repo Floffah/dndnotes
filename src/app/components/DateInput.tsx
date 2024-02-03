@@ -60,6 +60,13 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
         const [_value, setValue] = useState(propsValue);
         const value = _value ?? new Date();
 
+        const [hoursValue, setHoursValue] = useState(
+            value.getHours().toString(),
+        );
+        const [minutesValue, setMinutesValue] = useState(
+            value.getMinutes().toString(),
+        );
+
         const [hoursError, setHoursError] = useState(false);
         const [minutesError, setMinutesError] = useState(false);
 
@@ -73,6 +80,36 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
         useEffect(() => {
             setValue(propsValue);
         }, [propsValue]);
+
+        useEffect(() => {
+            const hours = parseInt(hoursValue.trim() || "0");
+
+            if (isNaN(hours) || hours < 0 || hours > 23) {
+                setHoursError(true);
+                return;
+            }
+
+            const newValue = new Date(value);
+
+            newValue.setHours(hours, newValue.getMinutes());
+
+            setValue(newValue);
+        }, [hoursValue]);
+
+        useEffect(() => {
+            const minutes = parseInt(minutesValue.trim() || "0");
+
+            if (isNaN(minutes) || minutes < 0 || minutes > 59) {
+                setMinutesError(true);
+                return;
+            }
+
+            const newValue = new Date(value);
+
+            newValue.setMinutes(minutes);
+
+            setValue(newValue);
+        }, [minutesValue]);
 
         return (
             <Popover.Root
@@ -321,29 +358,9 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                 <Input
                                     placeholder="HH"
                                     className="w-16"
-                                    value={value.getHours().toString()}
+                                    value={hoursValue}
                                     onChange={(event) => {
-                                        const hours = parseInt(
-                                            event.target.value,
-                                        );
-
-                                        if (
-                                            isNaN(hours) ||
-                                            hours < 0 ||
-                                            hours > 23
-                                        ) {
-                                            setHoursError(true);
-                                            return;
-                                        }
-
-                                        const newValue = new Date(value);
-
-                                        newValue.setHours(
-                                            parseInt(event.target.value),
-                                            newValue.getMinutes(),
-                                        );
-
-                                        setValue(newValue);
+                                        setHoursValue(event.target.value);
                                     }}
                                     type="number"
                                 />
@@ -353,28 +370,9 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                 <Input
                                     placeholder="MM"
                                     className="w-16"
-                                    value={value.getMinutes().toString()}
+                                    value={minutesValue}
                                     onChange={(event) => {
-                                        const minutes = parseInt(
-                                            event.target.value,
-                                        );
-
-                                        if (
-                                            isNaN(minutes) ||
-                                            minutes < 0 ||
-                                            minutes > 59
-                                        ) {
-                                            setMinutesError(true);
-                                            return;
-                                        }
-
-                                        const newValue = new Date(value);
-
-                                        newValue.setMinutes(
-                                            parseInt(event.target.value),
-                                        );
-
-                                        setValue(newValue);
+                                        setMinutesValue(event.target.value);
                                     }}
                                     type="number"
                                 />

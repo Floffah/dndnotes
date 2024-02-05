@@ -36,8 +36,7 @@ export const FormSelect = Object.assign(
                             onValueChange={(value) => onChange(value)}
                         >
                             <Select.Button>
-                                {placeholder ??
-                                    `Select ${props.label?.toLowerCase()}`}
+                                {placeholder ?? `Select ${props.name}`}
                             </Select.Button>
                             <Select.Panel>{props.children}</Select.Panel>
                         </Select>

@@ -49,7 +49,7 @@ export function AddFriendForm() {
     return (
         <Form
             form={addFriendForm}
-            onSubmit={onSubmitAddFriend}
+            submitHandler={onSubmitAddFriend}
             className="flex w-full gap-1"
         >
             <Form.Input

@@ -1,5 +1,6 @@
 import { Schema } from "mongoose";
 
+import { CampaignSessionType } from "@/db/enums/CampaignSessionType";
 import { RepeatInterval } from "@/db/enums/RepeatInterval";
 import { createModel } from "@/db/lib/createModel";
 import { CampaignModel } from "@/db/models/Campaign/model";
@@ -9,7 +10,7 @@ import { CampaignSessionSchedule } from "@/db/models/CampaignSessionSchedule/ind
 export const CampaignSessionScheduleSchema =
     new Schema<CampaignSessionSchedule>({
         name: { type: String, required: true },
-        type: { type: String, required: true },
+        type: { type: String, enum: CampaignSessionType, required: true },
         campaign: {
             type: Schema.Types.ObjectId,
             ref: CampaignModel,

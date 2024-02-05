@@ -1,18 +1,50 @@
 "use client";
 
-import { ComponentProps, useContext } from "react";
+import { composeRefs } from "@radix-ui/react-compose-refs";
+import {
+    ComponentProps,
+    ComponentRef,
+    forwardRef,
+    useContext,
+    useMemo,
+    useRef,
+} from "react";
 
 import { Button } from "@/app/components/Button";
 import { FormContext } from "@/app/components/Form/index";
 
-export function FormButton(props: ComponentProps<typeof Button>) {
-    const { form } = useContext(FormContext);
+export const FormButton = forwardRef<
+    ComponentRef<typeof Button>,
+    ComponentProps<typeof Button>
+>(({ onClick, ...props }, externalRef) => {
+    const { form, submit } = useContext(FormContext);
+
+    const buttonRef = useRef<ComponentRef<typeof Button>>(null);
+
+    const isInsideForm = useMemo(() => {
+        const closestForm = buttonRef.current?.closest("form");
+
+        return !!closestForm;
+    }, [buttonRef]);
 
     return (
         <Button
             {...props}
             type="submit"
             loading={form.formState.isSubmitting || props.loading}
+            ref={composeRefs(externalRef, buttonRef)}
+            onClick={
+                onClick ??
+                (async (e) => {
+                    if (
+                        !isInsideForm &&
+                        props.type !== "button" &&
+                        props.type !== "reset"
+                    ) {
+                        await submit(e);
+                    }
+                })
+            }
         />
     );
-}
+});

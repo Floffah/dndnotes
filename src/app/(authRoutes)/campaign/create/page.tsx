@@ -43,7 +43,7 @@ export default function CampaignCreatePage() {
 
                 <Form
                     form={form}
-                    onSubmit={onSubmit}
+                    submitHandler={onSubmit}
                     className="flex flex-col gap-4"
                 >
                     <Form.Input name="name" label="Campaign Name" />

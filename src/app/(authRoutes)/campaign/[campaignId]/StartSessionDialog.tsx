@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PropsWithChildren, forwardRef } from "react";
+import { composeRefs } from "@radix-ui/react-compose-refs";
+import { PropsWithChildren, forwardRef, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { trpc } from "@/app/api/lib/client/trpc";
 import { Dialog, DialogRef } from "@/app/components/Dialog";
 import { Form } from "@/app/components/Form";
 import { Link } from "@/app/components/Link";
@@ -22,17 +24,31 @@ export const StartSessionDialog = forwardRef<
 >(({ schedule, children }, ref) => {
     const campaign = useCampaign();
 
+    const dialogRef = useRef<DialogRef>(null);
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: schedule?.name ?? `Session ${campaign.totalSessions + 1}`,
+            type: schedule?.type ?? CampaignSessionType.ONE_SHOT,
         },
     });
 
-    const onSubmit = async (values: FormValues) => {};
+    const sessionType = form.watch("type");
+
+    const onSubmit = async (values: FormValues) => {
+        await campaign.startSession({
+            campaignId: campaign.id,
+            name: values.name,
+            scheduleId: schedule?.id,
+            type: values.type,
+        });
+
+        dialogRef.current?.close();
+    };
 
     return (
-        <Dialog ref={ref}>
+        <Dialog ref={composeRefs(ref, dialogRef)}>
             <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
             <Dialog.Overlay />
@@ -46,10 +62,10 @@ export const StartSessionDialog = forwardRef<
                     ) : (
                         <>
                             Note that this will create a standalone session, not
-                            associated with a schedule. Need to schedule a
-                            session?{" "}
+                            associated with a schedule. Want to schedule a
+                            session instead?{" "}
                             <Link
-                                href={`/campaign/${campaign.id}/schedule`}
+                                href={`/campaign/${campaign.id}/settings#schedules`}
                                 label="Campaign settings"
                             >
                                 Create a schedule
@@ -58,10 +74,38 @@ export const StartSessionDialog = forwardRef<
                     )}
                 </Dialog.Content.Description>
 
-                <Form.Provider form={form} onSubmit={onSubmit}>
+                <Form.Provider form={form} submitHandler={onSubmit}>
                     <Dialog.Content.Body>
-                        <Form.Root>
-                            <Form.Input name="name" label="Session name" />
+                        <Form.Root className="flex w-full flex-col gap-2">
+                            <Form.Input
+                                name="name"
+                                label="Session name"
+                                description="This can be changed later!"
+                            />
+
+                            {!schedule && (
+                                <Form.Select
+                                    name="type"
+                                    label="Session type"
+                                    warning={
+                                        sessionType ===
+                                            CampaignSessionType.ONGOING &&
+                                        !schedule &&
+                                        "Note that this will not be part of any recurring schedule. Are you sure this is part of an ongoing campaign?"
+                                    }
+                                >
+                                    <Form.Select.Item
+                                        value={CampaignSessionType.ONE_SHOT}
+                                    >
+                                        One shot
+                                    </Form.Select.Item>
+                                    <Form.Select.Item
+                                        value={CampaignSessionType.ONGOING}
+                                    >
+                                        Part of an ongoing campaign
+                                    </Form.Select.Item>
+                                </Form.Select>
+                            )}
                         </Form.Root>
                     </Dialog.Content.Body>
 

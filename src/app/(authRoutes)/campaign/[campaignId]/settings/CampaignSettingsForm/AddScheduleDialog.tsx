@@ -79,7 +79,7 @@ export function AddScheduleDialog({ children }: PropsWithChildren) {
                 <Dialog.Content.Body className="max-h-96 overflow-y-auto">
                     <Form
                         form={form}
-                        onSubmit={onSubmit}
+                        submitHandler={onSubmit}
                         className="my-1 flex flex-col gap-3 px-3"
                     >
                         <Form.Input name="name" label="Name" />

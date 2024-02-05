@@ -47,7 +47,7 @@ export function calculateNextDateInSeries(
             break;
     }
 
-    // 'current session' state - if there is a session scheduled within the previous 2 hours, return that
+    // 'current session' state - if there is a session scheduled within the previous length period, return that
     if (
         length &&
         Date.now() > nextDate.getTime() &&

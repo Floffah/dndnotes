@@ -79,7 +79,7 @@ const DialogContentBody = forwardRef<
     PropsWithChildren<Omit<ComponentProps<"div">, "children" | "ref">>
 >(({ children, className, ...props }, ref) => {
     return (
-        <div ref={ref} className={clsx(className, "flex-1")} {...props}>
+        <div ref={ref} className={clsx(className, "my-2 flex-1")} {...props}>
             {children}
         </div>
     );
@@ -126,14 +126,16 @@ const DialogContentFooterButton = forwardRef<
 const DialogContentFooter = Object.assign(
     forwardRef<
         HTMLDivElement,
-        PropsWithChildren<Omit<ComponentProps<"div">, "children" | "ref">>
-    >(({ children, className, ...props }, ref) => {
+        PropsWithChildren<Omit<ComponentProps<"div">, "children" | "ref">> & {
+            useLessSpace?: boolean;
+        }
+    >(({ children, useLessSpace = false, className, ...props }, ref) => {
         return (
             <div
                 ref={ref}
                 className={clsx(className, "flex w-full justify-end gap-2", {
-                    "*:flex-grow": Array.isArray(children),
-                    "*:w-1/2": !Array.isArray(children),
+                    "*:flex-grow": !useLessSpace || Array.isArray(children),
+                    "*:w-1/2": useLessSpace && !Array.isArray(children),
                 })}
                 {...props}
             >

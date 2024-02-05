@@ -1,14 +1,21 @@
 "use client";
 
 import clsx from "clsx";
-import { ComponentProps, PropsWithChildren, useContext, useMemo } from "react";
+import {
+    ComponentProps,
+    PropsWithChildren,
+    ReactNode,
+    useContext,
+    useMemo,
+} from "react";
 
 import { FormContext } from "@/app/components/Form/index";
 
 export interface FormFieldBaseProps {
     name: string;
-    label?: string;
-    description?: string;
+    label?: ReactNode;
+    description?: ReactNode;
+    warning?: ReactNode;
     disabled?: boolean;
     orientation?: "horizontal" | "vertical";
     position?: "start" | "end";
@@ -28,6 +35,7 @@ export const useFormField = <Props extends FormFieldBaseProps>(
         name,
         label,
         description,
+        warning,
         orientation = opts.defaultOrientation,
         position = opts.defaultPosition,
         fieldClassName,
@@ -45,6 +53,7 @@ export const useFormField = <Props extends FormFieldBaseProps>(
             name,
             label,
             description,
+            warning,
             orientation,
             position,
             fieldClassName,
@@ -69,6 +78,7 @@ export function FormField({
     label,
     name,
     description,
+    warning,
     orientation = "vertical",
     position = "start",
     className,
@@ -108,7 +118,23 @@ export function FormField({
     const renderDescription = () => {
         return (
             description && (
-                <p className="text-sm text-white/70">{description}</p>
+                <p
+                    className={clsx("text-sm", {
+                        "text-red-500/30": errorMessage,
+                        "text-white/70": !errorMessage,
+                    })}
+                >
+                    {description}
+                </p>
+            )
+        );
+    };
+
+    const renderWarning = () => {
+        return (
+            warning &&
+            !errorMessage && (
+                <p className="text-sm text-yellow-500">{warning}</p>
             )
         );
     };
@@ -116,7 +142,7 @@ export function FormField({
     const renderErrorMessage = () => {
         return (
             errorMessage && (
-                <p className="-mt-2 text-sm text-red-500">{errorMessage}</p>
+                <p className="text-sm text-red-500">{errorMessage}</p>
             )
         );
     };
@@ -133,6 +159,7 @@ export function FormField({
 
                     {children}
 
+                    {renderWarning()}
                     {renderErrorMessage()}
                 </>
             )}
@@ -154,6 +181,7 @@ export function FormField({
                         {position === "end" && children}
                     </div>
 
+                    {renderWarning()}
                     {renderErrorMessage()}
                 </div>
             )}

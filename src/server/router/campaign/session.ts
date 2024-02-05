@@ -10,16 +10,81 @@ import { CampaignError } from "@/db/models/Campaign/error";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberError } from "@/db/models/CampaignMember/error";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
+import { CampaignSession } from "@/db/models/CampaignSession";
 import { CampaignSessionAPIModel } from "@/db/models/CampaignSession/consumers";
+import { CampaignSessionError } from "@/db/models/CampaignSession/error";
 import { CampaignSessionModel } from "@/db/models/CampaignSession/model";
 import { CampaignSessionScheduleAPIModel } from "@/db/models/CampaignSessionSchedule/consumers";
 import { CampaignSessionScheduleError } from "@/db/models/CampaignSessionSchedule/error";
 import { CampaignSessionScheduleModel } from "@/db/models/CampaignSessionSchedule/model";
 import { CampaignSessionScheduleFilter } from "@/server/enums/CampaignSessionScheduleFilter";
+import { CampaignSessionSort } from "@/server/enums/CampaignSessionSort";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 import { procedure, router } from "@/server/trpc";
 
 export const campaignSessionRouter = router({
+    list: procedure
+        .input(
+            z.object({
+                campaignId: z.string(),
+                sort: z
+                    .nativeEnum(CampaignSessionSort)
+                    .optional()
+                    .default(CampaignSessionSort.CREATED_AT_DESC),
+            }),
+        )
+        .query(async (opts) => {
+            await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            const campaign = await CampaignModel.findById(
+                new ObjectId(opts.input.campaignId),
+            );
+
+            if (!campaign) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            const campaignMember = await CampaignMemberModel.findOne({
+                campaign: campaign._id,
+                user: new ObjectId(opts.ctx.session!.user.id),
+            });
+
+            if (!campaignMember) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignError.NO_CAMPAIGN_MEMBER,
+                });
+            }
+
+            const sessionsQuery = CampaignSessionModel.find({
+                campaign: campaign._id,
+            });
+
+            if (opts.input.sort === CampaignSessionSort.CREATED_AT_DESC) {
+                sessionsQuery.sort({ createdAt: -1 });
+            }
+
+            const sessions = await sessionsQuery.exec();
+
+            return sessions.map(
+                (session) =>
+                    new CampaignSessionAPIModel(session, {
+                        user: opts.ctx.session!.user,
+                        campaignMember: campaignMember,
+                    }),
+            );
+        }),
+
     getSchedules: procedure
         .input(
             z.object({
@@ -160,91 +225,6 @@ export const campaignSessionRouter = router({
             });
         }),
 
-    startSchedule: procedure
-        .input(
-            z.object({
-                name: z.string(),
-                campaignId: z.string(),
-                scheduleId: z.string().optional(),
-            }),
-        )
-        .mutation(async (opts) => {
-            await ensureAuthenticated(opts.ctx);
-
-            if (!ObjectId.isValid(opts.input.campaignId)) {
-                throw new TRPCError({
-                    code: "NOT_FOUND",
-                    message: CampaignError.NOT_FOUND,
-                });
-            }
-
-            if (
-                opts.input.scheduleId &&
-                !ObjectId.isValid(opts.input.scheduleId)
-            ) {
-                throw new TRPCError({
-                    code: "NOT_FOUND",
-                    message: CampaignSessionScheduleError.NOT_FOUND,
-                });
-            }
-
-            const campaign = await CampaignModel.findById(
-                new ObjectId(opts.input.campaignId),
-            );
-
-            if (!campaign) {
-                throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: CampaignError.NOT_FOUND,
-                });
-            }
-
-            const campaignMember = await CampaignMemberModel.findOne({
-                campaign: campaign._id,
-                user: new ObjectId(opts.ctx.session!.user.id),
-            });
-
-            if (!campaignMember) {
-                throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: CampaignError.NO_CAMPAIGN_MEMBER,
-                });
-            }
-
-            if (campaignMember.type !== CampaignMemberType.DM) {
-                throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: CampaignMemberError.NOT_OWNER,
-                });
-            }
-
-            const schedule = await CampaignSessionScheduleModel.findById(
-                new ObjectId(opts.input.scheduleId),
-            );
-
-            if (!schedule) {
-                throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: CampaignSessionScheduleError.NOT_FOUND,
-                });
-            }
-
-            const session = new CampaignSessionModel({
-                name: opts.input.name,
-                type: schedule.type,
-                campaign: campaign._id,
-                schedule: schedule._id,
-                startedAt: new Date(),
-            });
-
-            await session.save();
-
-            return new CampaignSessionAPIModel(session, {
-                user: opts.ctx.session!.user,
-                campaignMember: campaignMember,
-            });
-        }),
-
     deleteSchedule: procedure
         .input(
             z.object({
@@ -313,5 +293,121 @@ export const campaignSessionRouter = router({
             await schedule.deleteOne();
 
             return;
+        }),
+
+    start: procedure
+        .input(
+            z.object({
+                name: z.string(),
+                type: z.nativeEnum(CampaignSessionType),
+                scheduleId: z.string().optional(),
+                campaignId: z.string(),
+            }),
+        )
+        .mutation(async (opts) => {
+            await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            const campaign = await CampaignModel.findById(
+                new ObjectId(opts.input.campaignId),
+            );
+
+            if (!campaign) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            const campaignMember = await CampaignMemberModel.findOne({
+                campaign: campaign._id,
+                user: new ObjectId(opts.ctx.session!.user.id),
+            });
+
+            if (!campaignMember) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignError.NO_CAMPAIGN_MEMBER,
+                });
+            }
+
+            if (campaignMember.type !== CampaignMemberType.DM) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignMemberError.NOT_OWNER,
+                });
+            }
+
+            let scheduleId: ObjectId | undefined = undefined;
+            let sessionType = opts.input.type;
+
+            if (opts.input.scheduleId) {
+                if (!ObjectId.isValid(opts.input.scheduleId)) {
+                    throw new TRPCError({
+                        code: "NOT_FOUND",
+                        message: CampaignSessionScheduleError.NOT_FOUND,
+                    });
+                }
+
+                const schedule = await CampaignSessionScheduleModel.findById(
+                    new ObjectId(opts.input.scheduleId),
+                );
+
+                if (!schedule) {
+                    throw new TRPCError({
+                        code: "BAD_REQUEST",
+                        message: CampaignSessionScheduleError.NOT_FOUND,
+                    });
+                }
+
+                if (schedule.campaign.toString() !== campaign._id.toString()) {
+                    throw new TRPCError({
+                        code: "BAD_REQUEST",
+                        message: CampaignSessionScheduleError.NOT_FOUND,
+                    });
+                }
+
+                if (schedule.nextSessionAt > new Date()) {
+                    throw new TRPCError({
+                        code: "BAD_REQUEST",
+                        message: CampaignSessionScheduleError.NOT_READY,
+                    });
+                }
+
+                scheduleId = schedule._id;
+                sessionType = schedule.type;
+            }
+
+            if (!scheduleId && !opts.input.type) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignSessionError.TYPE_REQUIRED,
+                });
+            }
+
+            const session = new CampaignSessionModel({
+                name: opts.input.name,
+                campaign: campaign._id,
+                schedule: scheduleId,
+                startedAt: new Date(),
+                type: sessionType,
+            });
+
+            await session.save();
+
+            campaign.totalSessions += 1;
+
+            await campaign.save();
+
+            return new CampaignSessionAPIModel(session, {
+                user: opts.ctx.session!.user,
+                campaignMember: campaignMember,
+            });
         }),
 });

@@ -34,7 +34,7 @@ export function CampaignSettingsForm() {
             <div className="flex w-full max-w-md flex-col gap-4 pt-5">
                 <h1 className="text-3xl font-bold">Campaign Settings</h1>
 
-                <Form form={form} onSubmit={onSubmit}>
+                <Form form={form} submitHandler={onSubmit}>
                     <h2 className="mb-3 border-b-2 border-b-white/20 text-2xl font-semibold">
                         General
                     </h2>

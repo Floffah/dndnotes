@@ -12,7 +12,10 @@ export function CampaignSchedules() {
 
     return (
         <>
-            <h2 className="mb-3 mt-5 border-b-2 border-b-white/20 text-2xl font-semibold">
+            <h2
+                className="mb-3 mt-5 border-b-2 border-b-white/20 text-2xl font-semibold"
+                id="schedules"
+            >
                 Schedules
             </h2>
 

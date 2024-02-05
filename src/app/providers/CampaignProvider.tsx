@@ -9,6 +9,7 @@ import { serializableClone } from "@/app/lib/serializableClone";
 import { useUser } from "@/app/providers/UserProvider";
 import { Campaign } from "@/db/models/Campaign";
 import { CampaignMember } from "@/db/models/CampaignMember";
+import { CampaignSession } from "@/db/models/CampaignSession";
 import { CampaignSessionSchedule } from "@/db/models/CampaignSessionSchedule";
 import { AppRouter } from "@/server/router";
 
@@ -16,8 +17,12 @@ export interface CampaignContextValue extends Campaign {
     loading: boolean;
     members: CampaignMember[];
     currentMember: CampaignMember;
+    sessions: CampaignSession[];
     schedules: CampaignSessionSchedule[];
 
+    startSession: (
+        data: inferProcedureInput<AppRouter["campaign"]["session"]["start"]>,
+    ) => Promise<void>;
     update: (id: string, data: Partial<Campaign>) => Promise<void>;
     createSchedule: (
         data: inferProcedureInput<
@@ -51,6 +56,10 @@ export function CampaignProvider({
         (member) => member.user?.id === user.id,
     );
 
+    const sessions = trpc.campaign.session.list.useQuery({
+        campaignId,
+    });
+
     const schedulesQuery = trpc.campaign.session.getSchedules.useQuery({
         campaignId,
     });
@@ -62,12 +71,13 @@ export function CampaignProvider({
         ) ?? [];
 
     const updateCampaign = trpc.campaign.update.useMutation();
+    const createSession = trpc.campaign.session.start.useMutation();
     const createScheduleMutation =
         trpc.campaign.session.createSchedule.useMutation();
     const deleteScheduleMutation =
         trpc.campaign.session.deleteSchedule.useMutation();
 
-    const update = async (id: string, data: Partial<Campaign>) => {
+    const update: CampaignContextValue["update"] = async (id, data) => {
         const updatedCampaign = await updateCampaign.mutateAsync({
             id,
             ...data,
@@ -76,7 +86,7 @@ export function CampaignProvider({
         const campaignsCachedData = utils.campaign.get.getData(id);
 
         if (!campaignsCachedData) {
-            utils.campaign.get.setData(id, data as Campaign);
+            utils.campaign.get.setData(id, updatedCampaign);
             return;
         }
 
@@ -89,6 +99,30 @@ export function CampaignProvider({
         }
 
         utils.campaign.get.setData(id, clonedData);
+    };
+
+    const startSession: CampaignContextValue["startSession"] = async (data) => {
+        const session = await createSession.mutateAsync(data);
+
+        const sessionsCachedData = utils.campaign.session.list.getData({
+            campaignId: data.campaignId,
+        });
+
+        if (!sessionsCachedData) {
+            utils.campaign.session.list.setData(
+                {
+                    campaignId: data.campaignId,
+                },
+                [session],
+            );
+        } else {
+            utils.campaign.session.list.setData(
+                {
+                    campaignId: data.campaignId,
+                },
+                [...sessionsCachedData, session],
+            );
+        }
     };
 
     const createSchedule: CampaignContextValue["createSchedule"] = async (
@@ -152,13 +186,16 @@ export function CampaignProvider({
                     loading:
                         campaign.isLoading ||
                         campaignMembers.isLoading ||
-                        schedulesQuery.isLoading,
+                        schedulesQuery.isLoading ||
+                        sessions.isLoading,
                     ...(campaign.data ?? {}),
                     members: campaignMembers.data ?? [],
                     currentMember: currentMember ?? {},
-                    schedules: schedules,
+                    schedules,
+                    sessions: sessions.data ?? [],
 
                     update,
+                    startSession,
                     createSchedule,
                     deleteSchedule,
                 } as CampaignContextValue

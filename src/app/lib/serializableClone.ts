@@ -24,7 +24,7 @@ export function serializableClone(obj: any, visitedNodes = new WeakMap()) {
     const newObj = {};
 
     for (const [key, value] of Object.entries(obj)) {
-        if (key.startsWith("_")) continue;
+        if (["_doc", "_childDocs"].some((x) => key.startsWith(x))) continue;
 
         if (
             !value ||

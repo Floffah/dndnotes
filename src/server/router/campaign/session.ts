@@ -23,6 +23,73 @@ import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 import { procedure, router } from "@/server/trpc";
 
 export const campaignSessionRouter = router({
+    get: procedure
+        .input(
+            z.object({
+                campaignId: z.string(),
+                sessionId: z.string(),
+            }),
+        )
+        .query(async (opts) => {
+            await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            if (!ObjectId.isValid(opts.input.sessionId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignSessionError.NOT_FOUND,
+                });
+            }
+
+            const campaign = await CampaignModel.findById(
+                new ObjectId(opts.input.campaignId),
+            );
+
+            if (!campaign) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            const campaignMember = await CampaignMemberModel.findOne({
+                campaign: campaign._id,
+                user: new ObjectId(opts.ctx.session!.user.id),
+            });
+
+            if (!campaignMember) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignError.NO_CAMPAIGN_MEMBER,
+                });
+            }
+
+            const session = await CampaignSessionModel.findById(
+                new ObjectId(opts.input.sessionId),
+            )
+                .populate("schedule")
+                .populate("campaign")
+                .exec();
+
+            if (!session) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignSessionError.NOT_FOUND,
+                });
+            }
+
+            return new CampaignSessionAPIModel(session, {
+                user: opts.ctx.session!.user,
+                campaignMember: campaignMember,
+            });
+        }),
+
     list: procedure
         .input(
             z.object({

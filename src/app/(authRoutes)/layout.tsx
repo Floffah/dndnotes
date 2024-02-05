@@ -1,16 +1,15 @@
 import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
-import { serializableClone } from "@/app/lib/serializableClone";
-import { Hydrate } from "@/app/providers/Hydrate";
+import { DehydrateServerQueryHelpers } from "@/app/providers/DehydrateServerQueryHelpers";
 import { UserProvider } from "@/app/providers/UserProvider";
 
 export default async function AuthLayout({ children }) {
     const helpers = await getTRPCServerHelpers();
 
-    await helpers.user.me.prefetch();
+    const user = await helpers.user.me.fetch();
 
     return (
-        <Hydrate state={serializableClone(helpers.dehydrate())}>
+        <DehydrateServerQueryHelpers helpers={helpers}>
             <UserProvider>{children}</UserProvider>
-        </Hydrate>
+        </DehydrateServerQueryHelpers>
     );
 }

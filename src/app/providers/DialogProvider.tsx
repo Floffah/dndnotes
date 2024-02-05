@@ -115,8 +115,6 @@ export function DialogProvider({ children }: PropsWithChildren) {
                         portal: true,
                         className: clsx(props.className, "z-10"),
                         onOpenChange: (open) => {
-                            console.log(open);
-
                             if (!open) {
                                 const lastDialog = dialogs[dialogs.length - 2];
 

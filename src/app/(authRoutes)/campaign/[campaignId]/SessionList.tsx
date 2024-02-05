@@ -1,4 +1,4 @@
-import { addDays, format, formatDistance, formatRelative } from "date-fns";
+import { format, formatDistance } from "date-fns";
 import Link from "next/link";
 
 import { StartSessionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/StartSessionDialog";

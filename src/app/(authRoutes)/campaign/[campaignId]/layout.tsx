@@ -48,6 +48,10 @@ export default async function CampaignLayout({
         campaignId,
     });
 
+    await helpers.campaign.session.list.prefetch({
+        campaignId,
+    });
+
     return (
         <Hydrate state={serializableClone(helpers.dehydrate())}>
             <CampaignProvider campaignId={campaignId}>

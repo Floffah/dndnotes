@@ -30,7 +30,6 @@
     "@trpc/next": "^10.45.1",
     "@trpc/react-query": "^10.45.1",
     "@trpc/server": "^10.45.1",
-    "canvas": "^2.11.2",
     "clsx": "^2.1.0",
     "cookie": "^0.6.0",
     "crypto-random-string": "^5.0.0",

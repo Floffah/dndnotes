@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-import { DocumentType } from "@/db/enums/DocumentType";
+import { DocumentFormat } from "@/db/enums/DocumentFormat";
 import { createModel } from "@/db/lib/createModel";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { Document } from "@/db/models/Document/index";
@@ -11,9 +11,9 @@ export const DocumentSchema = new Schema<Document>({
         type: String,
         required: true,
     },
-    type: {
+    format: {
         type: String,
-        enum: DocumentType,
+        enum: DocumentFormat,
         required: true,
     },
     creator: {
@@ -30,15 +30,9 @@ export const DocumentSchema = new Schema<Document>({
         type: String,
         required: false,
     },
-    recordMap: {
-        type: [
-            {
-                type: String,
-                value: String,
-            },
-        ],
+    content: {
+        type: String,
         required: false,
-        default: [],
     },
 });
 

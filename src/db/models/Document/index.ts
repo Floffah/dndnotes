@@ -1,16 +1,13 @@
-import { DocumentType } from "@/db/enums/DocumentType";
+import { DocumentFormat } from "@/db/enums/DocumentFormat";
 import { Campaign } from "@/db/models/Campaign";
 import { User } from "@/db/models/User";
 import { IBaseModel } from "@/db/types/baseModel";
 
 export interface Document extends IBaseModel {
     name: string;
-    type: DocumentType;
+    format: DocumentFormat;
     creator: User;
     campaign: Campaign;
-    notionId: string;
-    recordMap: {
-        type: string;
-        value: string;
-    }[];
+    notionId?: string; // if format is NOTION
+    content?: string; // if format is MARKDOWN
 }

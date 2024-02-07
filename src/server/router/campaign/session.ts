@@ -1,22 +1,25 @@
 import { TRPCError } from "@trpc/server";
 import { addDays } from "date-fns";
 import { ObjectId } from "mongodb";
+import { HydratedDocument, Document as MongooseDocument } from "mongoose";
 import { z } from "zod";
 
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
 import { CampaignSessionType } from "@/db/enums/CampaignSessionType";
+import { DocumentFormat } from "@/db/enums/DocumentFormat";
 import { RepeatInterval } from "@/db/enums/RepeatInterval";
 import { CampaignError } from "@/db/models/Campaign/error";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberError } from "@/db/models/CampaignMember/error";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
-import { CampaignSession } from "@/db/models/CampaignSession";
 import { CampaignSessionAPIModel } from "@/db/models/CampaignSession/consumers";
 import { CampaignSessionError } from "@/db/models/CampaignSession/error";
 import { CampaignSessionModel } from "@/db/models/CampaignSession/model";
 import { CampaignSessionScheduleAPIModel } from "@/db/models/CampaignSessionSchedule/consumers";
 import { CampaignSessionScheduleError } from "@/db/models/CampaignSessionSchedule/error";
 import { CampaignSessionScheduleModel } from "@/db/models/CampaignSessionSchedule/model";
+import { Document } from "@/db/models/Document";
+import { DocumentModel } from "@/db/models/Document/model";
 import { CampaignSessionScheduleFilter } from "@/server/enums/CampaignSessionScheduleFilter";
 import { CampaignSessionSort } from "@/server/enums/CampaignSessionSort";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
@@ -75,6 +78,7 @@ export const campaignSessionRouter = router({
             )
                 .populate("schedule")
                 .populate("campaign")
+                .populate("summary")
                 .exec();
 
             if (!session) {
@@ -221,6 +225,117 @@ export const campaignSessionRouter = router({
                         campaignMember: campaignMember,
                     }),
             );
+        }),
+
+    updateSummary: procedure
+        .input(
+            z.object({
+                campaignId: z.string(),
+                sessionId: z.string(),
+                summary: z.string().optional(),
+                notionId: z.string().optional(),
+            }),
+        )
+        .mutation(async (opts) => {
+            await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            if (!ObjectId.isValid(opts.input.sessionId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignSessionError.NOT_FOUND,
+                });
+            }
+
+            const campaign = await CampaignModel.findById(
+                new ObjectId(opts.input.campaignId),
+            );
+
+            if (!campaign) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            const campaignMember = await CampaignMemberModel.findOne({
+                campaign: campaign._id,
+                user: new ObjectId(opts.ctx.session!.user.id),
+            });
+
+            if (!campaignMember) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignError.NO_CAMPAIGN_MEMBER,
+                });
+            }
+
+            const session = await CampaignSessionModel.findById(
+                new ObjectId(opts.input.sessionId),
+            )
+                .populate("summary")
+                .exec();
+
+            if (!session) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignSessionError.NOT_FOUND,
+                });
+            }
+
+            if (session.campaign.toString() !== campaign._id.toString()) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignSessionError.NOT_FOUND,
+                });
+            }
+
+            if (campaignMember.type !== CampaignMemberType.DM) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignMemberError.NOT_OWNER,
+                });
+            }
+
+            let document = session.summary as HydratedDocument<Document>;
+
+            if (!session.summary) {
+                document = new DocumentModel({
+                    name: session.name,
+                    creator: new ObjectId(opts.ctx.session!.user.id),
+                    campaign: campaign._id,
+                });
+                session.summary = document;
+            }
+
+            if (opts.input.summary) {
+                document.content = opts.input.summary;
+                document.notionId = null!;
+                document.format = DocumentFormat.MARKDOWN;
+            } else if (opts.input.notionId) {
+                document.notionId = opts.input.notionId;
+                document.content = null!;
+                document.format = DocumentFormat.NOTION;
+            } else {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignSessionError.INVALID_SUMMARY,
+                });
+            }
+
+            await document.save();
+            await session.save();
+
+            return new CampaignSessionAPIModel(session, {
+                user: opts.ctx.session!.user,
+                campaignMember: campaignMember,
+            });
         }),
 
     createSchedule: procedure

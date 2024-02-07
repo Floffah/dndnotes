@@ -5,8 +5,9 @@ import Link from "next/link";
 import { Divider } from "@/app/components/Divider";
 import { Icon } from "@/app/components/Icon";
 import { useCampaign } from "@/app/providers/CampaignProvider";
+import { CampaignSession } from "@/db/models/CampaignSession";
 
-export function CampaignNavBar() {
+export function CampaignNavBar({ session }: { session?: CampaignSession }) {
     const campaign = useCampaign();
 
     return (
@@ -20,15 +21,30 @@ export function CampaignNavBar() {
 
             <Divider orientation="vertical" />
 
-            <Link
-                href={`/campaign/${campaign.id}`}
-                className="text-lg font-semibold"
-            >
-                {campaign.name}
-            </Link>
-            <p className="text-sm text-white/80">
-                by {campaign.createdBy?.name}
-            </p>
+            {session ? (
+                <>
+                    <Link
+                        href={`/campaign/${campaign.id}`}
+                        className="text-lg font-semibold transition-transform duration-150 hover:scale-105"
+                    >
+                        {campaign.name}
+                    </Link>
+                    <Divider orientation="vertical" />
+                    <p className="text-lg">{session.name}</p>
+                </>
+            ) : (
+                <>
+                    <Link
+                        href={`/campaign/${campaign.id}`}
+                        className="text-lg font-semibold transition-transform duration-150 hover:scale-105"
+                    >
+                        {campaign.name}
+                    </Link>
+                    <p className="text-sm text-white/80">
+                        by {campaign.createdBy?.name}
+                    </p>
+                </>
+            )}
 
             <Divider orientation="vertical" />
 

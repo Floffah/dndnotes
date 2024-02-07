@@ -5,6 +5,7 @@ import { createModel } from "@/db/lib/createModel";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignSession } from "@/db/models/CampaignSession/index";
 import { CampaignSessionScheduleModel } from "@/db/models/CampaignSessionSchedule/model";
+import { DocumentModel } from "@/db/models/Document/model";
 
 export const CampaignSessionSchema = new Schema<CampaignSession>({
     name: {
@@ -24,6 +25,11 @@ export const CampaignSessionSchema = new Schema<CampaignSession>({
     startedAt: {
         type: Date,
         required: true,
+    },
+    summary: {
+        type: Schema.Types.ObjectId,
+        ref: DocumentModel,
+        required: false,
     },
     schedule: {
         type: Schema.Types.ObjectId,

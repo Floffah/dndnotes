@@ -40,7 +40,7 @@ export function SessionList() {
                                 {session.name}
                             </p>
                             <Tooltip title={format(session.startedAt, "PPPp")}>
-                                <p className="indicate-action -mt-2 text-sm text-white/75 indicate-white/50">
+                                <p className="indicate-action -mt-2 w-fit text-sm text-white/75 indicate-white/50">
                                     {formatDistance(
                                         session.createdAt,
                                         new Date(),

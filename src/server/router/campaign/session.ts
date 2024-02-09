@@ -235,7 +235,9 @@ export const campaignSessionRouter = router({
             z.object({
                 campaignId: z.string(),
                 sessionId: z.string(),
-                richText: z.any() as z.ZodType<JSONContent>,
+                richText: z.any().optional() as z.ZodOptional<
+                    z.ZodType<JSONContent>
+                >,
                 notionId: z.string().optional(),
             }),
         )

@@ -1,4 +1,4 @@
 export enum DocumentFormat {
     NOTION = "NOTION",
-    MARKDOWN = "MARKDOWN",
+    RICH_TEXT = "RICH_TEXT",
 }

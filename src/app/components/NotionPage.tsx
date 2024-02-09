@@ -3,8 +3,12 @@ import { ComponentProps } from "react";
 import { NotionRenderer } from "react-notion-x";
 import "react-notion-x/src/styles.css";
 
+import { LinkToNotionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/session/[sessionId]/LinkToNotionDialog";
 import { trpc } from "@/app/api/lib/client/trpc";
+import { Button } from "@/app/components/Button";
 import { Loader } from "@/app/components/Loader";
+import { useCampaignSession } from "@/app/providers/CampaignSessionProvider";
+import { NotionError } from "@/server/errors/NotionError";
 
 const Code = dynamic(() =>
     import("react-notion-x/build/third-party/code").then((m) => m.Code),
@@ -33,7 +37,13 @@ export function NotionPage({
     ComponentProps<typeof NotionRenderer>,
     "recordMap" | "components"
 >) {
-    const notionPageQuery = trpc.thirdParty.notion.getPage.useQuery(notionId);
+    const session = useCampaignSession();
+
+    const notionPageQuery = trpc.thirdParty.notion.getPage.useQuery(notionId, {
+        retry: (failureCount, error) => {
+            return failureCount > 3 || error.message !== NotionError.NOT_FOUND;
+        },
+    });
 
     if (notionPageQuery.isLoading) {
         return (
@@ -42,6 +52,33 @@ export function NotionPage({
                     Fetching page
                 </p>
                 <Loader className="h-8 w-8 text-white/75" />
+            </div>
+        );
+    }
+
+    if (
+        notionPageQuery.error &&
+        notionPageQuery.error.message === NotionError.NOT_FOUND
+    ) {
+        return (
+            <div className="flex flex-auto flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
+                <p className="text-lg font-semibold text-white/75">
+                    Notion document not found. Is it definitely public?
+                </p>
+                <div className="flex items-center gap-2">
+                    <Button
+                        size="md"
+                        color="primary"
+                        onClick={() => session.initEmptySummary()}
+                    >
+                        Create Rich Text Summary
+                    </Button>
+                    <LinkToNotionDialog>
+                        <Button size="md" color="secondary">
+                            Edit Notion Link
+                        </Button>
+                    </LinkToNotionDialog>
+                </div>
             </div>
         );
     }

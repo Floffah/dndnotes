@@ -1,0 +1,58 @@
+{
+    "type": "doc",
+    "content": [
+        {
+            "type": "heading",
+            "attrs": { "level": 1 },
+            "content": [{ "type": "text", "text": "Session summary" }]
+        },
+        {
+            "type": "paragraph",
+            "content": [
+                { "type": "text", "text": "This happened, and that happened." }
+            ]
+        },
+        {
+            "type": "bulletList",
+            "content": [
+                {
+                    "type": "listItem",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "content": [
+                                { "type": "text", "text": "You can edit this" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "listItem",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "content": [
+                                { "type": "text", "text": "Click anywhere" }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "blockquote",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "content": [
+                        { "type": "text", "text": "Most exciting session yet" }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "- Some NPC" }]
+        }
+    ]
+}

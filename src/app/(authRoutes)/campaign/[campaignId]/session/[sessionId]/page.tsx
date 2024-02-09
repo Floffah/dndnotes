@@ -13,25 +13,27 @@ export default function CampaignSessionPage() {
         <div className="flex h-full w-full flex-col gap-3 p-3">
             <CampaignNavBar session={session} />
 
-            <div className="flex h-full gap-3">
-                {session.summary ? (
-                    <CampaignSessionSummary />
-                ) : (
-                    <div className="flex flex-auto flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
-                        <p className="text-lg font-semibold">
-                            You have not created a summary for this session yet.
-                        </p>
-                        <LinkToNotionDialog>
-                            <Button size="md" color="primary">
-                                Link to Notion
-                            </Button>
-                        </LinkToNotionDialog>
+            {session.summary ? (
+                <CampaignSessionSummary />
+            ) : (
+                <div className="flex flex-auto flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
+                    <p className="text-lg font-semibold">
+                        You have not created a summary for this session yet.
+                    </p>
+                    <LinkToNotionDialog>
                         <Button size="md" color="primary">
-                            Create Summary
+                            Link to Notion
                         </Button>
-                    </div>
-                )}
-            </div>
+                    </LinkToNotionDialog>
+                    <Button
+                        size="md"
+                        color="primary"
+                        onClick={() => session.initEmptySummary()}
+                    >
+                        Create Summary
+                    </Button>
+                </div>
+            )}
         </div>
     );
 }

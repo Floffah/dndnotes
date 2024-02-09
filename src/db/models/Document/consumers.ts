@@ -1,3 +1,7 @@
+import { JSONContent, getSchema } from "@tiptap/core";
+import { Node } from "@tiptap/pm/model";
+
+import { tiptapExtensions } from "@/app/lib/tiptapExtensions";
 import { DocumentFormat } from "@/db/enums/DocumentFormat";
 import { isPopulated } from "@/db/lib/isPopulated";
 import { Campaign } from "@/db/models/Campaign";
@@ -14,7 +18,7 @@ export class DocumentAPIModel extends BaseAPIModel implements Document {
     creator: User;
     campaign: Campaign;
     notionId?: string; // if format is NOTION
-    content?: string; // if format is MARKDOWN
+    richText?: JSONContent; // if format is RICH_TEXT
 
     constructor(document: Document, ctx: ConsumerContext) {
         super(document, ctx);
@@ -28,6 +32,11 @@ export class DocumentAPIModel extends BaseAPIModel implements Document {
             ? new CampaignAPIModel(document.campaign, ctx)
             : null!;
         this.notionId = document.notionId;
-        this.content = document.content;
+        this.richText = Node.fromJSON(
+            getSchema(tiptapExtensions),
+            document.richText,
+        )
+            ? document.richText
+            : null!;
     }
 }

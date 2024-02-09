@@ -30,8 +30,8 @@ export const DocumentSchema = new Schema<Document>({
         type: String,
         required: false,
     },
-    content: {
-        type: String,
+    richText: {
+        type: Object,
         required: false,
     },
 });

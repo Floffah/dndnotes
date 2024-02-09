@@ -1,3 +1,5 @@
+import { JSONContent } from "@tiptap/core";
+
 import { DocumentFormat } from "@/db/enums/DocumentFormat";
 import { Campaign } from "@/db/models/Campaign";
 import { User } from "@/db/models/User";
@@ -9,5 +11,5 @@ export interface Document extends IBaseModel {
     creator: User;
     campaign: Campaign;
     notionId?: string; // if format is NOTION
-    content?: string; // if format is MARKDOWN
+    richText?: JSONContent; // if format is RICH_TEXT
 }

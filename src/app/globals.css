@@ -43,3 +43,7 @@ body {
         }
     }
 }
+
+.prose li p {
+    margin: 0;
+}

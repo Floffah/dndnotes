@@ -4,6 +4,7 @@ import { inferProcedureInput } from "@trpc/server";
 import { PropsWithChildren, createContext, useContext } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
+import defaultSessionDocument from "@/data/defaultSessionDocument.json";
 import { CampaignSession } from "@/db/models/CampaignSession";
 import { AppRouter } from "@/server/router";
 
@@ -15,6 +16,10 @@ export interface CampaignSessionContextValue extends CampaignSession {
             AppRouter["campaign"]["session"]["updateSummary"]
         >,
     ) => Promise<void>;
+    initEmptySummary: (opts?: {
+        campaignId: string;
+        sessionId: string;
+    }) => Promise<void>;
 }
 
 export const CampaignSessionContext =
@@ -62,6 +67,20 @@ export function CampaignSessionProvider({
         );
     };
 
+    const initEmptySummary: CampaignSessionContextValue["initEmptySummary"] =
+        async (
+            opts = {
+                campaignId,
+                sessionId,
+            },
+        ) => {
+            await updateSummary({
+                campaignId: opts.campaignId,
+                sessionId: opts.sessionId,
+                richText: defaultSessionDocument,
+            });
+        };
+
     return (
         <CampaignSessionContext.Provider
             value={{
@@ -69,6 +88,7 @@ export function CampaignSessionProvider({
                 ...(session.data ?? ({} as CampaignSession)),
 
                 updateSummary,
+                initEmptySummary,
             }}
         >
             {children}

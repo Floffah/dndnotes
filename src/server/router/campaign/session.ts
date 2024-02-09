@@ -1,9 +1,12 @@
+import { JSONContent, getSchema } from "@tiptap/core";
+import { Node } from "@tiptap/pm/model";
 import { TRPCError } from "@trpc/server";
 import { addDays } from "date-fns";
 import { ObjectId } from "mongodb";
-import { HydratedDocument, Document as MongooseDocument } from "mongoose";
+import { HydratedDocument } from "mongoose";
 import { z } from "zod";
 
+import { tiptapExtensions } from "@/app/lib/tiptapExtensions";
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
 import { CampaignSessionType } from "@/db/enums/CampaignSessionType";
 import { DocumentFormat } from "@/db/enums/DocumentFormat";
@@ -232,7 +235,7 @@ export const campaignSessionRouter = router({
             z.object({
                 campaignId: z.string(),
                 sessionId: z.string(),
-                summary: z.string().optional(),
+                richText: z.any() as z.ZodType<JSONContent>,
                 notionId: z.string().optional(),
             }),
         )
@@ -314,13 +317,25 @@ export const campaignSessionRouter = router({
                 session.summary = document;
             }
 
-            if (opts.input.summary) {
-                document.content = opts.input.summary;
+            if (opts.input.richText) {
+                if (
+                    !Node.fromJSON(
+                        getSchema(tiptapExtensions),
+                        opts.input.richText,
+                    )
+                ) {
+                    throw new TRPCError({
+                        code: "BAD_REQUEST",
+                        message: CampaignSessionError.INVALID_SUMMARY,
+                    });
+                }
+
+                document.richText = opts.input.richText;
                 document.notionId = null!;
-                document.format = DocumentFormat.MARKDOWN;
+                document.format = DocumentFormat.RICH_TEXT;
             } else if (opts.input.notionId) {
                 document.notionId = opts.input.notionId;
-                document.content = null!;
+                document.richText = null!;
                 document.format = DocumentFormat.NOTION;
             } else {
                 throw new TRPCError({

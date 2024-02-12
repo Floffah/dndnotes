@@ -10,30 +10,36 @@ export default function CampaignSessionPage() {
     const session = useCampaignSession();
 
     return (
-        <div className="flex h-full w-full flex-col gap-3 p-3">
+        <div className="flex h-screen w-screen flex-col gap-3 p-3">
             <CampaignNavBar session={session} />
 
-            {session.summary ? (
-                <CampaignSessionSummary />
-            ) : (
-                <div className="flex flex-auto flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
-                    <p className="text-lg font-semibold">
-                        You have not created a summary for this session yet.
-                    </p>
-                    <LinkToNotionDialog>
-                        <Button size="md" color="primary">
-                            Link to Notion
+            <div className="flex min-h-0 flex-1 gap-3">
+                <aside className="flex w-full max-w-[17rem] flex-col rounded-lg border border-white/10 bg-white/5"></aside>
+
+                {session.summary ? (
+                    <main className="flex-1 overflow-x-hidden overflow-y-scroll whitespace-nowrap rounded-lg border border-white/10 bg-white/5 p-3">
+                        <CampaignSessionSummary />
+                    </main>
+                ) : (
+                    <main className="flex flex-grow flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
+                        <p className="text-lg font-semibold">
+                            You have not created a summary for this session yet.
+                        </p>
+                        <LinkToNotionDialog>
+                            <Button size="md" color="primary">
+                                Link to Notion
+                            </Button>
+                        </LinkToNotionDialog>
+                        <Button
+                            size="md"
+                            color="primary"
+                            onClick={() => session.initEmptySummary()}
+                        >
+                            Create Summary
                         </Button>
-                    </LinkToNotionDialog>
-                    <Button
-                        size="md"
-                        color="primary"
-                        onClick={() => session.initEmptySummary()}
-                    >
-                        Create Summary
-                    </Button>
-                </div>
-            )}
+                    </main>
+                )}
+            </div>
         </div>
     );
 }

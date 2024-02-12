@@ -38,7 +38,7 @@ export default function CampaignCreatePage() {
 
     return (
         <div className="flex justify-center p-3">
-            <div className="flex w-full max-w-md flex-col gap-4 rounded-lg border border-white/10 bg-white/5 p-3">
+            <main className="flex w-full max-w-md flex-col gap-4 rounded-lg border border-white/10 bg-white/5 p-3">
                 <h1 className="text-xl font-bold">Create Campaign</h1>
 
                 <Form
@@ -59,7 +59,7 @@ export default function CampaignCreatePage() {
                         Create Campaign
                     </Form.Button>
                 </Form>
-            </div>
+            </main>
         </div>
     );
 }

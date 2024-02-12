@@ -13,7 +13,7 @@ export const FriendsList = memo(() => {
     const user = useUser();
 
     return (
-        <div className="relative flex h-full w-full max-w-[17rem] flex-col gap-2 rounded-lg border border-white/10 bg-white/5 p-2">
+        <aside className="relative flex h-full w-full max-w-[17rem] flex-col gap-2 rounded-lg border border-white/10 bg-white/5 p-2">
             <p className="text-lg font-bold">Add Friends</p>
 
             <AddFriendForm />
@@ -67,6 +67,6 @@ export const FriendsList = memo(() => {
                     </div>
                 );
             })}
-        </div>
+        </aside>
     );
 });

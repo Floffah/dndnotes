@@ -24,21 +24,21 @@ export default function CampaignPage() {
     }
 
     return (
-        <div className="flex h-full w-full flex-col gap-3 p-3">
+        <div className="relative flex h-screen w-screen flex-col gap-3 p-3">
             <CampaignNavBar />
 
             <div className="flex h-full gap-3">
                 {campaign.loading ? (
-                    <div className="flex h-full w-full flex-auto items-center justify-center">
+                    <main className="flex h-full w-full flex-auto items-center justify-center">
                         <Loader className="h-8 w-8 text-white/50" />
-                    </div>
+                    </main>
                 ) : (
-                    <div className="flex flex-auto flex-col gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
+                    <main className="flex flex-auto flex-col gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
                         <SessionBanner />
                         <SessionList />
 
                         <Divider />
-                    </div>
+                    </main>
                 )}
 
                 <MembersList campaign={campaign} />

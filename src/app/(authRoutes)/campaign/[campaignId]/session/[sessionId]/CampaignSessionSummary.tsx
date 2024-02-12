@@ -17,18 +17,13 @@ export function CampaignSessionSummary() {
         return (
             <NotionPage
                 notionId={session.summary.notionId}
-                className="w-full overflow-auto"
+                className="w-full"
             />
         );
     }
 
     if (session.summary.richText) {
-        return (
-            <RichTextEditor
-                content={session.summary.richText}
-                className="h-full w-full rounded-lg border border-white/10 bg-white/5 p-3"
-            />
-        );
+        return <RichTextEditor content={session.summary.richText} />;
     }
 
     return null;

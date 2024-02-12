@@ -11,7 +11,7 @@ export function CampaignNavBar({ session }: { session?: CampaignSession }) {
     const campaign = useCampaign();
 
     return (
-        <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 p-2">
+        <nav className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 p-2">
             <Link
                 href="/"
                 className="flex cursor-pointer select-none items-center justify-center p-1 transition-all duration-150 hover:scale-110"
@@ -58,6 +58,6 @@ export function CampaignNavBar({ session }: { session?: CampaignSession }) {
                     className="h-5 w-5"
                 />
             </Link>
-        </div>
+        </nav>
     );
 }

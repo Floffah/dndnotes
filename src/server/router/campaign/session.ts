@@ -320,12 +320,14 @@ export const campaignSessionRouter = router({
             }
 
             if (opts.input.richText) {
-                if (
-                    !Node.fromJSON(
-                        getSchema(tiptapExtensions),
-                        opts.input.richText,
-                    )
-                ) {
+                const prosemirrorDocument = Node.fromJSON(
+                    getSchema(tiptapExtensions),
+                    opts.input.richText,
+                );
+
+                try {
+                    prosemirrorDocument.check();
+                } catch (e) {
                     throw new TRPCError({
                         code: "BAD_REQUEST",
                         message: CampaignSessionError.INVALID_SUMMARY,

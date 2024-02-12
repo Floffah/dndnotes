@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import dynamic from "next/dynamic";
 import { ComponentProps } from "react";
 import { NotionRenderer } from "react-notion-x";
@@ -30,8 +31,9 @@ const Modal = dynamic(
 
 export function NotionPage({
     notionId,
-    fullPage = true,
+    fullPage = false,
     darkMode = true,
+    className,
     ...props
 }: { notionId: string } & Omit<
     ComponentProps<typeof NotionRenderer>,
@@ -47,7 +49,12 @@ export function NotionPage({
 
     if (notionPageQuery.isLoading) {
         return (
-            <div className="flex flex-auto flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
+            <div
+                className={clsx(
+                    className,
+                    "flex h-full flex-col items-center justify-center gap-3",
+                )}
+            >
                 <p className="text-lg font-semibold text-white/75">
                     Fetching page
                 </p>
@@ -61,7 +68,12 @@ export function NotionPage({
         notionPageQuery.error.message === NotionError.NOT_FOUND
     ) {
         return (
-            <div className="flex flex-auto flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3">
+            <div
+                className={clsx(
+                    className,
+                    "flex h-full flex-col items-center justify-center gap-3",
+                )}
+            >
                 <p className="text-lg font-semibold text-white/75">
                     Notion document not found. Is it definitely public?
                 </p>
@@ -94,6 +106,7 @@ export function NotionPage({
                 Equation,
                 Modal,
             }}
+            className={className}
             {...props}
         />
     );

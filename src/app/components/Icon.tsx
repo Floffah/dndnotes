@@ -4,8 +4,11 @@ import * as AccessibleIcon from "@radix-ui/react-accessible-icon";
 import {
     Icon as IconifyIcon,
     IconProps as IconifyIconProps,
+    _api,
 } from "@iconify/react";
 import { forwardRef } from "react";
+
+_api.setFetch(fetch);
 
 export interface IconProps extends IconifyIconProps {
     label: string;

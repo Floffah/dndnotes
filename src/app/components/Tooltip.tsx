@@ -24,7 +24,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
                         sideOffset={1.5}
                         className={clsx(
                             className,
-                            "select-none rounded bg-gray-900 px-2 py-1 text-white/80 shadow-lg transition-opacity duration-150 will-change-[transform,opacity] data-[state=delayed-open]:animate-fadeIn",
+                            "pointer-events-none select-none rounded bg-gray-900 px-2 py-1 text-white/80 shadow-lg transition-opacity duration-150 will-change-[transform,opacity] data-[state=delayed-open]:animate-fadeIn",
                         )}
                         {...props}
                     >

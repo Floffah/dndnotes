@@ -32,11 +32,6 @@ export class DocumentAPIModel extends BaseAPIModel implements Document {
             ? new CampaignAPIModel(document.campaign, ctx)
             : null!;
         this.notionId = document.notionId;
-        this.richText = Node.fromJSON(
-            getSchema(tiptapExtensions),
-            document.richText,
-        )
-            ? document.richText
-            : null!;
+        this.richText = document.richText;
     }
 }

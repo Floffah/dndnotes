@@ -3,13 +3,35 @@
     "content": [
         {
             "type": "heading",
-            "attrs": { "level": 1 },
-            "content": [{ "type": "text", "text": "Session summary" }]
+            "attrs": {
+                "level": 1
+            },
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Session Summary Example"
+                }
+            ]
         },
         {
             "type": "paragraph",
             "content": [
-                { "type": "text", "text": "This happened, and that happened." }
+                {
+                    "type": "text",
+                    "text": "Darryl Wilson is driving his 2008 Honda Odyssey to the Westrock Elementary School Doodlers' soccer tournament with his son, Grant Wilson. Along the way, they pick up Glenn Close and his son, Nick, Henry Oak and twins Lark and Sparrow Oak, and Ron Stampler and his stepson, Terry Jr. While on the drive, the families find themselves driving on increasingly rocky roads that are not recognized on Darryl's GPS. Suddenly, on the crest of a hill, a purple portal opens, sucking the Honda Odyssey, dads, and sons inside. While entering the portal, each dad is struck with the feeling that they are certain they have been a bad father to their sons."
+                }
+            ]
+        },
+        {
+            "type": "heading",
+            "attrs": {
+                "level": 2
+            },
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Key Events:"
+                }
             ]
         },
         {
@@ -21,7 +43,10 @@
                         {
                             "type": "paragraph",
                             "content": [
-                                { "type": "text", "text": "You can edit this" }
+                                {
+                                    "type": "text",
+                                    "text": "This"
+                                }
                             ]
                         }
                     ]
@@ -32,7 +57,24 @@
                         {
                             "type": "paragraph",
                             "content": [
-                                { "type": "text", "text": "Click anywhere" }
+                                {
+                                    "type": "text",
+                                    "text": "That"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "listItem",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "Then"
+                                }
                             ]
                         }
                     ]
@@ -40,19 +82,7 @@
             ]
         },
         {
-            "type": "blockquote",
-            "content": [
-                {
-                    "type": "paragraph",
-                    "content": [
-                        { "type": "text", "text": "Most exciting session yet" }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "paragraph",
-            "content": [{ "type": "text", "text": "- Some NPC" }]
+            "type": "paragraph"
         }
     ]
 }

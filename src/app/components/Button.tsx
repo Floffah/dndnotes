@@ -129,7 +129,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     )}
                     onClick={async (e) => {
                         setLoading(true);
-                        await onClick?.(e as any);
+
+                        try {
+                            await onClick?.(e as any);
+                        } catch (e) {
+                            console.error(e);
+                            setLoading(false);
+                            return;
+                        }
 
                         if (link) {
                             router.push(link);

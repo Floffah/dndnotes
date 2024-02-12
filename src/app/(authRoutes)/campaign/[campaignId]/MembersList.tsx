@@ -26,7 +26,7 @@ function Member({ member }: { member: CampaignMember }) {
 
 export function MembersList({ campaign }: { campaign: CampaignContextValue }) {
     return (
-        <div
+        <aside
             className={clsx(
                 "flex w-full max-w-[17rem] flex-col gap-1 overflow-y-auto overflow-x-hidden rounded-lg border border-white/10 bg-white/5",
                 {
@@ -46,6 +46,6 @@ export function MembersList({ campaign }: { campaign: CampaignContextValue }) {
             ) : (
                 <Loader className="h-8 w-8 text-white/50" />
             )}
-        </div>
+        </aside>
     );
 }

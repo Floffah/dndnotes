@@ -239,7 +239,7 @@ export const RichTextEditor = forwardRef<
         <div
             {...props}
             ref={ref}
-            className={clsx(className, "flex flex-col gap-3 p-3")}
+            className={clsx(className, "flex flex-col gap-3")}
         >
             <EditorContext.Provider
                 value={{

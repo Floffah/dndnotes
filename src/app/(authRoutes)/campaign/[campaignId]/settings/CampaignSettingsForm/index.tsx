@@ -30,7 +30,7 @@ export function CampaignSettingsForm() {
     };
 
     return (
-        <div className="flex h-full w-full flex-col items-center rounded-lg border border-white/10 bg-white/5">
+        <main className="flex h-full w-full flex-col items-center rounded-lg border border-white/10 bg-white/5">
             <div className="flex w-full max-w-md flex-col gap-4 pt-5">
                 <h1 className="text-3xl font-bold">Campaign Settings</h1>
 
@@ -52,6 +52,6 @@ export function CampaignSettingsForm() {
                     </Form.Button>
                 </Form>
             </div>
-        </div>
+        </main>
     );
 }

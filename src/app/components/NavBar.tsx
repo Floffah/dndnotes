@@ -53,7 +53,7 @@ function NavLink({
 
 export function NavBar() {
     return (
-        <div className="flex flex-shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/5">
+        <nav className="flex flex-shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/5">
             <NavLink icon="mdi:home" link="/home">
                 Home
             </NavLink>
@@ -79,6 +79,6 @@ export function NavBar() {
             >
                 Logout
             </NavLink>
-        </div>
+        </nav>
     );
 }

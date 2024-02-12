@@ -96,7 +96,7 @@ export const StartSessionDialog = forwardRef<
                                     <Form.Select.Item
                                         value={CampaignSessionType.ONE_SHOT}
                                     >
-                                        One shot
+                                        One Shot
                                     </Form.Select.Item>
                                     <Form.Select.Item
                                         value={CampaignSessionType.ONGOING}

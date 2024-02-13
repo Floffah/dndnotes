@@ -1,8 +1,9 @@
 import clsx from "clsx";
 
+import { CampaignInviteDialog } from "@/app/(authRoutes)/campaign/[campaignId]/CampaignInviteDialog";
 import { Icon } from "@/app/components/Icon";
 import { Loader } from "@/app/components/Loader";
-import { CampaignContextValue } from "@/app/providers/CampaignProvider";
+import { useCampaign } from "@/app/providers/CampaignProvider";
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
 import { CampaignMember } from "@/db/models/CampaignMember";
 
@@ -10,7 +11,7 @@ function Member({ member }: { member: CampaignMember }) {
     return (
         <div
             key={member.id}
-            className="flex cursor-pointer select-none items-center gap-2 rounded px-4 py-2 hover:bg-white/5"
+            className="flex cursor-pointer select-none items-center gap-2 rounded px-4 py-1 hover:bg-white/5"
         >
             <p className="text-lg font-semibold">{member.user.name}</p>
             {member.type === CampaignMemberType.DM && (
@@ -24,21 +25,38 @@ function Member({ member }: { member: CampaignMember }) {
     );
 }
 
-export function MembersList({ campaign }: { campaign: CampaignContextValue }) {
+export function MembersList() {
+    const campaign = useCampaign();
+
     return (
         <aside
             className={clsx(
-                "flex w-full max-w-[17rem] flex-col gap-1 overflow-y-auto overflow-x-hidden rounded-lg border border-white/10 bg-white/5",
+                "flex w-full max-w-[17rem] flex-col overflow-y-auto overflow-x-hidden rounded-lg border border-white/10 bg-white/5",
                 {
                     "items-center justify-center": campaign.loading,
                 },
             )}
         >
+            {campaign.currentMember.type === CampaignMemberType.DM && (
+                <CampaignInviteDialog>
+                    <div className="mt-2.5 flex cursor-pointer select-none items-center gap-2 rounded px-4 py-1 hover:bg-white/5">
+                        <Icon
+                            label="invite"
+                            icon="mdi:account-plus"
+                            className="h-4 w-4"
+                        />
+
+                        <p className="text-lg font-semibold">Invite</p>
+                    </div>
+                </CampaignInviteDialog>
+            )}
+
             {!campaign.loading ? (
                 <>
-                    <p className="p-3 pb-0 text-xs text-white/75">
+                    <p className="my-1.5 p-3 pb-0 text-xs text-white/75">
                         MEMBERS &#8212; {campaign.members.length}
                     </p>
+
                     {campaign.members.map((member) => (
                         <Member key={member.id} member={member} />
                     ))}

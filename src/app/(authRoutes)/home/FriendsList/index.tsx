@@ -7,6 +7,7 @@ import { FriendRequestsDialog } from "@/app/(authRoutes)/home/FriendsList/Friend
 import { Button } from "@/app/components/Button";
 import { Divider } from "@/app/components/Divider";
 import { Loader } from "@/app/components/Loader";
+import { User } from "@/app/components/User";
 import { useUser } from "@/app/providers/UserProvider";
 
 export const FriendsList = memo(() => {
@@ -54,17 +55,15 @@ export const FriendsList = memo(() => {
                         : friend.sender!;
 
                 return (
-                    <div
-                        key={friend.id}
-                        className="flex items-center gap-2 text-white/75"
-                    >
-                        <div className="flex h-8 w-8 select-none items-center justify-center rounded-full bg-white/10">
-                            <p className="text-sm font-bold">
-                                {otherUser.name[0].toUpperCase()}
-                            </p>
+                    <User user={otherUser} key={friend.id}>
+                        <div
+                            key={friend.id}
+                            className="flex items-center gap-2 text-white/75"
+                        >
+                            <User.Avatar />
+                            <User.Name />
                         </div>
-                        <p className="font-semibold">{otherUser.name}</p>
-                    </div>
+                    </User>
                 );
             })}
         </aside>

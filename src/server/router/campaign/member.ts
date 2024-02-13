@@ -45,6 +45,46 @@ export const campaignMemberRouter = router({
             );
         }),
 
+    getInvite: procedure
+        .input(
+            z.object({
+                campaignId: z.string(),
+                inviteCode: z.string(),
+            }),
+        )
+        .query(async (opts) => {
+            await ensureAuthenticated(opts.ctx);
+
+            if (!ObjectId.isValid(opts.input.campaignId)) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.NOT_FOUND,
+                });
+            }
+
+            const invite = await CampaignInviteModel.findOne({
+                campaign: new ObjectId(opts.input.campaignId),
+                code: opts.input.inviteCode,
+            })
+                .populate("user")
+                .populate("campaign")
+                .exec();
+
+            if (
+                !invite ||
+                invite.user.toString() !== opts.ctx.session!.user.id
+            ) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: CampaignInviteError.NOT_FOUND,
+                });
+            }
+
+            return new CampaignInviteAPIModel(invite, {
+                user: opts.ctx.session!.user,
+            });
+        }),
+
     invite: procedure
         .input(
             z.object({
@@ -98,6 +138,8 @@ export const campaignMemberRouter = router({
                 user: new ObjectId(opts.input.userId),
                 code: nanoid(16),
             });
+
+            await campaignInvite.populate("user");
 
             return new CampaignInviteAPIModel(campaignInvite, {
                 user: opts.ctx.session!.user,

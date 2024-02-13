@@ -1,0 +1,53 @@
+"use client";
+
+import { PropsWithChildren, createContext, useContext } from "react";
+
+import { trpc } from "@/app/api/lib/client/trpc";
+import { CampaignInviteAPIModel } from "@/db/models/CampaignInvite/consumers";
+
+export interface CampaignInviteContextValue extends CampaignInviteAPIModel {
+    loading: boolean;
+
+    accept: () => Promise<void>;
+}
+
+export const CampaignInviteContext = createContext<CampaignInviteContextValue>(
+    null!,
+);
+
+export const useCampaignInvite = () => useContext(CampaignInviteContext);
+
+export function CampaignInviteProvider({
+    campaignId,
+    inviteCode,
+    children,
+}: PropsWithChildren<{
+    campaignId: string;
+    inviteCode: string;
+}>) {
+    const invite = trpc.campaign.member.getInvite.useQuery({
+        campaignId,
+        inviteCode,
+    });
+
+    const acceptMutation = trpc.campaign.member.acceptInvite.useMutation();
+
+    const accept: CampaignInviteContextValue["accept"] = async () => {
+        await acceptMutation.mutateAsync({
+            code: inviteCode,
+        });
+    };
+
+    return (
+        <CampaignInviteContext.Provider
+            value={{
+                ...(invite.data as CampaignInviteAPIModel),
+                loading: invite.isLoading,
+
+                accept,
+            }}
+        >
+            {children}
+        </CampaignInviteContext.Provider>
+    );
+}

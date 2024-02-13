@@ -41,7 +41,7 @@ export default function CampaignPage() {
                     </main>
                 )}
 
-                <MembersList campaign={campaign} />
+                <MembersList />
             </div>
         </div>
     );

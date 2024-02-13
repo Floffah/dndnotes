@@ -8,7 +8,7 @@ import { registerTransformerTypes } from "@/db/lib/registerTransformerTypes";
 import { UserSessionModel } from "@/db/models/UserSession/model";
 import { mongoConnect } from "@/db/mongo";
 
-const connectionPromise = process.env.NODE_ENV !== "test" && mongoConnect();
+const connectionPromise = mongoConnect();
 
 export const createContext = async (opts: FetchCreateContextFnOptions) => {
     if (!opts.req.headers.has("cookie")) {

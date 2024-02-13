@@ -7,6 +7,7 @@ import { trpc } from "@/app/api/lib/client/trpc";
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
 import { FriendshipRequestState } from "@/db/enums/FriendshipRequestState";
 import { FriendshipRequest } from "@/db/models/FriendshipRequest";
+import { FriendshipRequestModel } from "@/db/models/FriendshipRequest/model";
 import { User } from "@/db/models/User";
 import {
     TRPCServerCaller,
@@ -159,7 +160,7 @@ describe("Friends", () => {
         session2 = _session2;
     });
 
-    describe("Fetching friends", () => {
+    describe("No friends", () => {
         let trpc: TRPCServerCaller;
 
         beforeAll(async () => {
@@ -187,7 +188,7 @@ describe("Friends", () => {
         });
     });
 
-    describe.only("Other user sends friend request", () => {
+    describe("Other user sends friend request", () => {
         let trpcUser1: TRPCServerCaller;
         let trpcUser2: TRPCServerCaller;
         let request: FriendshipRequest;
@@ -207,10 +208,7 @@ describe("Friends", () => {
 
         beforeEach(async () => {
             if (request) {
-                await trpcUser2.user.friends.updateRequest({
-                    id: request.id,
-                    state: FriendshipRequestState.DELETED,
-                });
+                await FriendshipRequestModel.findByIdAndDelete(request.id);
             }
 
             request = await trpcUser2.user.friends.sendRequest({
@@ -245,6 +243,31 @@ describe("Friends", () => {
             });
 
             expect(friends).toEqual([]);
+
+            const friendshipRequest = await FriendshipRequestModel.findById(
+                request.id,
+            );
+
+            expect(friendshipRequest).toBeNull();
+        });
+
+        test("Delete friend request", async () => {
+            await trpcUser2.user.friends.updateRequest({
+                id: request.id,
+                state: FriendshipRequestState.DELETED,
+            });
+
+            const friends = await trpcUser1.user.friends.getAccepted({
+                user: user1.id,
+            });
+
+            expect(friends).toEqual([]);
+
+            const friendshipRequest = await FriendshipRequestModel.findById(
+                request.id,
+            );
+
+            expect(friendshipRequest).toBeNull();
         });
     });
 });

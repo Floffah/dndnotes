@@ -7,7 +7,7 @@ if (!cached) {
 }
 
 export async function mongoConnect(connectionUrl?: string) {
-    if (process.env.CI) {
+    if (process.env.CI || process.env.NODE_ENV === "test") {
         return;
     }
 

@@ -1,11 +1,11 @@
-import { connection } from "mongoose";
+import mongoose from "mongoose";
 
 export async function resetDatabase() {
-    if (connection.readyState === 0) {
+    if (mongoose.connection.readyState === 0) {
         throw new Error("Not connected to database");
     }
 
-    const collections = await connection.db.collections();
+    const collections = await mongoose.connection.db.collections();
 
     await Promise.all(
         collections.map((collection) => collection.deleteMany({})),

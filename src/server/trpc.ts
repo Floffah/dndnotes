@@ -6,6 +6,9 @@ import superjson from "superjson";
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
 import { registerTransformerTypes } from "@/db/lib/registerTransformerTypes";
 import { UserSessionModel } from "@/db/models/UserSession/model";
+import { mongoConnect } from "@/db/mongo";
+
+const connectionPromise = mongoConnect();
 
 export const createContext = async (opts: FetchCreateContextFnOptions) => {
     if (!opts.req.headers.has("cookie")) {
@@ -22,6 +25,8 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
             session: null,
         };
     }
+
+    await connectionPromise;
 
     const session = await UserSessionModel.findOne({
         token,

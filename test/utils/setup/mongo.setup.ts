@@ -1,6 +1,6 @@
 import { resetDatabase } from "../mongo";
 import { config } from "dotenv";
-import { connect, connection, disconnect } from "mongoose";
+import mongoose from "mongoose";
 
 config();
 
@@ -8,10 +8,14 @@ process.env.MONGODB_URI = process.env.MONGODB_URI_TESTS;
 
 beforeAll(async () => {
     const connectedPromise = new Promise((resolve) =>
-        connection.on("connected", resolve),
+        setInterval(() => {
+            if (mongoose.connection?.readyState === 1) {
+                resolve(void 0);
+            }
+        }, 100),
     );
 
-    await connect(process.env.MONGODB_URI_TESTS as string);
+    await mongoose.connect(process.env.MONGODB_URI_TESTS as string);
 
     await connectedPromise;
 
@@ -19,5 +23,5 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-    await disconnect();
+    await mongoose.disconnect();
 });

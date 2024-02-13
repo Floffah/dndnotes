@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "test": "jest",
+    "test": "node --no-warnings --experimental-vm-modules node_modules/.bin/jest",
     "env": "vercel env pull .env",
     "deps": "ncu -u -x @tanstack/react-query && yarn"
   },

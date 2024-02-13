@@ -7,6 +7,7 @@ import { trpc } from "@/app/api/lib/client/trpc";
 import { SESSION_TOKEN } from "@/app/api/lib/storage";
 import { FriendshipRequestState } from "@/db/enums/FriendshipRequestState";
 import { FriendshipRequest } from "@/db/models/FriendshipRequest";
+import { FriendshipRequestError } from "@/db/models/FriendshipRequest/error";
 import { FriendshipRequestModel } from "@/db/models/FriendshipRequest/model";
 import { User } from "@/db/models/User";
 import {
@@ -62,7 +63,7 @@ describe("User", () => {
                 expect(response?.id).toEqual(user1.id);
             });
 
-            test("Sanitizer does not remove email", async () => {
+            test("API does expose email", async () => {
                 const response = await trpc.user.me();
 
                 expect(response?.email).toEqual(user1.email);
@@ -108,7 +109,7 @@ describe("User", () => {
                     expect(userResponse?.id).toEqual(user2.id);
                 });
 
-                test("Sanitizer does remove email", () => {
+                test("API does not expose email", () => {
                     expect(userResponse?.email).not.toEqual(user2.email);
                 });
             });
@@ -232,6 +233,15 @@ describe("Friends", () => {
             expect(friends[0].sender.id).toEqual(user2.id);
         });
 
+        test("Accept friend request sent to another user", () => {
+            return expect(
+                trpcUser2.user.friends.updateRequest({
+                    id: request.id,
+                    state: FriendshipRequestState.ACCEPTED,
+                }),
+            ).rejects.toMatchSnapshot();
+        });
+
         test("Reject friend request", async () => {
             await trpcUser1.user.friends.updateRequest({
                 id: request.id,
@@ -251,6 +261,15 @@ describe("Friends", () => {
             expect(friendshipRequest).toBeNull();
         });
 
+        test("Reject friend request sent to another user", () => {
+            return expect(
+                trpcUser2.user.friends.updateRequest({
+                    id: request.id,
+                    state: FriendshipRequestState.DENIED,
+                }),
+            ).rejects.toMatchSnapshot();
+        });
+
         test("Delete friend request", async () => {
             await trpcUser2.user.friends.updateRequest({
                 id: request.id,
@@ -268,6 +287,15 @@ describe("Friends", () => {
             );
 
             expect(friendshipRequest).toBeNull();
+        });
+
+        test("Delete friend request current user did not send", () => {
+            return expect(
+                trpcUser1.user.friends.updateRequest({
+                    id: request.id,
+                    state: FriendshipRequestState.DELETED,
+                }),
+            ).rejects.toMatchSnapshot();
         });
     });
 });

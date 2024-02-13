@@ -7,13 +7,14 @@ config();
 process.env.MONGODB_URI = process.env.MONGODB_URI_TESTS;
 
 beforeAll(async () => {
-    const connectedPromise = new Promise((resolve) =>
-        setInterval(() => {
+    const connectedPromise = new Promise((resolve) => {
+        const interval = setInterval(() => {
             if (mongoose.connection?.readyState === 1) {
                 resolve(void 0);
+                clearInterval(interval);
             }
-        }, 100),
-    );
+        }, 100);
+    });
 
     await mongoose.connect(process.env.MONGODB_URI_TESTS as string);
 

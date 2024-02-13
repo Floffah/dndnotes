@@ -8,7 +8,7 @@ import { registerTransformerTypes } from "@/db/lib/registerTransformerTypes";
 import { UserSessionModel } from "@/db/models/UserSession/model";
 import { mongoConnect } from "@/db/mongo";
 
-const connectionPromise = mongoConnect();
+const connectionPromise = process.env.NODE_ENV !== "test" && mongoConnect();
 
 export const createContext = async (opts: FetchCreateContextFnOptions) => {
     if (!opts.req.headers.has("cookie")) {
@@ -52,4 +52,4 @@ const trpc = initTRPC.context<typeof createContext>().create({
     transformer: superjson,
 });
 
-export const { router, procedure } = trpc;
+export const { router, procedure, createCallerFactory } = trpc;

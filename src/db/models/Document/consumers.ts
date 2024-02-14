@@ -1,7 +1,5 @@
-import { JSONContent, getSchema } from "@tiptap/core";
-import { Node } from "@tiptap/pm/model";
+import { JSONContent } from "@tiptap/core";
 
-import { tiptapExtensions } from "@/app/lib/tiptapExtensions";
 import { DocumentFormat } from "@/db/enums/DocumentFormat";
 import { isPopulated } from "@/db/lib/isPopulated";
 import { Campaign } from "@/db/models/Campaign";

@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Friends Other user sends friend request Accept friend request sent to another user 1`] = `[TRPCError: Cannot accept a request that was not sent to you]`;
-
-exports[`Friends Other user sends friend request Delete friend request current user did not send 1`] = `[TRPCError: Cannot delete a request that you did not send]`;
-
-exports[`Friends Other user sends friend request Reject friend request sent to another user 1`] = `[TRPCError: Cannot deny a request that was not sent to you]`;

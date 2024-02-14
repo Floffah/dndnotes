@@ -16,7 +16,7 @@ module.exports = {
             },
         ],
     },
-    setupFilesAfterEnv: ["./test/utils/setup/mongo.setup.ts"],
+    setupFilesAfterEnv: ["./src/tests/setup/mongo.setup.ts"],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
         prefix: "<rootDir>/",
     }),

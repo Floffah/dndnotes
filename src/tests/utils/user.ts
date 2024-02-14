@@ -1,10 +1,10 @@
 import { randomBytes } from "crypto";
 import type { ObjectId } from "mongodb";
 import type { Document } from "mongoose";
-import type { UserSession } from "src/db/models/UserSession";
 import { generateUsername } from "unique-username-generator";
 
 import { UserModel } from "@/db/models/User/model";
+import type { UserSession } from "@/db/models/UserSession";
 import { UserSessionModel } from "@/db/models/UserSession/model";
 
 export async function createUser<WithSession extends boolean>(

@@ -4,6 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "test": "node --no-warnings --experimental-vm-modules node_modules/.bin/jest -i",
+    "test:snapshot": "yarn test -u",
     "env": "vercel env pull .env",
     "deps": "ncu -u -x @tanstack/react-query && yarn"
   },

@@ -1,6 +1,7 @@
-import { resetDatabase } from "../mongo";
 import { config } from "dotenv";
 import mongoose from "mongoose";
+
+import { resetDatabase } from "@/tests/utils/mongo";
 
 config();
 

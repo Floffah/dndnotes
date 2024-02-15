@@ -3296,12 +3296,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.11.17":
-  version: 20.11.17
-  resolution: "@types/node@npm:20.11.17"
+"@types/node@npm:20.11.18":
+  version: 20.11.18
+  resolution: "@types/node@npm:20.11.18"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 10c0/1f30dae80b416cbf38f133a619ffb0e9fb9e7bc58f82d900bf73816ae5781740c4640892bf5971dd9c12570d5d05241646be3e7540bb4e059322ec6af4e51e15
+  checksum: 10c0/88edd038cb1eee8cb20d9de3f5e18f28faffb6473431df468170c023de2b9ab6dd13df4d2eb458a258589dd26793be41cd7c684b611d2d1404c022fa80a0a12b
   languageName: node
   linkType: hard
 
@@ -10451,7 +10451,7 @@ __metadata:
     "@types/cookie": "npm:^0.6.0"
     "@types/jest": "npm:^29.5.12"
     "@types/mdx": "npm:^2.0.11"
-    "@types/node": "npm:20.11.17"
+    "@types/node": "npm:20.11.18"
     "@types/pubnub": "npm:^7"
     "@types/react": "npm:^18.2.55"
     "@types/react-dom": "npm:^18.2.19"
@@ -10472,7 +10472,7 @@ __metadata:
     notion-client: "npm:^6.16.0"
     npm-check-updates: "npm:^16.14.15"
     postcss: "npm:8.4.35"
-    postcss-import: "npm:^16.0.0"
+    postcss-import: "npm:^16.0.1"
     prettier: "npm:^3.2.5"
     prettier-plugin-tailwindcss: "npm:^0.5.11"
     pubnub: "npm:^7.5.0"
@@ -11588,16 +11588,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-import@npm:^16.0.0":
-  version: 16.0.0
-  resolution: "postcss-import@npm:16.0.0"
+"postcss-import@npm:^16.0.1":
+  version: 16.0.1
+  resolution: "postcss-import@npm:16.0.1"
   dependencies:
     postcss-value-parser: "npm:^4.0.0"
     read-cache: "npm:^1.0.0"
     resolve: "npm:^1.1.7"
   peerDependencies:
     postcss: ^8.0.0
-  checksum: 10c0/7e9eccc2744dabdd542ba467b2df562c254d3b9e96b277752dbe525e3a8c47741cbbe802b40f64cbe92bc839244c2645cd0284ddb2938f8f38f2271fa427c932
+  checksum: 10c0/6bfc7b68106df6148fb60be51c1974b1fb7524f08df77c00c8efe01a29e4f037d797a942194bd060f801cb74ad2f62b64f88d0e2ffe65b5d813a65c1fde02052
   languageName: node
   linkType: hard
 

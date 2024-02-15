@@ -2,4 +2,5 @@
 
 ## Tests
 
-- Add more unhappy path tests
+- Test rest of api
+  - Add more unhappy path tests too

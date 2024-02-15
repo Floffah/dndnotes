@@ -4,6 +4,8 @@ import { IBaseModel } from "@/db/types/baseModel";
 
 export interface CampaignInvite extends IBaseModel {
     campaign: Campaign;
-    user: User;
+    viewedBy: User[];
+    acceptedBy: User[];
+    createdBy: User;
     code: string;
 }

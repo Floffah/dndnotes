@@ -291,6 +291,7 @@ const DialogContent = Object.assign(
 );
 
 export interface DialogRef {
+    isOpen: boolean;
     open: () => void;
     close: () => void;
 }
@@ -341,6 +342,7 @@ export const Dialog = Object.assign(
             }, [propsOpen]);
 
             useImperativeHandle(ref, () => ({
+                isOpen: open,
                 open: () => setOpen(true),
                 close: () => setOpen(false),
             }));

@@ -12,7 +12,9 @@ export class CampaignInviteAPIModel
     implements CampaignInvite
 {
     campaign: Campaign;
-    user: User;
+    viewedBy: User[];
+    acceptedBy: User[];
+    createdBy: User;
     code: string;
 
     constructor(campaignInvite: CampaignInvite, ctx: ConsumerContext) {
@@ -20,8 +22,14 @@ export class CampaignInviteAPIModel
         this.campaign = isPopulated(campaignInvite.campaign)
             ? new CampaignAPIModel(campaignInvite.campaign, ctx)
             : null!;
-        this.user = isPopulated(campaignInvite.user)
-            ? new UserAPIModel(campaignInvite.user, ctx)
+        this.viewedBy = campaignInvite.viewedBy
+            .filter(isPopulated)
+            .map((user) => new UserAPIModel(user, ctx));
+        this.acceptedBy = campaignInvite.acceptedBy
+            .filter(isPopulated)
+            .map((user) => new UserAPIModel(user, ctx));
+        this.createdBy = isPopulated(campaignInvite.createdBy)
+            ? new UserAPIModel(campaignInvite.createdBy, ctx)
             : null!;
         this.code = campaignInvite.code;
     }

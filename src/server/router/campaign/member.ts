@@ -5,12 +5,14 @@ import { nanoid } from "nanoid";
 import { z } from "zod";
 
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
+import { isPopulated } from "@/db/lib/isPopulated";
 import { CampaignError } from "@/db/models/Campaign/error";
 import { CampaignInviteAPIModel } from "@/db/models/CampaignInvite/consumers";
 import { CampaignInviteError } from "@/db/models/CampaignInvite/error";
 import { CampaignInviteModel } from "@/db/models/CampaignInvite/model";
 import { CampaignMemberAPIModel } from "@/db/models/CampaignMember/consumers";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
+import { User } from "@/db/models/User";
 import { UserError } from "@/db/models/User/error";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 
@@ -66,17 +68,36 @@ export const campaignMemberRouter = router({
                 campaign: new ObjectId(opts.input.campaignId),
                 code: opts.input.inviteCode,
             })
-                .populate("user")
                 .populate("campaign")
                 .exec();
 
-            if (
-                !invite ||
-                invite.user.toString() !== opts.ctx.session!.user.id
-            ) {
+            if (!invite) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
                     message: CampaignInviteError.NOT_FOUND,
+                });
+            }
+
+            if (
+                !invite.viewedBy.some((user) =>
+                    isPopulated(user)
+                        ? user.id === opts.ctx.session!.user.id
+                        : user.toString() === opts.ctx.session!.user.id,
+                )
+            ) {
+                invite.viewedBy.push(opts.ctx.session!.user);
+                await invite.save();
+            }
+
+            const campaignMember = await CampaignMemberModel.findOne({
+                campaign: new ObjectId(opts.input.campaignId),
+                user: new ObjectId(opts.ctx.session!.user.id),
+            });
+
+            if (campaignMember) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: CampaignInviteError.ALREADY_MEMBER,
                 });
             }
 
@@ -85,11 +106,10 @@ export const campaignMemberRouter = router({
             });
         }),
 
-    invite: procedure
+    createInvite: procedure
         .input(
             z.object({
                 campaignId: z.string(),
-                userId: z.string(),
             }),
         )
         .mutation(async (opts) => {
@@ -102,44 +122,22 @@ export const campaignMemberRouter = router({
                 });
             }
 
-            if (!ObjectId.isValid(opts.input.userId)) {
-                throw new TRPCError({
-                    code: "NOT_FOUND",
-                    message: UserError.NOT_FOUND,
-                });
-            }
-
-            const campaignMember = await CampaignMemberModel.findOne({
-                campaign: new ObjectId(opts.input.campaignId),
-                user: new ObjectId(opts.input.userId),
-            });
-
-            if (campaignMember) {
-                throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: CampaignInviteError.ALREADY_MEMBER,
-                });
-            }
-
             const existingInvite = await CampaignInviteModel.findOne({
                 campaign: new ObjectId(opts.input.campaignId),
-                user: new ObjectId(opts.input.userId),
+                createdBy: new ObjectId(opts.ctx.session!.user.id),
             });
 
             if (existingInvite) {
-                throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: CampaignInviteError.ALREADY_INVITED,
+                return new CampaignInviteAPIModel(existingInvite, {
+                    user: opts.ctx.session!.user,
                 });
             }
 
             const campaignInvite = await CampaignInviteModel.create({
                 campaign: new ObjectId(opts.input.campaignId),
-                user: new ObjectId(opts.input.userId),
+                createdBy: new ObjectId(opts.ctx.session!.user.id),
                 code: nanoid(16),
             });
-
-            await campaignInvite.populate("user");
 
             return new CampaignInviteAPIModel(campaignInvite, {
                 user: opts.ctx.session!.user,
@@ -159,19 +157,16 @@ export const campaignMemberRouter = router({
                 code: opts.input.code,
             });
 
-            if (
-                !campaignInvite ||
-                campaignInvite.user.toString() !== opts.ctx.session!.user.id
-            ) {
+            if (!campaignInvite) {
                 throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: CampaignInviteError.INVALID_CODE,
+                    code: "NOT_FOUND",
+                    message: CampaignInviteError.NOT_FOUND,
                 });
             }
 
             const campaignMember = await CampaignMemberModel.findOne({
                 campaign: campaignInvite.campaign,
-                user: campaignInvite.user,
+                user: new ObjectId(opts.ctx.session!.user.id),
             });
 
             if (campaignMember) {
@@ -185,11 +180,15 @@ export const campaignMemberRouter = router({
 
             await CampaignMemberModel.create({
                 campaign: campaignInvite.campaign,
-                user: campaignInvite.user,
+                user: new ObjectId(opts.ctx.session!.user.id),
                 type: CampaignMemberType.PLAYER,
             });
 
-            await campaignInvite.deleteOne();
+            campaignInvite.acceptedBy.push(
+                new ObjectId(opts.ctx.session!.user.id) as any,
+            );
+
+            await campaignInvite.save();
 
             return true;
         }),

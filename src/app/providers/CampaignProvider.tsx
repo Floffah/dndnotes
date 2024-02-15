@@ -25,7 +25,6 @@ export interface CampaignContextValue extends Campaign {
         data: inferProcedureInput<AppRouter["campaign"]["session"]["start"]>,
     ) => Promise<void>;
     update: (id: string, data: Partial<Campaign>) => Promise<void>;
-    inviteUser: (userId: string) => Promise<CampaignInvite>;
     createSchedule: (
         data: inferProcedureInput<
             AppRouter["campaign"]["session"]["createSchedule"]
@@ -73,7 +72,6 @@ export function CampaignProvider({
         ) ?? [];
 
     const updateCampaign = trpc.campaign.update.useMutation();
-    const inviteMutation = trpc.campaign.member.invite.useMutation();
     const createSession = trpc.campaign.session.start.useMutation();
     const createScheduleMutation =
         trpc.campaign.session.createSchedule.useMutation();
@@ -102,13 +100,6 @@ export function CampaignProvider({
         }
 
         utils.campaign.get.setData(id, clonedData);
-    };
-
-    const inviteUser: CampaignContextValue["inviteUser"] = async (userId) => {
-        return await inviteMutation.mutateAsync({
-            campaignId,
-            userId,
-        });
     };
 
     const startSession: CampaignContextValue["startSession"] = async (data) => {
@@ -205,7 +196,6 @@ export function CampaignProvider({
                     sessions: sessions.data ?? [],
 
                     update,
-                    inviteUser,
                     startSession,
                     createSchedule,
                     deleteSchedule,

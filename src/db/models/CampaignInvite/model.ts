@@ -11,7 +11,21 @@ export const CampaignInviteSchema = new Schema<CampaignInvite>({
         ref: CampaignModel,
         required: true,
     },
-    user: {
+    viewedBy: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: UserModel,
+            default: [],
+        },
+    ],
+    acceptedBy: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: UserModel,
+            default: [],
+        },
+    ],
+    createdBy: {
         type: Schema.Types.ObjectId,
         ref: UserModel,
         required: true,

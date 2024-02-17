@@ -10,6 +10,7 @@ import { FormContext } from "@/app/components/Form/index";
 import { Select } from "@/app/components/Select";
 
 type Base = ComponentProps<typeof Select> & FormFieldBaseProps;
+
 interface FormSelectProps extends Base {
     placeholder?: string;
 }

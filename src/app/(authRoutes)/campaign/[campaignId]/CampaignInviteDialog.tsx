@@ -1,26 +1,13 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { composeRefs } from "@radix-ui/react-compose-refs";
 import clsx from "clsx";
-import {
-    PropsWithChildren,
-    forwardRef,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { PropsWithChildren, forwardRef, useRef, useState } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
 import { Dialog, DialogRef } from "@/app/components/Dialog";
 import { Divider } from "@/app/components/Divider";
-import { Form } from "@/app/components/Form";
 import { Icon } from "@/app/components/Icon";
-import { Link } from "@/app/components/Link";
 import { Loader } from "@/app/components/Loader";
-import { User } from "@/app/components/User";
+import { useAsyncEffect } from "@/app/lib/hooks/useAsyncEffect";
 import { useCampaign } from "@/app/providers/CampaignProvider";
-import { useUser } from "@/app/providers/UserProvider";
 import { CampaignInvite } from "@/db/models/CampaignInvite";
 
 export const CampaignInviteDialog = forwardRef<DialogRef, PropsWithChildren>(
@@ -36,17 +23,20 @@ export const CampaignInviteDialog = forwardRef<DialogRef, PropsWithChildren>(
         const createInviteMutation =
             trpc.campaign.member.createInvite.useMutation();
 
-        useEffect(() => {
-            if (open && !createInviteMutation.isLoading && !invite) {
-                (async () => {
-                    setInvite(
-                        await createInviteMutation.mutateAsync({
+        useAsyncEffect(
+            function* ({ resolve }) {
+                if (open && !createInviteMutation.isLoading && !invite) {
+                    const invite = yield* resolve(
+                        createInviteMutation.mutateAsync({
                             campaignId: campaign.id,
                         }),
                     );
-                })();
-            }
-        }, [open]);
+
+                    setInvite(invite);
+                }
+            },
+            [open],
+        );
 
         return (
             <Dialog ref={ref} onOpenChange={setOpen}>

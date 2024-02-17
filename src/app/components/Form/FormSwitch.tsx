@@ -12,6 +12,7 @@ import { FormContext } from "@/app/components/Form/index";
 import { Switch } from "@/app/components/Switch";
 
 type Base = ComponentProps<typeof Switch> & FormFieldBaseProps;
+
 interface FormSwitchProps extends Base {
     name: string;
     label: string;

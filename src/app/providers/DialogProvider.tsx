@@ -26,11 +26,13 @@ interface DialogInstance {
 
 interface DialogContext {
     open: (instance: DialogInstance["element"]) => void;
+
     showConfirmation(
         opts: Omit<ComponentProps<typeof ConfirmationDialog>, "onConfirm"> & {
             onConfirm?: ComponentProps<typeof ConfirmationDialog>["onConfirm"];
         },
     ): Promise<boolean>;
+
     close: () => void;
 }
 

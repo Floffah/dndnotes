@@ -8,7 +8,6 @@ import { trpc } from "@/app/api/lib/client/trpc";
 import { serializableClone } from "@/app/lib/serializableClone";
 import { useUser } from "@/app/providers/UserProvider";
 import { Campaign } from "@/db/models/Campaign";
-import { CampaignInvite } from "@/db/models/CampaignInvite";
 import { CampaignMember } from "@/db/models/CampaignMember";
 import { CampaignSession } from "@/db/models/CampaignSession";
 import { CampaignSessionSchedule } from "@/db/models/CampaignSessionSchedule";

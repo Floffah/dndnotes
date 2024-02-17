@@ -12,8 +12,6 @@ import { CampaignInviteError } from "@/db/models/CampaignInvite/error";
 import { CampaignInviteModel } from "@/db/models/CampaignInvite/model";
 import { CampaignMemberAPIModel } from "@/db/models/CampaignMember/consumers";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
-import { User } from "@/db/models/User";
-import { UserError } from "@/db/models/User/error";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
 
 export const campaignMemberRouter = router({

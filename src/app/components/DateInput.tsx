@@ -174,7 +174,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                     }}
                                 >
                                     <Icon
-                                        label="subtract year icon"
+                                        label="subtract year"
                                         icon="mdi:minus"
                                     />
                                 </button>
@@ -198,10 +198,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                         setValue(newValue);
                                     }}
                                 >
-                                    <Icon
-                                        label="add year icon"
-                                        icon="mdi:plus"
-                                    />
+                                    <Icon label="add year" icon="mdi:plus" />
                                 </button>
                             </div>
 
@@ -224,7 +221,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                     }}
                                 >
                                     <Icon
-                                        label="scroll left icon"
+                                        label="scroll left"
                                         icon="mdi:chevron-left"
                                         className="h-5 w-5"
                                     />
@@ -284,7 +281,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                     }}
                                 >
                                     <Icon
-                                        label="scroll right icon"
+                                        label="scroll right"
                                         icon="mdi:chevron-right"
                                         className="h-5 w-5"
                                     />

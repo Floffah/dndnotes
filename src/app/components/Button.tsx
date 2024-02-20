@@ -85,7 +85,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                                 "h-4 w-4": size === "sm",
                                 "h-5 w-5": size === "md",
                             })}
-                            label={iconLabel ?? "button icon"}
+                            label={iconLabel ?? "button"}
                             icon={icon}
                         />
                     ) : (

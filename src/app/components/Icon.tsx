@@ -6,7 +6,7 @@ import {
     IconProps as IconifyIconProps,
     _api,
 } from "@iconify/react";
-import { forwardRef } from "react";
+import { forwardRef, useMemo } from "react";
 
 _api.setFetch(fetch);
 
@@ -15,7 +15,15 @@ export interface IconProps extends IconifyIconProps {
 }
 
 export const Icon = forwardRef<SVGSVGElement, IconProps>(
-    ({ label, ...props }, ref) => {
+    ({ label: propsLabel, ...props }, ref) => {
+        const label = useMemo(() => {
+            if (propsLabel.includes("icon")) {
+                return propsLabel;
+            }
+
+            return propsLabel + " (icon)";
+        }, [propsLabel]);
+
         return (
             <AccessibleIcon.Root label={label}>
                 <IconifyIcon ref={ref as any} {...props} />

@@ -16,7 +16,7 @@ function Member({ member }: { member: CampaignMember }) {
             <p className="text-lg font-semibold">{member.user.name}</p>
             {member.type === CampaignMemberType.DM && (
                 <Icon
-                    label="dungeon master icon"
+                    label="dungeon master"
                     icon="mdi:crown"
                     className="h-4 w-4 text-yellow-400"
                 />

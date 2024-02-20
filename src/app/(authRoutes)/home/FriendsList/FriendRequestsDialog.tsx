@@ -44,7 +44,7 @@ export function FriendRequestsDialog({ children }: PropsWithChildren) {
                                 }
                             >
                                 <Icon
-                                    label="accept request icon"
+                                    label="accept request"
                                     icon="mdi:check"
                                     className="h-4 w-4"
                                 />
@@ -61,7 +61,7 @@ export function FriendRequestsDialog({ children }: PropsWithChildren) {
                                 }}
                             >
                                 <Icon
-                                    label="deny request icon"
+                                    label="deny request"
                                     icon="mdi:close"
                                     className="h-4 w-4"
                                 />

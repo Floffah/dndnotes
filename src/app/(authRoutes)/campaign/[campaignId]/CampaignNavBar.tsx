@@ -53,7 +53,7 @@ export function CampaignNavBar({ session }: { session?: CampaignSession }) {
                 className="flex cursor-pointer select-none items-center justify-center p-1 transition-all duration-150 hover:scale-110"
             >
                 <Icon
-                    label="campaign settings icon"
+                    label="campaign settings"
                     icon="mdi:cog"
                     className="h-5 w-5"
                 />

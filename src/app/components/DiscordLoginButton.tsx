@@ -25,7 +25,7 @@ export function DiscordLoginButton({ redirectUri }: { redirectUri?: string }) {
                 });
             }}
         >
-            <Icon label="discord icon" icon="ic:baseline-discord" />
+            <Icon label="discord" icon="ic:baseline-discord" />
             Login with Discord
         </button>
     );

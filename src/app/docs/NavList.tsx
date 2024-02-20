@@ -49,10 +49,7 @@ function NavLinksList({
                                 ? item.label
                                 : toSentenceCase(name)}
                             {typeof item !== "string" && item.children && (
-                                <Icon
-                                    label="down icon"
-                                    icon="mdi:chevron-down"
-                                />
+                                <Icon label="down" icon="mdi:chevron-down" />
                             )}
                         </Link>
                         {typeof item !== "string" && item.children && (

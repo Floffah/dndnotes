@@ -21,7 +21,7 @@ export function SessionList() {
                     <StartSessionDialog>
                         <div className="flex h-full w-full cursor-pointer items-center justify-center gap-1 rounded-lg border border-dashed border-white/10 p-3">
                             <Icon
-                                label="add icon"
+                                label="add"
                                 icon="mdi:plus"
                                 className="h-5 w-5"
                             />

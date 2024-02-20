@@ -6,6 +6,8 @@ import { memo } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
 import { Button } from "@/app/components/Button";
+import { Details } from "@/app/components/Details";
+import { Icon } from "@/app/components/Icon";
 import { Loader } from "@/app/components/Loader";
 import { CampaignFilter } from "@/server/enums/CampaignFilter";
 
@@ -58,9 +60,11 @@ export const CampaignsList = memo(() => {
                                     </p>
                                 )}
 
-                                <p className="text-sm text-white/80">
-                                    More info will display here soon
-                                </p>
+                                <Details>
+                                    <Details.Item icon="mdi:clock">
+                                        {campaign.totalSessions} SESSIONS
+                                    </Details.Item>
+                                </Details>
                             </Link>
                         ))}
                     </div>

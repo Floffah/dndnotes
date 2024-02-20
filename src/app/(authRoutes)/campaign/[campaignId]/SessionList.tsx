@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { StartSessionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/StartSessionDialog";
 import { Button } from "@/app/components/Button";
+import { Details } from "@/app/components/Details";
 import { Icon } from "@/app/components/Icon";
 import { Tooltip } from "@/app/components/Tooltip";
 import { useCampaign } from "@/app/providers/CampaignProvider";
@@ -50,28 +51,23 @@ export function SessionList() {
                                     )}
                                 </p>
                             </Tooltip>
-                            <div className="flex w-full gap-2 text-xs text-white/50">
-                                <p className="flex items-center gap-1">
-                                    <Icon
-                                        label="session type"
-                                        icon="mdi:file-document-outline"
-                                    />
-                                    <span>
-                                        {session.type.replace("_", " ")}
-                                    </span>
-                                </p>
-                                <p className="flex items-center gap-1">
-                                    <Icon
-                                        label="scheduled type"
-                                        icon="mdi:calendar"
-                                    />
-                                    <span>
-                                        {session.schedule
-                                            ? "SCHEDULED"
-                                            : "NOT SCHEDULED"}
-                                    </span>
-                                </p>
-                            </div>
+
+                            <Details>
+                                <Details.Item
+                                    icon="mdi:file-document-outline"
+                                    label="session type"
+                                >
+                                    {session.type.replace("_", " ")}
+                                </Details.Item>
+                                <Details.Item
+                                    icon="mdi:calendar"
+                                    label="scheduled type"
+                                >
+                                    {session.schedule
+                                        ? "SCHEDULED"
+                                        : "NOT SCHEDULED"}
+                                </Details.Item>
+                            </Details>
                         </Link>
                     ))}
                 </div>

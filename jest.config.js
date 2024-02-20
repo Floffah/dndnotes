@@ -3,18 +3,12 @@ const { compilerOptions } = require("./tsconfig");
 
 require("dotenv").config();
 
-/** @type {import('ts-jest').JestConfigWithTsJest} */
+/** @type {import('jest').Config} */
 module.exports = {
-    preset: "ts-jest",
     testEnvironment: "node",
     extensionsToTreatAsEsm: [".ts"],
     transform: {
-        "^.+\\.tsx?$": [
-            "ts-jest",
-            {
-                useESM: true,
-            },
-        ],
+        "^.+\\.tsx?$": ["@swc/jest"],
     },
     setupFilesAfterEnv: ["./src/tests/setup/mongo.setup.ts"],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {

@@ -25,12 +25,12 @@ export function CampaignInviteProvider({
     campaignId: string;
     inviteCode: string;
 }>) {
-    const invite = trpc.campaign.member.getInvite.useQuery({
+    const invite = trpc.campaign.invite.get.useQuery({
         campaignId,
         inviteCode,
     });
 
-    const acceptMutation = trpc.campaign.member.acceptInvite.useMutation();
+    const acceptMutation = trpc.campaign.invite.accept.useMutation();
 
     const accept: CampaignInviteContextValue["accept"] = async () => {
         await acceptMutation.mutateAsync({

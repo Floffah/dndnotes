@@ -1,5 +1,5 @@
 import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
 import { CampaignInviteProvider } from "@/app/providers/CampaignInviteProvider";
@@ -15,7 +15,7 @@ export async function generateMetadata(
     let invite;
 
     try {
-        invite = await helpers.campaign.member.getInvite.fetch({
+        invite = await helpers.campaign.invite.get.fetch({
             campaignId,
             inviteCode,
         });
@@ -36,7 +36,7 @@ export default async function CampaignJoinPageLayout({
     const helpers = await getTRPCServerHelpers();
 
     try {
-        await helpers.campaign.member.getInvite.fetch({
+        await helpers.campaign.invite.get.fetch({
             campaignId,
             inviteCode,
         });
@@ -44,6 +44,8 @@ export default async function CampaignJoinPageLayout({
         switch (e.message) {
             case CampaignInviteError.NOT_FOUND:
                 return notFound();
+            case CampaignInviteError.ALREADY_MEMBER:
+                return redirect(`/campaign/${campaignId}`);
         }
     }
 

@@ -11,10 +11,10 @@ export default function CampaignInvitePage() {
 
     return (
         <div className="flex h-screen w-screen flex-col items-center justify-center">
-            <div className="flex max-w-md flex-col gap-4 rounded-lg bg-gray-800 p-5">
-                <p className="text-2xl font-semibold text-white">
+            <main className="flex max-w-md flex-col gap-4 rounded-lg bg-gray-800 p-5">
+                <h1 className="text-2xl font-semibold text-white">
                     Join {invite.campaign.name}
-                </p>
+                </h1>
 
                 <Button
                     size="md"
@@ -27,7 +27,7 @@ export default function CampaignInvitePage() {
                 >
                     Accept Invite
                 </Button>
-            </div>
+            </main>
         </div>
     );
 }

@@ -20,8 +20,7 @@ export const CampaignInviteDialog = forwardRef<DialogRef, PropsWithChildren>(
         const [linkCopied, setLinkCopied] = useState(false);
         const copiedTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-        const createInviteMutation =
-            trpc.campaign.member.createInvite.useMutation();
+        const createInviteMutation = trpc.campaign.invite.create.useMutation();
 
         useAsyncEffect(
             function* ({ resolve }) {

@@ -53,7 +53,7 @@ export function useAsyncEffect(
 
                 if (result.value) {
                     try {
-                        await result.value;
+                        result.value = await result.value;
                     } catch (e) {
                         if (abortController.signal.aborted) {
                             cancelErrorFns.forEach((fn) => fn(e as Error));

@@ -21,4 +21,16 @@ export const CampaignSchema = new Schema<Campaign>({
     },
 });
 
+CampaignSchema.virtual("sessions", {
+    ref: "CampaignSession",
+    localField: "_id",
+    foreignField: "campaign",
+});
+
+CampaignSchema.virtual("schedules", {
+    ref: "CampaignSessionSchedule",
+    localField: "_id",
+    foreignField: "campaign",
+});
+
 export const CampaignModel = createModel("Campaign", CampaignSchema);

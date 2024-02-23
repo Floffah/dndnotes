@@ -6,7 +6,7 @@
     "test": "node --no-warnings --experimental-vm-modules node_modules/.bin/jest -i",
     "test:snapshot": "yarn test -u",
     "env": "vercel env pull .env",
-    "deps": "ncu -u -x @tanstack/react-query && yarn"
+    "deps": "ncu -x @tanstack/react-query"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -28,11 +28,11 @@
     "@react-spring/web": "^9.7.3",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-query": "4.36.1",
-    "@tiptap/extension-underline": "^2.2.3",
-    "@tiptap/html": "^2.2.3",
-    "@tiptap/pm": "^2.2.3",
-    "@tiptap/react": "^2.2.3",
-    "@tiptap/starter-kit": "^2.2.3",
+    "@tiptap/extension-underline": "^2.2.4",
+    "@tiptap/html": "^2.2.4",
+    "@tiptap/pm": "^2.2.4",
+    "@tiptap/react": "^2.2.4",
+    "@tiptap/starter-kit": "^2.2.4",
     "@trpc/client": "^10.45.1",
     "@trpc/next": "^10.45.1",
     "@trpc/react-query": "^10.45.1",
@@ -42,7 +42,7 @@
     "crypto-random-string": "^5.0.0",
     "date-fns": "^3.3.1",
     "discord.js": "^14.14.1",
-    "mongoose": "^8.1.3",
+    "mongoose": "^8.2.0",
     "nanoid": "^5.0.6",
     "next": "^14.1.0",
     "notion-client": "^6.16.0",
@@ -64,9 +64,9 @@
     "@types/cookie": "^0.6.0",
     "@types/jest": "^29.5.12",
     "@types/mdx": "^2.0.11",
-    "@types/node": "20.11.19",
+    "@types/node": "20.11.20",
     "@types/pubnub": "^7",
-    "@types/react": "^18.2.57",
+    "@types/react": "^18.2.58",
     "@types/react-dom": "^18.2.19",
     "@types/sanitize-html": "^2",
     "autoprefixer": "^10.4.17",
@@ -85,7 +85,7 @@
     "tsx": "^4.7.1",
     "typescript": "5.3.3",
     "unique-username-generator": "^1.3.0",
-    "vercel": "^33.5.1"
+    "vercel": "^33.5.2"
   },
   "packageManager": "yarn@4.1.0"
 }

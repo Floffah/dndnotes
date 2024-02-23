@@ -62,6 +62,7 @@ export const campaignRouter = router({
                 },
             })
                 .populate("createdBy")
+                .populate("schedules")
                 .exec();
 
             return campaigns.map(

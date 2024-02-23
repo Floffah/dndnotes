@@ -1,15 +1,63 @@
 "use client";
 
 import clsx from "clsx";
+import { formatDistance } from "date-fns";
 import Link from "next/link";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 
 import { trpc } from "@/app/api/lib/client/trpc";
 import { Button } from "@/app/components/Button";
-import { Details } from "@/app/components/Details";
-import { Icon } from "@/app/components/Icon";
+import { Card } from "@/app/components/Card";
 import { Loader } from "@/app/components/Loader";
+import { Campaign } from "@/db/models/Campaign";
 import { CampaignFilter } from "@/server/enums/CampaignFilter";
+
+const CampaignCard = ({ campaign }: { campaign: Campaign }) => {
+    const nextScheduleTime = useMemo(() => {
+        if (!campaign.schedules.some((schedule) => !!schedule.nextSessionAt)) {
+            return null;
+        }
+
+        const nextScheduleTime = Math.min(
+            ...campaign.schedules
+                .filter(
+                    (schedule) =>
+                        !!schedule.nextSessionAt &&
+                        schedule.nextSessionAt > new Date(),
+                )
+                .map((schedule) => schedule.nextSessionAt.getTime()),
+        );
+
+        return new Date(nextScheduleTime);
+    }, [campaign.schedules]);
+
+    return (
+        <Card asChild color="default">
+            <Link
+                href={`/campaign/${campaign.id}`}
+                className="flex w-full flex-col gap-1.5 rounded-lg border border-white/10 p-3"
+            >
+                <Card.Title>{campaign.name}</Card.Title>
+                {campaign.createdBy && (
+                    <Card.Subtitle>by {campaign.createdBy?.name}</Card.Subtitle>
+                )}
+
+                <Card.Details>
+                    <Card.Details.Item icon="mdi:clock">
+                        {campaign.totalSessions} sessions
+                    </Card.Details.Item>
+                    {nextScheduleTime && (
+                        <Card.Details.Item icon="mdi:alarm">
+                            {formatDistance(nextScheduleTime, new Date(), {
+                                addSuffix: true,
+                            })}
+                        </Card.Details.Item>
+                    )}
+                </Card.Details>
+            </Link>
+        </Card>
+    );
+};
 
 export const CampaignsList = memo(() => {
     const campaigns = trpc.campaign.list.useQuery({
@@ -46,26 +94,10 @@ export const CampaignsList = memo(() => {
                 ) : (
                     <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                         {campaigns.data.map((campaign) => (
-                            <Link
-                                href={`/campaign/${campaign.id}`}
+                            <CampaignCard
+                                campaign={campaign}
                                 key={campaign.id}
-                                className="flex w-full flex-col gap-1.5 rounded-lg border border-white/10 p-3"
-                            >
-                                <p className="text-lg font-semibold">
-                                    {campaign.name}
-                                </p>
-                                {campaign.createdBy && (
-                                    <p className="-mt-2.5 text-sm text-white/75">
-                                        by {campaign.createdBy?.name}
-                                    </p>
-                                )}
-
-                                <Details>
-                                    <Details.Item icon="mdi:clock">
-                                        {campaign.totalSessions} SESSIONS
-                                    </Details.Item>
-                                </Details>
-                            </Link>
+                            />
                         ))}
                     </div>
                 )}

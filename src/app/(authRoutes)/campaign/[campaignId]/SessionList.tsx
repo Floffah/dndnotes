@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { StartSessionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/StartSessionDialog";
 import { Button } from "@/app/components/Button";
+import { Card } from "@/app/components/Card";
 import { Details } from "@/app/components/Details";
 import { Icon } from "@/app/components/Icon";
 import { Tooltip } from "@/app/components/Tooltip";
@@ -32,43 +33,43 @@ export function SessionList() {
                     </StartSessionDialog>
 
                     {campaign.sessions.map((session) => (
-                        <Link
-                            href={`/campaign/${campaign.id}/session/${session.id}`}
-                            key={session.id}
-                            className="flex w-full flex-col gap-1.5 rounded-lg border border-white/10 p-3"
-                        >
-                            <p className="text-lg font-semibold">
-                                {session.name}
-                            </p>
-                            <Tooltip title={format(session.startedAt, "PPPp")}>
-                                <p className="indicate-action -mt-2 w-fit text-sm text-white/75 indicate-white/50">
-                                    {formatDistance(
-                                        session.createdAt,
-                                        new Date(),
-                                        {
-                                            addSuffix: true,
-                                        },
-                                    )}
-                                </p>
-                            </Tooltip>
+                        <Card key={session.id} asChild color="default">
+                            <Link
+                                href={`/campaign/${campaign.id}/session/${session.id}`}
+                            >
+                                <Card.Title>{session.name}</Card.Title>
+                                <Tooltip
+                                    title={format(session.startedAt, "PPPp")}
+                                >
+                                    <Card.Subtitle className="indicate-action indicate-white/50">
+                                        {formatDistance(
+                                            session.createdAt,
+                                            new Date(),
+                                            {
+                                                addSuffix: true,
+                                            },
+                                        )}
+                                    </Card.Subtitle>
+                                </Tooltip>
 
-                            <Details>
-                                <Details.Item
-                                    icon="mdi:file-document-outline"
-                                    label="session type"
-                                >
-                                    {session.type.replace("_", " ")}
-                                </Details.Item>
-                                <Details.Item
-                                    icon="mdi:calendar"
-                                    label="scheduled type"
-                                >
-                                    {session.schedule
-                                        ? "SCHEDULED"
-                                        : "NOT SCHEDULED"}
-                                </Details.Item>
-                            </Details>
-                        </Link>
+                                <Card.Details>
+                                    <Card.Details.Item
+                                        icon="mdi:file-document-outline"
+                                        label="session type"
+                                    >
+                                        {session.type.replace("_", " ")}
+                                    </Card.Details.Item>
+                                    <Card.Details.Item
+                                        icon="mdi:calendar"
+                                        label="scheduled type"
+                                    >
+                                        {session.schedule
+                                            ? "SCHEDULED"
+                                            : "NOT SCHEDULED"}
+                                    </Card.Details.Item>
+                                </Card.Details>
+                            </Link>
+                        </Card>
                     ))}
                 </div>
             ) : (

@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import { PropsWithChildren, forwardRef, useRef, useState } from "react";
 
-import { trpc } from "@/app/api/lib/client/trpc";
 import { Dialog, DialogRef } from "@/app/components/Dialog";
 import { Divider } from "@/app/components/Divider";
 import { Icon } from "@/app/components/Icon";
 import { Loader } from "@/app/components/Loader";
+import { trpc } from "@/app/lib/api/trpc";
 import { useAsyncEffect } from "@/app/lib/hooks/useAsyncEffect";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 import { CampaignInvite } from "@/db/models/CampaignInvite";
@@ -24,7 +24,7 @@ export const CampaignInviteDialog = forwardRef<DialogRef, PropsWithChildren>(
 
         useAsyncEffect(
             function* ({ resolve }) {
-                if (open && !createInviteMutation.isLoading && !invite) {
+                if (open && !createInviteMutation.isPending && !invite) {
                     const invite = yield* resolve(
                         createInviteMutation.mutateAsync({
                             campaignId: campaign.id,

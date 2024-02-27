@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
-import { createSuccessResponse } from "@/app/api/lib/server/apiResponse";
-import { SESSION_TOKEN } from "@/app/api/lib/storage";
+import { createSuccessResponse } from "@/app/api/apiResponse";
+import { SESSION_TOKEN } from "@/app/lib/api/storageKeys";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;

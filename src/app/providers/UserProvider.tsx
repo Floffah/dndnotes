@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { createContext, useContext } from "react";
 
-import { trpc } from "@/app/api/lib/client/trpc";
+import { trpc } from "@/app/lib/api/trpc";
 import { FriendshipRequestState } from "@/db/enums/FriendshipRequestState";
 import { FriendshipRequest } from "@/db/models/FriendshipRequest";
 import { User } from "@/db/models/User";
@@ -128,10 +128,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
             value={
                 {
                     ...(userQuery.data ?? {}),
-                    loading: userQuery.isLoading,
-                    authenticated: !userQuery.isLoading && !!userQuery.data?.id,
+                    loading: userQuery.isPending,
+                    authenticated: !userQuery.isPending && !!userQuery.data?.id,
                     friendsLoading:
-                        friends.isLoading || incomingRequests.isLoading,
+                        friends.isPending || incomingRequests.isPending,
                     friends: friends.data ?? [],
                     incomingRequests: incomingRequests.data ?? [],
 

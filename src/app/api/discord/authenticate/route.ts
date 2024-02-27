@@ -3,8 +3,8 @@ import cryptoRandomString from "crypto-random-string";
 import {
     createErrorResponse,
     createSuccessResponse,
-} from "@/app/api/lib/server/apiResponse";
-import { SESSION_TOKEN } from "@/app/api/lib/storage";
+} from "@/app/api/apiResponse";
+import { SESSION_TOKEN } from "@/app/lib/api/storageKeys";
 import { UserAPIModel } from "@/db/models/User/consumers";
 import { UserModel } from "@/db/models/User/model";
 import { UserSessionModel } from "@/db/models/UserSession/model";

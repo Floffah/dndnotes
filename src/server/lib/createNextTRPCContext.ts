@@ -10,5 +10,9 @@ export async function createNextTRPCContext(): Promise<
             headers: headers(),
         } as Request,
         resHeaders: new Headers(),
+        info: {
+            isBatchCall: false,
+            calls: [],
+        },
     });
 }

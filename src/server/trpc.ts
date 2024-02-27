@@ -3,7 +3,7 @@ import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { parse } from "cookie";
 import superjson from "superjson";
 
-import { SESSION_TOKEN } from "@/app/api/lib/storage";
+import { SESSION_TOKEN } from "@/app/lib/api/storageKeys";
 import { registerTransformerTypes } from "@/db/lib/registerTransformerTypes";
 import { UserSessionModel } from "@/db/models/UserSession/model";
 import { mongoConnect } from "@/db/mongo";

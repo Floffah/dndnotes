@@ -7,6 +7,10 @@ export async function createTRPCServerCaller(request: Partial<Request>) {
     const ctx = await createContext({
         req: request as Request,
         resHeaders: new Headers(),
+        info: {
+            isBatchCall: false,
+            calls: [],
+        },
     });
 
     if (!callerFactory) {

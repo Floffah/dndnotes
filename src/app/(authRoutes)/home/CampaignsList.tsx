@@ -5,10 +5,10 @@ import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { memo, useMemo } from "react";
 
-import { trpc } from "@/app/api/lib/client/trpc";
 import { Button } from "@/app/components/Button";
 import { Card } from "@/app/components/Card";
 import { Loader } from "@/app/components/Loader";
+import { trpc } from "@/app/lib/api/trpc";
 import { Campaign } from "@/db/models/Campaign";
 import { CampaignFilter } from "@/server/enums/CampaignFilter";
 
@@ -82,10 +82,10 @@ export const CampaignsList = memo(() => {
 
             <div
                 className={clsx("flex w-full justify-center", {
-                    "py-10": campaigns.isLoading || !campaigns.data,
+                    "py-10": campaigns.isPending || !campaigns.data,
                 })}
             >
-                {campaigns.isLoading || !campaigns.data ? (
+                {campaigns.isPending || !campaigns.data ? (
                     <Loader className="h-8 w-8 text-white/40" />
                 ) : campaigns.data.length === 0 ? (
                     <p className="text-sm text-white/80">

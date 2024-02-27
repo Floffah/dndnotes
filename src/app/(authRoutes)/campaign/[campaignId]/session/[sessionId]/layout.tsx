@@ -1,10 +1,10 @@
 import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
-import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
+import { getTRPCServerHelpers } from "@/app/lib/api/trpc/getTRPCServerHelpers";
 import { populateMetadata } from "@/app/lib/populateMetadata";
 import { CampaignSessionProvider } from "@/app/providers/CampaignSessionProvider";
-import { DehydrateServerQueryHelpers } from "@/app/providers/DehydrateServerQueryHelpers";
+import { ServerHydrationBoundary } from "@/app/providers/ServerHydrationBoundary";
 import { CampaignSession } from "@/db/models/CampaignSession";
 import { CampaignSessionError } from "@/db/models/CampaignSession/error";
 
@@ -50,13 +50,13 @@ export default async function CampaignSessionLayout({
     }
 
     return (
-        <DehydrateServerQueryHelpers helpers={helpers}>
+        <ServerHydrationBoundary helpers={helpers}>
             <CampaignSessionProvider
                 campaignId={campaignId}
                 sessionId={sessionId}
             >
                 {children}
             </CampaignSessionProvider>
-        </DehydrateServerQueryHelpers>
+        </ServerHydrationBoundary>
     );
 }

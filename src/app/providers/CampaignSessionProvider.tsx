@@ -3,7 +3,7 @@
 import { inferProcedureInput } from "@trpc/server";
 import { PropsWithChildren, createContext, useContext } from "react";
 
-import { trpc } from "@/app/api/lib/client/trpc";
+import { trpc } from "@/app/lib/api/trpc";
 import defaultSessionDocument from "@/data/defaultSessionDocument.json";
 import { CampaignSession } from "@/db/models/CampaignSession";
 import { AppRouter } from "@/server/router";
@@ -84,7 +84,7 @@ export function CampaignSessionProvider({
     return (
         <CampaignSessionContext.Provider
             value={{
-                loading: session.isLoading,
+                loading: session.isPending,
                 ...(session.data ?? ({} as CampaignSession)),
 
                 updateSummary,

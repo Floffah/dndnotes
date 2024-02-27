@@ -1,7 +1,7 @@
 import { inferProcedureOutput } from "@trpc/server";
 import { ObjectId } from "mongodb";
 
-import { SESSION_TOKEN } from "@/app/api/lib/storage";
+import { SESSION_TOKEN } from "@/app/lib/api/storageKeys";
 import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
 import { User } from "@/db/models/User";

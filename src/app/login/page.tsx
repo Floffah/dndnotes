@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
 import { RedirectType, redirect } from "next/navigation";
 
-import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
-import { SESSION_TOKEN } from "@/app/api/lib/storage";
 import { DiscordLoginButton } from "@/app/components/DiscordLoginButton";
+import { SESSION_TOKEN } from "@/app/lib/api/storageKeys";
+import { getTRPCServerHelpers } from "@/app/lib/api/trpc/getTRPCServerHelpers";
 
 export default async function LoginPage({
     searchParams: { redirectUri },

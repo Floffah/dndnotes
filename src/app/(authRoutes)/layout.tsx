@@ -1,5 +1,5 @@
-import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
-import { DehydrateServerQueryHelpers } from "@/app/providers/DehydrateServerQueryHelpers";
+import { getTRPCServerHelpers } from "@/app/lib/api/trpc/getTRPCServerHelpers";
+import { ServerHydrationBoundary } from "@/app/providers/ServerHydrationBoundary";
 import { UserProvider } from "@/app/providers/UserProvider";
 
 export default async function AuthLayout({ children }) {
@@ -8,8 +8,8 @@ export default async function AuthLayout({ children }) {
     const user = await helpers.user.me.fetch();
 
     return (
-        <DehydrateServerQueryHelpers helpers={helpers}>
+        <ServerHydrationBoundary helpers={helpers}>
             <UserProvider>{children}</UserProvider>
-        </DehydrateServerQueryHelpers>
+        </ServerHydrationBoundary>
     );
 }

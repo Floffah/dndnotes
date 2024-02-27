@@ -1,4 +1,4 @@
-import { SESSION_TOKEN } from "@/app/api/lib/storage";
+import { SESSION_TOKEN } from "@/app/lib/api/storageKeys";
 import { FriendshipRequestState } from "@/db/enums/FriendshipRequestState";
 import { FriendshipRequest } from "@/db/models/FriendshipRequest";
 import { FriendshipRequestModel } from "@/db/models/FriendshipRequest/model";

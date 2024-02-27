@@ -1,6 +1,6 @@
 import { inferProcedureOutput } from "@trpc/server";
 
-import { SESSION_TOKEN } from "@/app/api/lib/storage";
+import { SESSION_TOKEN } from "@/app/lib/api/storageKeys";
 import { User } from "@/db/models/User";
 import { UserSession } from "@/db/models/UserSession";
 import {

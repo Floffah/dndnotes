@@ -1,15 +1,15 @@
 "use client";
 
-import { Hydrate as RQHydrate } from "@tanstack/react-query";
+import { HydrationBoundary as RQHydrationBoundary } from "@tanstack/react-query";
 import { ComponentProps } from "react";
 import { deserialize } from "superjson";
 
-export function Hydrate({
+export function ClientHydrationBoundary({
     state,
     ...props
-}: ComponentProps<typeof RQHydrate> & { state: any }) {
+}: ComponentProps<typeof RQHydrationBoundary> & { state: any }) {
     return (
-        <RQHydrate
+        <RQHydrationBoundary
             state={"json" in state ? deserialize(state) : state}
             {...props}
         />

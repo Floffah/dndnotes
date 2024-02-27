@@ -1,9 +1,8 @@
 "use client";
 
-import { DiscordLoginButton } from "src/app/components/DiscordLoginButton";
-
 import { CampaignsList } from "@/app/(authRoutes)/home/CampaignsList";
 import { FriendsList } from "@/app/(authRoutes)/home/FriendsList";
+import { DiscordLoginButton } from "@/app/components/DiscordLoginButton";
 import { NavBar } from "@/app/components/NavBar";
 import { useUser } from "@/app/providers/UserProvider";
 

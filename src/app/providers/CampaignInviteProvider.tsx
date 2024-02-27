@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, createContext, useContext } from "react";
 
-import { trpc } from "@/app/api/lib/client/trpc";
+import { trpc } from "@/app/lib/api/trpc";
 import { CampaignInviteAPIModel } from "@/db/models/CampaignInvite/consumers";
 
 export interface CampaignInviteContextValue extends CampaignInviteAPIModel {
@@ -42,7 +42,7 @@ export function CampaignInviteProvider({
         <CampaignInviteContext.Provider
             value={{
                 ...(invite.data as CampaignInviteAPIModel),
-                loading: invite.isLoading,
+                loading: invite.isPending,
 
                 accept,
             }}

@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { trpc } from "@/app/api/lib/client/trpc";
 import { Form } from "@/app/components/Form";
+import { trpc } from "@/app/lib/api/trpc";
 
 const formSchema = z.object({
     name: z.string().min(3).max(100),

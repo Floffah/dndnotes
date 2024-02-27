@@ -4,7 +4,7 @@ import { inferProcedureInput } from "@trpc/server";
 import { addMilliseconds } from "date-fns";
 import { PropsWithChildren, createContext, useContext } from "react";
 
-import { trpc } from "@/app/api/lib/client/trpc";
+import { trpc } from "@/app/lib/api/trpc";
 import { serializableClone } from "@/app/lib/serializableClone";
 import { useUser } from "@/app/providers/UserProvider";
 import { Campaign } from "@/db/models/Campaign";
@@ -184,10 +184,10 @@ export function CampaignProvider({
             value={
                 {
                     loading:
-                        campaign.isLoading ||
-                        campaignMembers.isLoading ||
-                        schedulesQuery.isLoading ||
-                        sessions.isLoading,
+                        campaign.isPending ||
+                        campaignMembers.isPending ||
+                        schedulesQuery.isPending ||
+                        sessions.isPending,
                     ...(campaign.data ?? {}),
                     members: campaignMembers.data ?? [],
                     currentMember: currentMember ?? {},

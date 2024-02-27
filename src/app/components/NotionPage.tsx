@@ -5,9 +5,9 @@ import { NotionRenderer } from "react-notion-x";
 import "react-notion-x/src/styles.css";
 
 import { LinkToNotionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/session/[sessionId]/LinkToNotionDialog";
-import { trpc } from "@/app/api/lib/client/trpc";
 import { Button } from "@/app/components/Button";
 import { Loader } from "@/app/components/Loader";
+import { trpc } from "@/app/lib/api/trpc";
 import { useCampaignSession } from "@/app/providers/CampaignSessionProvider";
 import { NotionError } from "@/server/errors/NotionError";
 
@@ -47,7 +47,7 @@ export function NotionPage({
         },
     });
 
-    if (notionPageQuery.isLoading) {
+    if (notionPageQuery.isPending) {
         return (
             <div
                 className={clsx(

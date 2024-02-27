@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
-import { trpc } from "@/app/api/lib/client/trpc";
 import { Icon } from "@/app/components/Icon";
+import { trpc } from "@/app/lib/api/trpc";
 import { authenticateUser } from "@/app/lib/authenticateUser";
 
 export function DiscordLoginButton({ redirectUri }: { redirectUri?: string }) {

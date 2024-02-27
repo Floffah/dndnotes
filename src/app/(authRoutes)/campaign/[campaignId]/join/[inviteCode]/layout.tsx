@@ -1,9 +1,9 @@
 import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
-import { getTRPCServerHelpers } from "@/app/api/lib/server/getTRPCServerHelpers";
+import { getTRPCServerHelpers } from "@/app/lib/api/trpc/getTRPCServerHelpers";
 import { CampaignInviteProvider } from "@/app/providers/CampaignInviteProvider";
-import { DehydrateServerQueryHelpers } from "@/app/providers/DehydrateServerQueryHelpers";
+import { ServerHydrationBoundary } from "@/app/providers/ServerHydrationBoundary";
 import { CampaignInviteError } from "@/db/models/CampaignInvite/error";
 
 export async function generateMetadata(
@@ -50,13 +50,13 @@ export default async function CampaignJoinPageLayout({
     }
 
     return (
-        <DehydrateServerQueryHelpers helpers={helpers}>
+        <ServerHydrationBoundary helpers={helpers}>
             <CampaignInviteProvider
                 campaignId={campaignId}
                 inviteCode={inviteCode}
             >
                 {children}
             </CampaignInviteProvider>
-        </DehydrateServerQueryHelpers>
+        </ServerHydrationBoundary>
     );
 }

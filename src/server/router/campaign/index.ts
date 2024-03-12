@@ -9,12 +9,14 @@ import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
 import { CampaignFilter } from "@/server/enums/CampaignFilter";
 import { ensureAuthenticated } from "@/server/lib/ensureAuthenticated";
+import { campaignCharacterRouter } from "@/server/router/campaign/character";
 import { campaignInviteRouter } from "@/server/router/campaign/invite";
 import { campaignMemberRouter } from "@/server/router/campaign/member";
 import { campaignSessionRouter } from "@/server/router/campaign/session";
 import { procedure, router } from "@/server/trpc";
 
 export const campaignRouter = router({
+    character: campaignCharacterRouter,
     invite: campaignInviteRouter,
     member: campaignMemberRouter,
     session: campaignSessionRouter,

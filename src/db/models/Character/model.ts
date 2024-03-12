@@ -1,10 +1,8 @@
 import { Schema } from "mongoose";
 
 import { createModel } from "@/db/lib/createModel";
-import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMemberModel } from "@/db/models/CampaignMember/model";
 import { Character } from "@/db/models/Character/index";
-import { DocumentModel } from "@/db/models/Document/model";
 
 export const CharacterSchema = new Schema<Character>({
     name: {
@@ -13,17 +11,17 @@ export const CharacterSchema = new Schema<Character>({
     },
     campaign: {
         type: Schema.Types.ObjectId,
-        ref: CampaignModel,
+        ref: "Campaign",
         required: true,
     },
     createdBy: {
         type: Schema.Types.ObjectId,
-        ref: CampaignMemberModel,
+        ref: "CampaignMemberModel",
         required: true,
     },
     describer: {
         type: Schema.Types.ObjectId,
-        ref: DocumentModel,
+        ref: "Document",
         required: false,
     },
     content: {

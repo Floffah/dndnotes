@@ -2,10 +2,7 @@ import { Schema } from "mongoose";
 
 import { CampaignMemberType } from "@/db/enums/CampaignMemberType";
 import { createModel } from "@/db/lib/createModel";
-import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignMember } from "@/db/models/CampaignMember/index";
-import { CharacterModel } from "@/db/models/Character/model";
-import { UserModel } from "@/db/models/User/model";
 
 export const CampaignMemberSchema = new Schema<CampaignMember>({
     type: {
@@ -15,17 +12,17 @@ export const CampaignMemberSchema = new Schema<CampaignMember>({
     },
     campaign: {
         type: Schema.Types.ObjectId,
-        ref: CampaignModel,
+        ref: "Campaign",
         required: true,
     },
     user: {
         type: Schema.Types.ObjectId,
-        ref: UserModel,
+        ref: "User",
         required: true,
     },
     character: {
         type: Schema.Types.ObjectId,
-        ref: CharacterModel,
+        ref: "Character",
         required: false,
     },
 });

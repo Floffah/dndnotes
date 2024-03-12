@@ -2,9 +2,7 @@ import { Schema } from "mongoose";
 
 import { DocumentFormat } from "@/db/enums/DocumentFormat";
 import { createModel } from "@/db/lib/createModel";
-import { CampaignModel } from "@/db/models/Campaign/model";
 import { Document } from "@/db/models/Document/index";
-import { UserModel } from "@/db/models/User/model";
 
 export const DocumentSchema = new Schema<Document>({
     name: {
@@ -18,12 +16,12 @@ export const DocumentSchema = new Schema<Document>({
     },
     creator: {
         type: Schema.Types.ObjectId,
-        ref: UserModel,
+        ref: "User",
         required: true,
     },
     campaign: {
         type: Schema.Types.ObjectId,
-        ref: CampaignModel,
+        ref: "Campaign",
         required: true,
     },
     notionId: {

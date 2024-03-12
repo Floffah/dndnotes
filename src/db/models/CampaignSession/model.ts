@@ -2,10 +2,7 @@ import { Schema } from "mongoose";
 
 import { CampaignSessionType } from "@/db/enums/CampaignSessionType";
 import { createModel } from "@/db/lib/createModel";
-import { CampaignModel } from "@/db/models/Campaign/model";
 import { CampaignSession } from "@/db/models/CampaignSession/index";
-import { CampaignSessionScheduleModel } from "@/db/models/CampaignSessionSchedule/model";
-import { DocumentModel } from "@/db/models/Document/model";
 
 export const CampaignSessionSchema = new Schema<CampaignSession>({
     name: {
@@ -19,7 +16,7 @@ export const CampaignSessionSchema = new Schema<CampaignSession>({
     },
     campaign: {
         type: Schema.Types.ObjectId,
-        ref: CampaignModel,
+        ref: "Campaign",
         required: true,
     },
     startedAt: {
@@ -28,12 +25,12 @@ export const CampaignSessionSchema = new Schema<CampaignSession>({
     },
     summary: {
         type: Schema.Types.ObjectId,
-        ref: DocumentModel,
+        ref: "Document",
         required: false,
     },
     schedule: {
         type: Schema.Types.ObjectId,
-        ref: CampaignSessionScheduleModel,
+        ref: "CampaignSessionSchedule",
         required: false,
     },
 });

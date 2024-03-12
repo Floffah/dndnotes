@@ -2,7 +2,6 @@ import { Schema } from "mongoose";
 
 import { createModel } from "@/db/lib/createModel";
 import { Campaign } from "@/db/models/Campaign/index";
-import { UserModel } from "@/db/models/User/model";
 
 export const CampaignSchema = new Schema<Campaign>({
     name: {
@@ -11,7 +10,7 @@ export const CampaignSchema = new Schema<Campaign>({
     },
     createdBy: {
         type: Schema.Types.ObjectId,
-        ref: UserModel,
+        ref: "User",
         required: true,
     },
     totalSessions: {

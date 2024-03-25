@@ -1,0 +1,103 @@
+import {
+    DehydratedState,
+    dehydrate as rqDehydrate,
+} from "@tanstack/react-query";
+import { z } from "zod";
+
+import { getQueryClient } from "@/client/react/reactQuery";
+import {
+    ProtoBuilderProcedure,
+    ProtoBuilderRouter,
+    ProtoBuilderType,
+} from "@/server";
+import { TransformerLike, defaultTransformer } from "@/shared";
+
+interface RouteClientFunctions<Procedure extends ProtoBuilderProcedure> {
+    fetch: (
+        input: z.infer<Procedure["_defs"]["input"]>,
+    ) => Promise<Procedure["_defs"]["output"]>;
+    prefetch: (input: z.infer<Procedure["_defs"]["input"]>) => void;
+}
+
+export type RouterClient<Router extends ProtoBuilderRouter<any>> = {
+    [K in keyof Router["_defs"]["fields"]]: Router["_defs"]["fields"][K]["_defs"]["builderType"] extends ProtoBuilderType.Router
+        ? RouterClient<Router["_defs"]["fields"][K]>
+        : RouteClientFunctions<Router["_defs"]["fields"][K]>;
+};
+
+interface CallerClientOpts<Router extends ProtoBuilderRouter<any>> {
+    router: Router;
+    ctx: Router["_defs"]["context"];
+    transformer?: TransformerLike;
+}
+
+export function createCallerClient<Router extends ProtoBuilderRouter<any>>(
+    opts: CallerClientOpts<Router>,
+): RouterClient<Router> & {
+    dehydrate: () => DehydratedState;
+} {
+    const queryClient = getQueryClient();
+    const transformer = opts.transformer ?? defaultTransformer;
+
+    const getProcedureMethods = (path: string[]) => {
+        const procedure = path.reduce(
+            (acc, key) => acc[key],
+            opts.router,
+        ) as any;
+
+        return {
+            fetch: (input: any) => {
+                return queryClient.fetchQuery({
+                    queryKey: [...path, input],
+                    queryFn: () => {
+                        procedure._defs.executor({
+                            ctx: opts.ctx,
+                            input,
+                        });
+                    },
+                });
+            },
+            prefetch: (input: any) => {
+                return queryClient.prefetchQuery({
+                    queryKey: [...path, input],
+                    queryFn: () => {
+                        procedure._defs.executor({
+                            ctx: opts.ctx,
+                            input,
+                        });
+                    },
+                });
+            },
+        };
+    };
+
+    const dehydrate = () => {
+        const dehydratedState = rqDehydrate(queryClient);
+
+        return transformer.serialize(dehydratedState);
+    };
+
+    const createCallerProxy = (parent: string[]) => {
+        return new Proxy(() => void 0, {
+            get(_original, key) {
+                if (key === "dehydrate") {
+                    return dehydrate;
+                }
+
+                return createCallerProxy([...parent, String(key)]);
+            },
+            apply(_original, _thisArg, args) {
+                const path = [...parent];
+                const fnName = path.pop();
+
+                if (!fnName) {
+                    throw new Error("Invalid path");
+                }
+
+                return getProcedureMethods([...path, fnName])[fnName](...args);
+            },
+        });
+    };
+
+    return createCallerProxy([]);
+}

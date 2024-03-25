@@ -8,7 +8,7 @@ module.exports = {
     arrowParens: "always",
     endOfLine: "lf",
     embeddedLanguageFormatting: "auto",
-    tailwindConfig: "./tailwind.config.js",
+    tailwindConfig: "./apps/web/tailwind.config.js",
     tailwindFunctions: ["clsx"],
 
     importOrder: [

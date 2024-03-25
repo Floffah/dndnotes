@@ -16,6 +16,10 @@ function createCallerProxy(
 ) {
     return new Proxy(() => void 0, {
         get(_original, key) {
+            if (typeof key !== "string" || key === "then" || key === "catch") {
+                return undefined;
+            }
+
             return createCallerProxy(caller, [...parent, String(key)]);
         },
         apply(_original, _thisArg, args) {

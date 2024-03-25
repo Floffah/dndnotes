@@ -1,9 +1,8 @@
-import { ClientProvider } from "@dndnotes/backend-framework/client";
 import { Nunito } from "next/font/google";
 
 import "@/app/globals.css";
-import { api } from "@/app/lib/api";
 import { populateMetadata } from "@/app/lib/populateMetadata";
+import { APIProvider } from "@/app/providers/APIProvider";
 import { DialogProvider } from "@/app/providers/DialogProvider";
 
 export const metadata = populateMetadata({
@@ -17,9 +16,9 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en" className={nunito.variable}>
             <body className={nunito.className}>
-                <ClientProvider environment={api}>
+                <APIProvider>
                     <DialogProvider>{children}</DialogProvider>
-                </ClientProvider>
+                </APIProvider>
             </body>
         </html>
     );

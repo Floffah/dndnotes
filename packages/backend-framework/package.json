@@ -1,7 +1,5 @@
 {
   "name": "@dndnotes/backend-framework",
-  "main": "./dist/shared/index.js",
-  "types": "./dist/shared/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/shared/index.d.ts",
@@ -10,10 +8,16 @@
       "default": "./dist/shared/index.js"
     },
     "./client": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./dist/client/index.d.ts",
+      "import": "./dist/client/index.mjs",
+      "require": "./dist/client/index.js",
+      "default": "./dist/client/index.js"
+    },
+    "./client/context": {
+      "types": "./dist/client/react/context.d.ts",
+      "import": "./dist/client/react/context.mjs",
+      "require": "./dist/client/react/context.js",
+      "default": "./dist/client/react/context.js"
     },
     "./server": {
       "types": "./dist/server/index.d.ts",
@@ -28,7 +32,10 @@
         "./dist/shared/index.d.ts"
       ],
       "client": [
-        "./dist/index.d.ts"
+        "./dist/client/index.d.ts"
+      ],
+      "client/context": [
+        "./dist/client/react/context.d.ts"
       ],
       "server": [
         "./dist/server/index.d.ts"
@@ -48,7 +55,6 @@
     "mongoose": "^8.2.3",
     "nanoid": "^5.0.6",
     "notion-client": "^6.16.0",
-    "react": "^18.2.0",
     "superjson": "^2.2.1",
     "zod": "^3.22.4"
   },
@@ -61,5 +67,8 @@
     "ts-jest": "^29.1.2",
     "tsup": "^8.0.2",
     "typescript": "^5.4.3"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
   }
 }

@@ -41,7 +41,7 @@ export function createCallerClient<Router extends ProtoBuilderRouter<any>>(
 
     const getProcedureMethods = (path: string[]) => {
         const procedure = path.reduce(
-            (acc, key) => acc[key],
+            (acc, key) => acc._defs.fields[key],
             opts.router,
         ) as any;
 
@@ -80,6 +80,14 @@ export function createCallerClient<Router extends ProtoBuilderRouter<any>>(
     const createCallerProxy = (parent: string[]) => {
         return new Proxy(() => void 0, {
             get(_original, key) {
+                if (
+                    typeof key !== "string" ||
+                    key === "then" ||
+                    key === "catch"
+                ) {
+                    return undefined;
+                }
+
                 if (key === "dehydrate") {
                     return dehydrate;
                 }
@@ -90,14 +98,24 @@ export function createCallerClient<Router extends ProtoBuilderRouter<any>>(
                 const path = [...parent];
                 const fnName = path.pop();
 
+                console.log({ path, fnName, args });
+
                 if (!fnName) {
                     throw new Error("Invalid path");
                 }
 
-                return getProcedureMethods([...path, fnName])[fnName](...args);
+                const methods = getProcedureMethods(path);
+
+                if (!methods[fnName]) {
+                    return undefined;
+                }
+
+                return methods[fnName](...args);
             },
         });
     };
 
-    return createCallerProxy([]);
+    const proxy = createCallerProxy([]);
+
+    return proxy;
 }

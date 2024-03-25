@@ -27,12 +27,14 @@ export function ClientProvider({
 }: PropsWithChildren<{
     environment: ReturnType<typeof createReactEnvironment<any>>;
 }>) {
+    "use client";
+
     const [queryClient] = useState(() => getQueryClient());
 
     useLayoutEffect(() => {
         const interval = setInterval(() => {
             environment._internals.batcher.execute();
-        }, 10);
+        }, 1000);
 
         return () => {
             clearInterval(interval);

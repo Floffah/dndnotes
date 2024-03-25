@@ -217,6 +217,7 @@ export function createReactEnvironment<Router extends ProtoBuilderRouter<any>>(
                     ),
             });
         },
+        toJSON: () => path,
     });
 
     const nonProxiedKeys = {
@@ -228,11 +229,19 @@ export function createReactEnvironment<Router extends ProtoBuilderRouter<any>>(
         useCache: useCache<Router>,
     };
 
-    const createCallerProxy = (parent: string[]) => {
-        return new Proxy(() => void 0, {
+    const createCallerProxy = (parent: string[], base: any = () => void 0) => {
+        return new Proxy(base, {
             get(_original, key) {
-                if (key in nonProxiedKeys) {
-                    return nonProxiedKeys[key as keyof typeof nonProxiedKeys];
+                if (
+                    typeof key !== "string" ||
+                    key === "then" ||
+                    key === "catch"
+                ) {
+                    return undefined;
+                }
+
+                if (nonProxiedKeys[key]) {
+                    return nonProxiedKeys[key];
                 }
 
                 return createCallerProxy([...parent, String(key)]);
@@ -248,7 +257,7 @@ export function createReactEnvironment<Router extends ProtoBuilderRouter<any>>(
                 const functions = procedureFunctions(path);
 
                 if (!functions[fnName]) {
-                    throw new Error("Invalid path");
+                    throw new Error(`Unknown function ${fnName}`);
                 }
 
                 return functions[fnName](...args);
@@ -256,6 +265,8 @@ export function createReactEnvironment<Router extends ProtoBuilderRouter<any>>(
         });
     };
 
-    return createCallerProxy([]) as ReactProcedureCaller<Router> &
-        typeof nonProxiedKeys;
+    return createCallerProxy(
+        [],
+        nonProxiedKeys,
+    ) as ReactProcedureCaller<Router> & typeof nonProxiedKeys;
 }

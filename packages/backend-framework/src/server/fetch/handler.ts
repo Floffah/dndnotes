@@ -44,6 +44,7 @@ interface FetchHandlerOpts<Router extends ProtoBuilderRouter<any>> {
     createContext: (
         context: FetchHandlerContext,
     ) => Promise<Router["_defs"]["context"]> | Router["_defs"]["context"];
+    prefix?: string;
 }
 
 export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
@@ -69,9 +70,17 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
             return new Response("No inputs specified", { status: 400 });
         }
 
-        const procedureNames = decodeURIComponent(url.pathname.slice(1)).split(
-            ",",
-        );
+        let pathname = url.pathname;
+
+        if (options.prefix) {
+            if (!pathname.startsWith(options.prefix)) {
+                return new Response("Invalid prefix", { status: 400 });
+            }
+
+            pathname = pathname.slice(options.prefix.length);
+        }
+
+        const procedureNames = decodeURIComponent(pathname.slice(1)).split(",");
         const procedures = procedureNames.map((name) => {
             const procedure = getProcedureByPath(name, options.appRouter);
 

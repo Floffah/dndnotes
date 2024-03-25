@@ -33,7 +33,7 @@ export default async function CampaignJoinPageLayout({
     children,
     params: { campaignId, inviteCode },
 }) {
-    const helpers = await getTRPCServerHelpers();
+    const helpers = await getServerHelpers();
 
     try {
         await helpers.campaign.invite.get.fetch({

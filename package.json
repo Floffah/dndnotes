@@ -8,7 +8,8 @@
     "deps": "ncu --target semver -ws",
     "build": "turbo run build",
     "start": "turbo run start",
-    "dev": "turbo run dev"
+    "dev": "turbo run dev",
+    "env": "vercel env pull apps/web/.env"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",

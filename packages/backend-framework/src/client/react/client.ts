@@ -121,8 +121,6 @@ function createBatcher(opts: BatcherOptions) {
 
             const results = opts.transformer.deserialize(await res.json());
 
-            console.log(results);
-
             if (results?.error) {
                 currentBatch.forEach(({ reject }) => reject(results.error));
             } else {

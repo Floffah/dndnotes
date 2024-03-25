@@ -15,8 +15,6 @@ export default async function LoginPage({
     const user =
         cookies().has(SESSION_TOKEN) && (await helpers.user.me.fetch());
 
-    console.log(user);
-
     if (user) {
         redirect(
             redirectUri ? decodeURIComponent(redirectUri) : "/home",

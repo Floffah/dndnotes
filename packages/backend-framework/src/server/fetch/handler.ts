@@ -5,7 +5,7 @@ import {
     ProtoBuilderRouter,
     ProtoBuilderType,
 } from "@/server";
-import { ServerError } from "@/shared";
+import { ServerError, ServerErrorCode } from "@/shared";
 
 const getProcedureByPath = <TraversingRouter extends ProtoBuilderRouter<any>>(
     path: string,
@@ -53,18 +53,27 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
             const url = new URL(req.url);
 
             if (url.pathname.trim() === "/") {
-                return new Response("No procedures specified", { status: 400 });
+                throw new ServerError({
+                    code: "BAD_REQUEST",
+                    message: "No procedure provided",
+                });
             }
 
-            if (!url.searchParams.has("inputs")) {
-                return new Response("No inputs specified", { status: 400 });
+            if (req.method === "GET" && !url.searchParams.has("inputs")) {
+                throw new ServerError({
+                    code: "BAD_REQUEST",
+                    message: "No inputs provided",
+                });
             }
 
             let pathname = url.pathname;
 
             if (options.prefix) {
                 if (!pathname.startsWith(options.prefix)) {
-                    return new Response("Invalid prefix", { status: 400 });
+                    throw new ServerError({
+                        code: "BAD_REQUEST",
+                        message: `Path does not start with prefix ${options.prefix}`,
+                    });
                 }
 
                 pathname = pathname.slice(options.prefix.length);
@@ -77,7 +86,10 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                 const procedure = getProcedureByPath(name, options.appRouter);
 
                 if (!procedure) {
-                    throw new Error(`Procedure ${name} not found`);
+                    throw new ServerError({
+                        code: "BAD_REQUEST",
+                        message: `Procedure ${name} not found`,
+                    });
                 }
 
                 return [name, procedure] as const;
@@ -90,8 +102,9 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                 ) &&
                 req.method !== "POST"
             ) {
-                return new Response("Mutations must be sent as POST requests", {
-                    status: 400,
+                throw new ServerError({
+                    code: "BAD_REQUEST",
+                    message: "Mutations must be called with POST method",
                 });
             }
 
@@ -114,7 +127,10 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                     const input = queryInputs[index];
 
                     if (!input) {
-                        throw new Error(`No input provided for query ${name}`);
+                        throw new ServerError({
+                            code: "BAD_REQUEST",
+                            message: `No input provided for query ${name}`,
+                        });
                     }
 
                     let result;
@@ -166,6 +182,34 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                 },
             );
         } catch (error: any) {
+            let status = 500;
+
+            if (error instanceof ServerError) {
+                switch (error.code) {
+                    case ServerErrorCode.BAD_REQUEST:
+                        status = 400;
+                        break;
+                    case ServerErrorCode.UNAUTHORIZED:
+                        status = 401;
+                        break;
+                    case ServerErrorCode.FORBIDDEN:
+                        status = 403;
+                        break;
+                    case ServerErrorCode.NOT_FOUND:
+                        status = 404;
+                        break;
+                    case ServerErrorCode.CONFLICT:
+                        status = 409;
+                        break;
+                    case ServerErrorCode.INTERNAL_SERVER_ERROR:
+                        status = 500;
+                        break;
+                    default:
+                        status = 500;
+                        break;
+                }
+            }
+
             return new Response(
                 JSON.stringify(
                     options.appRouter._defs.transformer.serialize({
@@ -173,7 +217,7 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                         error: error?.message ?? error.toString(),
                     }),
                 ),
-                { status: 500, headers: resHeaders },
+                { status, headers: resHeaders },
             );
         }
     };

@@ -8,8 +8,6 @@ export function ClientHydrationBoundary({
     state,
     ...props
 }: ComponentProps<typeof RQHydrationBoundary> & { state: any }) {
-    console.log(state);
-
     return (
         <RQHydrationBoundary
             state={"json" in state ? deserialize(state) : state}

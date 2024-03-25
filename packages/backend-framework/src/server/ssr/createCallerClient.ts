@@ -4,6 +4,7 @@ import {
 } from "@tanstack/react-query";
 import { z } from "zod";
 
+import { getQueryKey } from "@/client/react/queryKeys";
 import { getQueryClient } from "@/client/react/reactQuery";
 import {
     ProtoBuilderProcedure,
@@ -48,9 +49,9 @@ export function createCallerClient<Router extends ProtoBuilderRouter<any>>(
         return {
             fetch: (input: any) => {
                 return queryClient.fetchQuery({
-                    queryKey: [...path, input],
+                    queryKey: getQueryKey(path, input),
                     queryFn: () => {
-                        procedure._defs.executor({
+                        return procedure._defs.executor({
                             ctx: opts.ctx,
                             input,
                         });
@@ -59,9 +60,9 @@ export function createCallerClient<Router extends ProtoBuilderRouter<any>>(
             },
             prefetch: (input: any) => {
                 return queryClient.prefetchQuery({
-                    queryKey: [...path, input],
+                    queryKey: getQueryKey(path, input),
                     queryFn: () => {
-                        procedure._defs.executor({
+                        return procedure._defs.executor({
                             ctx: opts.ctx,
                             input,
                         });
@@ -97,8 +98,6 @@ export function createCallerClient<Router extends ProtoBuilderRouter<any>>(
             apply(_original, _thisArg, args) {
                 const path = [...parent];
                 const fnName = path.pop();
-
-                console.log({ path, fnName, args });
 
                 if (!fnName) {
                     throw new Error("Invalid path");

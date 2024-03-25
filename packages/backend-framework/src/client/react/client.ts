@@ -9,6 +9,7 @@ import {
 import { z } from "zod";
 
 import { useCache } from "@/client";
+import { getQueryKey } from "@/client/react/queryKeys";
 import {
     ProcedureType,
     ProtoBuilderProcedure,
@@ -91,8 +92,9 @@ function createBatcher(opts: BatcherOptions) {
             const paths = currentBatch
                 .map(({ path }) => path.join("."))
                 .join(",");
-            const inputs = opts.transformer.serialize(
-                currentBatch.map(({ input }) => input),
+            const rawInputs = currentBatch.map(({ input }) => input);
+            const stringifiedInputs = JSON.stringify(
+                opts.transformer.serialize(rawInputs),
             );
 
             const method = currentBatch.some(
@@ -106,7 +108,7 @@ function createBatcher(opts: BatcherOptions) {
             url.pathname = url.pathname + "/" + paths;
 
             if (method === "GET") {
-                url.searchParams.set("inputs", inputs);
+                url.searchParams.set("inputs", stringifiedInputs);
             }
 
             const res = await fetch(url.toString(), {
@@ -114,28 +116,34 @@ function createBatcher(opts: BatcherOptions) {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: method === "POST" ? JSON.stringify(inputs) : void 0,
+                body: method === "POST" ? stringifiedInputs : void 0,
             });
 
             const results = opts.transformer.deserialize(await res.json());
 
-            currentBatch.forEach(({ resolve, reject }, i) => {
-                const response = results[i];
+            console.log(results);
 
-                if (response.status === "ok") {
-                    resolve(response.data);
-                } else if (response.error.type === "ServerError") {
-                    const error = new ServerError({
-                        code: response.error.code,
-                        message: response.error.message,
-                        cause: response.error.cause,
-                    });
+            if (results?.error) {
+                currentBatch.forEach(({ reject }) => reject(results.error));
+            } else {
+                currentBatch.forEach(({ resolve, reject }, i) => {
+                    const response = results[i];
 
-                    reject(error);
-                } else {
-                    reject(response.error);
-                }
-            });
+                    if (response.status === "ok") {
+                        resolve(response.data);
+                    } else if (response.error.type === "ServerError") {
+                        const error = new ServerError({
+                            code: response.error.code,
+                            message: response.error.message,
+                            cause: response.error.cause,
+                        });
+
+                        reject(error);
+                    } else {
+                        reject(response.error);
+                    }
+                });
+            }
         },
     };
 }
@@ -171,7 +179,7 @@ export function createReactEnvironment<Router extends ProtoBuilderRouter<any>>(
         ): UseQueryResult<Awaited<Procedure["_defs"]["output"]>, unknown> => {
             return useQuery({
                 ...opts,
-                queryKey: [...path, input],
+                queryKey: getQueryKey(path, input),
                 queryFn: () =>
                     new Promise<Awaited<Procedure["_defs"]["output"]>>(
                         (resolve, reject) => {
@@ -202,7 +210,7 @@ export function createReactEnvironment<Router extends ProtoBuilderRouter<any>>(
         > => {
             return useMutation({
                 ...opts,
-                mutationKey: path,
+                mutationKey: getQueryKey(path),
                 mutationFn: (input) =>
                     new Promise<Awaited<Procedure["_defs"]["output"]>>(
                         (resolve, reject) => {

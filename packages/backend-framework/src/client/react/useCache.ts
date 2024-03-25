@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 import { z } from "zod";
 
+import { getQueryKey } from "@/client/react/queryKeys";
 import {
     ProtoBuilderProcedure,
     ProtoBuilderRouter,
@@ -31,10 +32,10 @@ export function useCache<Router extends ProtoBuilderRouter<any>>() {
     const getProcedureFunctions = useCallback((paths: string[]) => {
         return {
             setData: (input: any, data: any) => {
-                queryClient.setQueryData([paths, input], data);
+                queryClient.setQueryData(getQueryKey(paths, input), data);
             },
             getData: (input: any) => {
-                return queryClient.getQueryData([paths, input]);
+                return queryClient.getQueryData(getQueryKey(paths, input));
             },
         };
     }, []);

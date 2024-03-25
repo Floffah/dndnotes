@@ -34,7 +34,7 @@ export function ClientProvider({
     useLayoutEffect(() => {
         const interval = setInterval(() => {
             environment._internals.batcher.execute();
-        }, 1000);
+        }, 10);
 
         return () => {
             clearInterval(interval);

@@ -15,7 +15,6 @@ import {
 } from "@dndnotes/models";
 import { JSONContent, getSchema } from "@tiptap/core";
 import { Node } from "@tiptap/pm/model";
-import { TRPCError } from "@trpc/server";
 import { addDays } from "date-fns";
 import { ObjectId } from "mongodb";
 import { HydratedDocument } from "mongoose";

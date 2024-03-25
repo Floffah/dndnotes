@@ -12,4 +12,4 @@ export async function createBackendCaller(request: Partial<Request>) {
     return createRouterCaller(appRouter, ctx);
 }
 
-export type TRPCServerCaller = Awaited<ReturnType<typeof createBackendCaller>>;
+export type ServerCaller = Awaited<ReturnType<typeof createBackendCaller>>;

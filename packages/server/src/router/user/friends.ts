@@ -5,7 +5,6 @@ import {
     FriendshipRequestState,
     UserError,
 } from "@dndnotes/models";
-import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import { FilterQuery } from "mongoose";
 import { z } from "zod";

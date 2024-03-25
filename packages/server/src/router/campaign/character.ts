@@ -7,7 +7,6 @@ import {
     ViewableBy,
     characterSheet,
 } from "@dndnotes/models";
-import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 

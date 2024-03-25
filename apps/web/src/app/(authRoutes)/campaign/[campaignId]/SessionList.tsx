@@ -4,7 +4,6 @@ import Link from "next/link";
 import { StartSessionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/StartSessionDialog";
 import { Button } from "@/app/components/Button";
 import { Card } from "@/app/components/Card";
-import { Details } from "@/app/components/Details";
 import { Icon } from "@/app/components/Icon";
 import { Tooltip } from "@/app/components/Tooltip";
 import { useCampaign } from "@/app/providers/CampaignProvider";

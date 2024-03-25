@@ -28,7 +28,8 @@
   },
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup --minify --clean"
+    "build": "tsup --minify --clean",
+    "test": "node --no-warnings --experimental-vm-modules ../../node_modules/.bin/jest -i"
   },
   "dependencies": {
     "@dndnotes/backend-framework": "workspace:*",
@@ -36,10 +37,6 @@
     "@dndnotes/models": "workspace:*",
     "@tiptap/core": "^2.2.4",
     "@tiptap/pm": "^2.2.4",
-    "@trpc/client": "^11.0.0-next-beta.318",
-    "@trpc/next": "^11.0.0-next-beta.318",
-    "@trpc/react-query": "^11.0.0-next-beta.318",
-    "@trpc/server": "^11.0.0-next-beta.318",
     "cookie": "^0.6.0",
     "date-fns": "^3.6.0",
     "mongodb": "^6.5.0",

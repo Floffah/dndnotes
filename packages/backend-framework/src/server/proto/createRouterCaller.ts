@@ -33,7 +33,10 @@ export function createRouterCaller<Router extends ProtoBuilderRouter<any>>(
     context: Router["_defs"]["context"],
 ): RouterCaller<Router> {
     return createCallerProxy((path, ...args) => {
-        const procedure = path.reduce((acc, key) => acc[key], router) as any;
+        const procedure = path.reduce(
+            (acc, key) => acc._defs.fields[key],
+            router,
+        ) as any;
 
         if (!procedure) {
             throw new Error("Invalid path");

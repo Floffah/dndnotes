@@ -2,17 +2,14 @@ import { SESSION_TOKEN } from "@dndnotes/lib";
 import { Campaign, User } from "@dndnotes/models";
 import { ObjectId } from "mongodb";
 
-import {
-    TRPCServerCaller,
-    createBackendCaller,
-} from "@/lib/createBackendCaller";
+import { ServerCaller, createBackendCaller } from "@/lib/createBackendCaller";
 import { CampaignMemberModel } from "@/models/CampaignMemberModel";
 import { CampaignModel } from "@/models/CampaignModel";
 import { resetDatabase } from "@/tests/utils/mongo";
 import { createUser } from "@/tests/utils/user";
 
 let authUser: User;
-let trpc: TRPCServerCaller;
+let api: ServerCaller;
 
 beforeAll(async () => {
     await resetDatabase();
@@ -20,7 +17,7 @@ beforeAll(async () => {
     const { user, session } = await createUser(true);
     authUser = user;
 
-    trpc = await createBackendCaller({
+    api = await createBackendCaller({
         headers: new Headers({
             cookie: `${SESSION_TOKEN}=${session.token}`,
         }),
@@ -28,7 +25,7 @@ beforeAll(async () => {
 });
 
 test("Create", async () => {
-    const campaign = await trpc.campaign.create({
+    const campaign = await api.campaign.create({
         name: "Test Campaign",
     });
 
@@ -50,7 +47,7 @@ test("Read", async () => {
         createdBy: new ObjectId(authUser.id),
     });
 
-    const campaignResponse = await trpc.campaign.get(campaign.id);
+    const campaignResponse = await api.campaign.get(campaign.id);
 
     expect(campaignResponse?.id).toEqual(campaign.id);
 });
@@ -59,13 +56,13 @@ describe("Update", () => {
     let campaign: Campaign;
 
     beforeAll(async () => {
-        campaign = await trpc.campaign.create({
+        campaign = await api.campaign.create({
             name: "Test Campaign",
         });
     });
 
     test("Name", async () => {
-        const campaignResponse = await trpc.campaign.update({
+        const campaignResponse = await api.campaign.update({
             id: campaign.id,
             name: "Updated Campaign",
         });
@@ -79,11 +76,11 @@ describe("Update", () => {
 });
 
 test("Delete", async () => {
-    const campaign = await trpc.campaign.create({
+    const campaign = await api.campaign.create({
         name: "Test Campaign",
     });
 
-    const campaignResponse = await trpc.campaign.delete(campaign.id);
+    const campaignResponse = await api.campaign.delete(campaign.id);
 
     expect(campaignResponse).toEqual(true);
 

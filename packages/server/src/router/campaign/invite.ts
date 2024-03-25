@@ -6,7 +6,6 @@ import {
     CampaignMemberType,
     isPopulated,
 } from "@dndnotes/models";
-import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import { nanoid } from "nanoid";
 import { z } from "zod";

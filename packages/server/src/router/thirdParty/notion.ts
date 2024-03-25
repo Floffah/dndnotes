@@ -1,5 +1,4 @@
 import { ServerError } from "@dndnotes/backend-framework";
-import { TRPCError } from "@trpc/server";
 import { NotionAPI } from "notion-client";
 import { z } from "zod";
 

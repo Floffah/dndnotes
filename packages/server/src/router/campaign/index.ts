@@ -4,7 +4,6 @@ import {
     CampaignError,
     CampaignMemberType,
 } from "@dndnotes/models";
-import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 

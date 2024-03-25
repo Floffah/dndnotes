@@ -3,7 +3,6 @@
 import { InputTypes } from "@dndnotes/backend-framework";
 import { CampaignSession } from "@dndnotes/models";
 import { AppRouter } from "@dndnotes/server";
-import { inferProcedureInput } from "@trpc/server";
 import { PropsWithChildren, createContext, useContext } from "react";
 
 import { api } from "@/app/lib/api";

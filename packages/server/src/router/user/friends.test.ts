@@ -6,10 +6,7 @@ import {
     UserSession,
 } from "@dndnotes/models";
 
-import {
-    TRPCServerCaller,
-    createBackendCaller,
-} from "@/lib/createBackendCaller";
+import { ServerCaller, createBackendCaller } from "@/lib/createBackendCaller";
 import { FriendshipRequestModel } from "@/models/FriendshipRequestModel";
 import { resetDatabase } from "@/tests/utils/mongo";
 import { createUser } from "@/tests/utils/user";
@@ -32,10 +29,10 @@ beforeAll(async () => {
 });
 
 describe("No friends", () => {
-    let trpc: TRPCServerCaller;
+    let api: ServerCaller;
 
     beforeAll(async () => {
-        trpc = await createBackendCaller({
+        api = await createBackendCaller({
             headers: new Headers({
                 cookie: `${SESSION_TOKEN}=${session1.token}`,
             }),
@@ -43,7 +40,7 @@ describe("No friends", () => {
     });
 
     test("User has no pending requests", async () => {
-        const friends = await trpc.user.friends.getPending({
+        const friends = await api.user.friends.getPending({
             to: user1.id,
         });
 
@@ -51,7 +48,7 @@ describe("No friends", () => {
     });
 
     test("User has no friends", async () => {
-        const friends = await trpc.user.friends.getAccepted({
+        const friends = await api.user.friends.getAccepted({
             user: user1.id,
         });
 
@@ -60,17 +57,17 @@ describe("No friends", () => {
 });
 
 describe("Other user sends friend request", () => {
-    let trpcUser1: TRPCServerCaller;
-    let trpcUser2: TRPCServerCaller;
+    let apiUser1: ServerCaller;
+    let apiUser2: ServerCaller;
     let request: FriendshipRequest;
 
     beforeAll(async () => {
-        trpcUser1 = await createBackendCaller({
+        apiUser1 = await createBackendCaller({
             headers: new Headers({
                 cookie: `${SESSION_TOKEN}=${session1.token}`,
             }),
         });
-        trpcUser2 = await createBackendCaller({
+        apiUser2 = await createBackendCaller({
             headers: new Headers({
                 cookie: `${SESSION_TOKEN}=${session2.token}`,
             }),
@@ -82,7 +79,7 @@ describe("Other user sends friend request", () => {
             await FriendshipRequestModel.findByIdAndDelete(request.id);
         }
 
-        request = await trpcUser2.user.friends.sendRequest({
+        request = await apiUser2.user.friends.sendRequest({
             to: {
                 id: user1.id,
             },
@@ -90,12 +87,12 @@ describe("Other user sends friend request", () => {
     });
 
     test("Accept friend request", async () => {
-        await trpcUser1.user.friends.updateRequest({
+        await apiUser1.user.friends.updateRequest({
             id: request.id,
             state: FriendshipRequestState.ACCEPTED,
         });
 
-        const friends = await trpcUser1.user.friends.getAccepted({
+        const friends = await apiUser1.user.friends.getAccepted({
             user: user1.id,
         });
 
@@ -105,7 +102,7 @@ describe("Other user sends friend request", () => {
 
     test("Accept friend request sent to another user", () => {
         return expect(
-            trpcUser2.user.friends.updateRequest({
+            apiUser2.user.friends.updateRequest({
                 id: request.id,
                 state: FriendshipRequestState.ACCEPTED,
             }),
@@ -113,12 +110,12 @@ describe("Other user sends friend request", () => {
     });
 
     test("Reject friend request", async () => {
-        await trpcUser1.user.friends.updateRequest({
+        await apiUser1.user.friends.updateRequest({
             id: request.id,
             state: FriendshipRequestState.DENIED,
         });
 
-        const friends = await trpcUser1.user.friends.getAccepted({
+        const friends = await apiUser1.user.friends.getAccepted({
             user: user1.id,
         });
 
@@ -133,7 +130,7 @@ describe("Other user sends friend request", () => {
 
     test("Reject friend request sent to another user", () => {
         return expect(
-            trpcUser2.user.friends.updateRequest({
+            apiUser2.user.friends.updateRequest({
                 id: request.id,
                 state: FriendshipRequestState.DENIED,
             }),
@@ -141,12 +138,12 @@ describe("Other user sends friend request", () => {
     });
 
     test("Delete friend request", async () => {
-        await trpcUser2.user.friends.updateRequest({
+        await apiUser2.user.friends.updateRequest({
             id: request.id,
             state: FriendshipRequestState.DELETED,
         });
 
-        const friends = await trpcUser1.user.friends.getAccepted({
+        const friends = await apiUser1.user.friends.getAccepted({
             user: user1.id,
         });
 
@@ -161,7 +158,7 @@ describe("Other user sends friend request", () => {
 
     test("Delete friend request current user did not send", () => {
         return expect(
-            trpcUser1.user.friends.updateRequest({
+            apiUser1.user.friends.updateRequest({
                 id: request.id,
                 state: FriendshipRequestState.DELETED,
             }),

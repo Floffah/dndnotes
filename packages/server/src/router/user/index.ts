@@ -1,6 +1,5 @@
 import { ServerError } from "@dndnotes/backend-framework";
 import { UserAPIModel, UserError } from "@dndnotes/models";
-import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 

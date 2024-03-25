@@ -1,5 +1,4 @@
-import { CampaignMemberType } from "@dndnotes/models";
-import { CampaignSessionSchedule } from "@dndnotes/models";
+import { CampaignMemberType, CampaignSessionSchedule } from "@dndnotes/models";
 import { formatDistance, formatRelative } from "date-fns";
 import Link from "next/link";
 import { useMemo } from "react";

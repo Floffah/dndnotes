@@ -637,10 +637,6 @@ __metadata:
     "@swc/jest": "npm:^0.2.36"
     "@tiptap/core": "npm:^2.2.4"
     "@tiptap/pm": "npm:^2.2.4"
-    "@trpc/client": "npm:^11.0.0-next-beta.318"
-    "@trpc/next": "npm:^11.0.0-next-beta.318"
-    "@trpc/react-query": "npm:^11.0.0-next-beta.318"
-    "@trpc/server": "npm:^11.0.0-next-beta.318"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.11.30"
     cookie: "npm:^0.6.0"
@@ -3520,55 +3516,6 @@ __metadata:
     "@vue/compiler-sfc":
       optional: true
   checksum: 10c0/42270fb9c89e54a3f8b6ac8c43e6d0e03350e2857e902cdad4de22c78ef1864da600525595311bc7e94e51c16c7dd3882c2e048a162fdab59761ffa893756aa2
-  languageName: node
-  linkType: hard
-
-"@trpc/client@npm:^11.0.0-next-beta.318":
-  version: 11.0.0-next-beta.318
-  resolution: "@trpc/client@npm:11.0.0-next-beta.318"
-  peerDependencies:
-    "@trpc/server": 11.0.0-next-beta.318+e9899d002
-  checksum: 10c0/0b25de9db0f211276d5ab1b09332b3ebc19a0a8efedc18c922b878f723d545f839a6c4492e13936b10dfc4726e0df0d92fe395642af5e2b072a26e01bc0f8f76
-  languageName: node
-  linkType: hard
-
-"@trpc/next@npm:^11.0.0-next-beta.318":
-  version: 11.0.0-next-beta.318
-  resolution: "@trpc/next@npm:11.0.0-next-beta.318"
-  peerDependencies:
-    "@tanstack/react-query": ^5.25.0
-    "@trpc/client": 11.0.0-next-beta.318+e9899d002
-    "@trpc/react-query": 11.0.0-next-beta.318+e9899d002
-    "@trpc/server": 11.0.0-next-beta.318+e9899d002
-    next: "*"
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  peerDependenciesMeta:
-    "@tanstack/react-query":
-      optional: true
-    "@trpc/react-query":
-      optional: true
-  checksum: 10c0/b04ac4341a5341924a07e1543a6b5a22b05c1426c7690a5fdc72cc8c32d6e599a221d0b20ce5f7d89d72ba1c21ae163aa5f607193f8f774abba3017047cef90f
-  languageName: node
-  linkType: hard
-
-"@trpc/react-query@npm:^11.0.0-next-beta.318":
-  version: 11.0.0-next-beta.318
-  resolution: "@trpc/react-query@npm:11.0.0-next-beta.318"
-  peerDependencies:
-    "@tanstack/react-query": ^5.25.0
-    "@trpc/client": 11.0.0-next-beta.318+e9899d002
-    "@trpc/server": 11.0.0-next-beta.318+e9899d002
-    react: ">=18.2.0"
-    react-dom: ">=18.2.0"
-  checksum: 10c0/1bce098a5b02b1e8fa31627b67e8df8e4af462ac027018ecec0f92095a53d94d982413388d0596061096e2ac5d7621e32497cba37ad7af05297725fcb240d8c1
-  languageName: node
-  linkType: hard
-
-"@trpc/server@npm:^11.0.0-next-beta.318":
-  version: 11.0.0-next-beta.318
-  resolution: "@trpc/server@npm:11.0.0-next-beta.318"
-  checksum: 10c0/99c32c088116ca76951a72b979ce61ec61da873818768ec522f285c421fa05b93e78474bb6f15fd1b65f4f0e13f45bb29ffcbb55f8caed93955f1a8896efffd6
   languageName: node
   linkType: hard
 

@@ -1,5 +1,4 @@
-import { CampaignMemberType } from "@dndnotes/models";
-import { CampaignMember } from "@dndnotes/models";
+import { CampaignMember, CampaignMemberType } from "@dndnotes/models";
 import clsx from "clsx";
 
 import { CampaignInviteDialog } from "@/app/(authRoutes)/campaign/[campaignId]/CampaignInviteDialog";

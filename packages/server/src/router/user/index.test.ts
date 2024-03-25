@@ -1,10 +1,7 @@
 import { SESSION_TOKEN } from "@dndnotes/lib";
 import { User, UserSession } from "@dndnotes/models";
 
-import {
-    TRPCServerCaller,
-    createBackendCaller,
-} from "@/lib/createBackendCaller";
+import { ServerCaller, createBackendCaller } from "@/lib/createBackendCaller";
 import { resetDatabase } from "@/tests/utils/mongo";
 import { createUser } from "@/tests/utils/user";
 
@@ -21,10 +18,10 @@ describe("Authentication", () => {
     });
 
     describe("Not authenticated", () => {
-        let trpc: TRPCServerCaller;
+        let api: ServerCaller;
 
         beforeAll(async () => {
-            trpc = await createBackendCaller({
+            api = await createBackendCaller({
                 headers: new Headers({
                     cookie: "",
                 }),
@@ -32,16 +29,16 @@ describe("Authentication", () => {
         });
 
         test("User is not authenticated", async () => {
-            const response = await trpc.user.me();
+            const response = await api.user.me();
             expect(response).toEqual(null);
         });
     });
 
     describe("Authenticated", () => {
-        let trpc: TRPCServerCaller;
+        let api: ServerCaller;
 
         beforeAll(async () => {
-            trpc = await createBackendCaller({
+            api = await createBackendCaller({
                 headers: new Headers({
                     cookie: `${SESSION_TOKEN}=${session1.token}`,
                 }),
@@ -49,13 +46,13 @@ describe("Authentication", () => {
         });
 
         test("User is authenticated", async () => {
-            const response = await trpc.user.me();
+            const response = await api.user.me();
 
             expect(response?.id).toEqual(user1.id);
         });
 
         test("API does expose email", async () => {
-            const response = await trpc.user.me();
+            const response = await api.user.me();
 
             expect(response?.email).toEqual(user1.email);
         });
@@ -83,13 +80,13 @@ describe("Fetching", () => {
             let userResponse: User | null;
 
             beforeAll(async () => {
-                const trpc = await createBackendCaller({
+                const api = await createBackendCaller({
                     headers: new Headers({
                         cookie: `${SESSION_TOKEN}=${session1.token}`,
                     }),
                 });
 
-                userResponse = await trpc.user.get({
+                userResponse = await api.user.get({
                     id: user2.id,
                 });
             });
@@ -107,13 +104,13 @@ describe("Fetching", () => {
             let userResponse: User | null;
 
             beforeAll(async () => {
-                const trpc = await createBackendCaller({
+                const api = await createBackendCaller({
                     headers: new Headers({
                         cookie: "",
                     }),
                 });
 
-                userResponse = await trpc.user.get({
+                userResponse = await api.user.get({
                     id: user2.id,
                 });
             });

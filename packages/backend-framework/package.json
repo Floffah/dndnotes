@@ -13,12 +13,6 @@
       "require": "./dist/client/index.js",
       "default": "./dist/client/index.js"
     },
-    "./client/context": {
-      "types": "./dist/client/react/context.d.ts",
-      "import": "./dist/client/react/context.mjs",
-      "require": "./dist/client/react/context.js",
-      "default": "./dist/client/react/context.js"
-    },
     "./server": {
       "types": "./dist/server/index.d.ts",
       "import": "./dist/server/index.mjs",
@@ -33,9 +27,6 @@
       ],
       "client": [
         "./dist/client/index.d.ts"
-      ],
-      "client/context": [
-        "./dist/client/react/context.d.ts"
       ],
       "server": [
         "./dist/server/index.d.ts"

@@ -12,31 +12,20 @@ const getProcedureByPath = <TraversingRouter extends ProtoBuilderRouter<any>>(
     currentRouter: TraversingRouter,
 ): ProtoBuilderProcedure | undefined => {
     const parts = path.split(".");
-    const currentPart = parts.shift();
 
-    if (!currentPart) {
-        return;
+    const field = parts.reduce<ProtoBuilderRouter<any> | ProtoBuilderProcedure>(
+        (acc, part) =>
+            acc._defs.builderType === ProtoBuilderType.Router
+                ? acc?._defs.fields[part]
+                : null,
+        currentRouter,
+    );
+
+    if (!field || field._defs.builderType !== ProtoBuilderType.Procedure) {
+        return undefined;
     }
 
-    const currentField = currentRouter._defs.fields[currentPart];
-
-    if (!currentField) {
-        return;
-    }
-
-    if (
-        "_defs" in currentField &&
-        currentField._defs.builderType === ProtoBuilderType.Procedure
-    ) {
-        return currentField;
-    }
-
-    if (
-        "_defs" in currentField &&
-        currentField._defs.builderType === "Router"
-    ) {
-        return getProcedureByPath(parts.join("."), currentField);
-    }
+    return field as ProtoBuilderProcedure;
 };
 
 interface FetchHandlerOpts<Router extends ProtoBuilderRouter<any>> {
@@ -55,121 +44,137 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
             "Content-Type": "application/json",
         });
 
-        const context = await options.createContext({
-            req,
-            resHeaders,
-        });
-
-        const url = new URL(req.url);
-
-        if (url.pathname.trim() === "/") {
-            return new Response("No procedures specified", { status: 400 });
-        }
-
-        if (!url.searchParams.has("inputs")) {
-            return new Response("No inputs specified", { status: 400 });
-        }
-
-        let pathname = url.pathname;
-
-        if (options.prefix) {
-            if (!pathname.startsWith(options.prefix)) {
-                return new Response("Invalid prefix", { status: 400 });
-            }
-
-            pathname = pathname.slice(options.prefix.length);
-        }
-
-        const procedureNames = decodeURIComponent(pathname.slice(1)).split(",");
-        const procedures = procedureNames.map((name) => {
-            const procedure = getProcedureByPath(name, options.appRouter);
-
-            if (!procedure) {
-                throw new Error(`Procedure ${name} not found`);
-            }
-
-            return [name, procedure] as const;
-        });
-
-        if (
-            procedures.some(
-                ([_, procedure]) =>
-                    procedure._defs.type === ProcedureType.Mutation,
-            ) &&
-            req.method !== "POST"
-        ) {
-            return new Response("Mutations must be sent as POST requests", {
-                status: 400,
+        try {
+            const context = await options.createContext({
+                req,
+                resHeaders,
             });
-        }
 
-        let queryInputs: any[] = [];
+            const url = new URL(req.url);
 
-        if (req.method === "POST") {
-            queryInputs = options.appRouter._defs.transformer.deserialize(
-                await req.json(),
-            );
-        } else {
-            queryInputs = options.appRouter._defs.transformer.deserialize(
-                JSON.parse(decodeURIComponent(url.searchParams.get("inputs")!)),
-            );
-        }
+            if (url.pathname.trim() === "/") {
+                return new Response("No procedures specified", { status: 400 });
+            }
 
-        const results = await Promise.all(
-            procedures.map(([name, procedure], index) => {
-                const input = queryInputs[index];
+            if (!url.searchParams.has("inputs")) {
+                return new Response("No inputs specified", { status: 400 });
+            }
 
-                if (!input) {
-                    throw new Error(`No input provided for query ${name}`);
+            let pathname = url.pathname;
+
+            if (options.prefix) {
+                if (!pathname.startsWith(options.prefix)) {
+                    return new Response("Invalid prefix", { status: 400 });
                 }
 
-                let result;
-                try {
-                    result = procedure._defs.executor({
-                        input,
-                        ctx: context,
-                    });
-                } catch (e: any) {
-                    let error: ServerError;
+                pathname = pathname.slice(options.prefix.length);
+            }
 
-                    if (e instanceof ServerError) {
-                        error = e;
-                    } else {
-                        error = new ServerError({
-                            code: "INTERNAL_SERVER_ERROR",
-                            cause: e,
-                        });
+            const procedureNames = decodeURIComponent(pathname.slice(1)).split(
+                ",",
+            );
+            const procedures = procedureNames.map((name) => {
+                const procedure = getProcedureByPath(name, options.appRouter);
+
+                if (!procedure) {
+                    throw new Error(`Procedure ${name} not found`);
+                }
+
+                return [name, procedure] as const;
+            });
+
+            if (
+                procedures.some(
+                    ([_, procedure]) =>
+                        procedure._defs.type === ProcedureType.Mutation,
+                ) &&
+                req.method !== "POST"
+            ) {
+                return new Response("Mutations must be sent as POST requests", {
+                    status: 400,
+                });
+            }
+
+            let queryInputs: any[] = [];
+
+            if (req.method === "POST") {
+                queryInputs = options.appRouter._defs.transformer.deserialize(
+                    await req.json(),
+                );
+            } else {
+                queryInputs = options.appRouter._defs.transformer.deserialize(
+                    JSON.parse(
+                        decodeURIComponent(url.searchParams.get("inputs")!),
+                    ),
+                );
+            }
+
+            const results = await Promise.all(
+                procedures.map(async ([name, procedure], index) => {
+                    const input = queryInputs[index];
+
+                    if (!input) {
+                        throw new Error(`No input provided for query ${name}`);
                     }
 
-                    result = error;
-                }
+                    let result;
+                    try {
+                        result = await procedure._defs.executor({
+                            input,
+                            ctx: context,
+                        });
+                    } catch (e: any) {
+                        let error: ServerError;
 
-                if (result instanceof ServerError) {
+                        if (e instanceof ServerError) {
+                            error = e;
+                        } else {
+                            error = new ServerError({
+                                code: "INTERNAL_SERVER_ERROR",
+                                cause: e,
+                            });
+                        }
+
+                        result = error;
+                    }
+
+                    if (result instanceof ServerError) {
+                        return {
+                            status: "error",
+                            error: {
+                                type: "ServerError",
+                                code: result.code,
+                                message: result.message,
+                                cause: result.cause,
+                            },
+                        };
+                    }
+
                     return {
-                        status: "error",
-                        error: {
-                            type: "ServerError",
-                            code: result.code,
-                            message: result.message,
-                            cause: result.cause,
-                        },
+                        status: "ok",
+                        data: result,
                     };
-                }
+                }),
+            );
 
-                return {
-                    status: "ok",
-                    data: result,
-                };
-            }),
-        );
-
-        return new Response(
-            JSON.stringify(
-                options.appRouter._defs.transformer.serialize(results),
-            ),
-            {
-                headers: resHeaders,
-            },
-        );
+            return new Response(
+                JSON.stringify(
+                    options.appRouter._defs.transformer.serialize(results),
+                ),
+                {
+                    headers: resHeaders,
+                },
+            );
+        } catch (error: any) {
+            return new Response(
+                JSON.stringify(
+                    options.appRouter._defs.transformer.serialize({
+                        rawError: error,
+                        error: error?.message ?? error.toString(),
+                    }),
+                ),
+                { status: 500, headers: resHeaders },
+            );
+        }
     };
 }

@@ -5,6 +5,7 @@ import {
 import { SESSION_TOKEN } from "@dndnotes/lib";
 import { UserSession, registerTransformerTypes } from "@dndnotes/models";
 import { parse } from "cookie";
+import superjson from "superjson";
 
 import { mongoConnect } from "@/lib/mongoDB";
 import { UserSessionModel } from "@/models/UserSessionModel";
@@ -49,4 +50,6 @@ export type Context = Awaited<ReturnType<typeof createContext>>;
 
 registerTransformerTypes();
 
-export const { procedure, router } = createProtoBuilder().context<Context>();
+export const { procedure, router } = createProtoBuilder({
+    transformer: superjson,
+}).context<Context>();

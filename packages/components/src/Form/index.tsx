@@ -16,26 +16,31 @@ import {
     UseFormReturn,
 } from "react-hook-form";
 
-import { FormButton } from "@/app/components/Form/FormButton";
-import { FormDateInput } from "@/app/components/Form/FormDateInput";
-import { FormField } from "@/app/components/Form/FormField";
-import { FormInput } from "@/app/components/Form/FormInput";
-import { FormSelect } from "@/app/components/Form/FormSelect";
-import { FormSwitch } from "@/app/components/Form/FormSwitch";
+import { FormButton } from "@/Form/FormButton";
+import { FormDateInput } from "@/Form/FormDateInput";
+import { FormField } from "@/Form/FormField";
+import { FormInput } from "@/Form/FormInput";
+import { FormSelect } from "@/Form/FormSelect";
+import { FormSwitch } from "@/Form/FormSwitch";
 
-interface FormProps {
+export interface FormProps {
     form: UseFormReturn<any, any, any>;
     submitHandler: SubmitHandler<any>;
     submitErrorHandler?: SubmitErrorHandler<any>;
 }
 
-interface FormContextValue extends FormProps {
+export interface FormContextValue extends FormProps {
     submit: (e?: BaseSyntheticEvent) => Promise<void>;
 }
 
 export const FormContext = createContext<FormContextValue>(null!);
 
-const FormProvider = ({ children, ...value }: PropsWithChildren<FormProps>) => {
+export const FormProvider = ({
+    children,
+    ...value
+}: PropsWithChildren<FormProps>) => {
+    "use client";
+
     const submit = useCallback(
         (e?: BaseSyntheticEvent) =>
             value.form.handleSubmit(
@@ -57,8 +62,10 @@ const FormProvider = ({ children, ...value }: PropsWithChildren<FormProps>) => {
     );
 };
 
-const FormRoot = forwardRef<HTMLFormElement, ComponentProps<"form">>(
+export const FormRoot = forwardRef<HTMLFormElement, ComponentProps<"form">>(
     ({ children, ...props }, ref) => {
+        "use client";
+
         const form = useContext(FormContext);
 
         return (
@@ -78,6 +85,8 @@ export const Form = Object.assign(
             { form, submitHandler, submitErrorHandler, children, ...props },
             ref,
         ) => {
+            "use client";
+
             return (
                 <FormProvider
                     form={form}

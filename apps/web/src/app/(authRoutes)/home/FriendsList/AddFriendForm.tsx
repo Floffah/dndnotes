@@ -1,10 +1,10 @@
+import { Form } from "@dndnotes/components";
 import { FriendshipRequestError, UserError } from "@dndnotes/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form } from "@/app/components/Form";
 import { useUser } from "@/app/providers/UserProvider";
 
 const addFriendFormSchema = z.object({

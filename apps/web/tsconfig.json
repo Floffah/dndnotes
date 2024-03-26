@@ -37,6 +37,9 @@
     },
     {
       "path": "../../packages/backend-framework/tsconfig.json"
+    },
+    {
+      "path": "../../packages/components/tsconfig.json"
     }
   ],
   "include": [

@@ -1,5 +1,6 @@
 "use client";
 
+import { Button, Card, Loader } from "@dndnotes/components";
 import { Campaign } from "@dndnotes/models";
 import { CampaignFilter } from "@dndnotes/server";
 import clsx from "clsx";
@@ -7,9 +8,6 @@ import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { memo, useMemo } from "react";
 
-import { Button } from "@/app/components/Button";
-import { Card } from "@/app/components/Card";
-import { Loader } from "@/app/components/Loader";
 import { api } from "@/app/lib/api";
 
 const CampaignCard = ({ campaign }: { campaign: Campaign }) => {

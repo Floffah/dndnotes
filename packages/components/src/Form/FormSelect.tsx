@@ -1,22 +1,23 @@
+"use client";
+
 import { ComponentProps, useContext } from "react";
 import { Controller } from "react-hook-form";
 
-import {
-    FormField,
-    FormFieldBaseProps,
-    useFormField,
-} from "@/app/components/Form/FormField";
-import { FormContext } from "@/app/components/Form/index";
-import { Select } from "@/app/components/Select";
+import { FormField, FormFieldBaseProps, useFormField } from "@/Form/FormField";
+import { FormContext } from "@/Form/index";
+import { Select } from "@/Select";
 
-type Base = ComponentProps<typeof Select> & FormFieldBaseProps;
+export type BaseFormSelectProps = ComponentProps<typeof Select> &
+    FormFieldBaseProps;
 
-interface FormSelectProps extends Base {
+export interface FormSelectProps extends BaseFormSelectProps {
     placeholder?: string;
 }
 
 export const FormSelect = Object.assign(
     ({ placeholder, ...props }: FormSelectProps) => {
+        "use client";
+
         const { form } = useContext(FormContext);
 
         const {

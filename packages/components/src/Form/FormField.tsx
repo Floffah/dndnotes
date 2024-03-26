@@ -9,7 +9,7 @@ import {
     useMemo,
 } from "react";
 
-import { FormContext } from "@/app/components/Form/index";
+import { FormContext } from "@/Form/index";
 
 export interface FormFieldBaseProps {
     name: string;
@@ -29,6 +29,8 @@ export const useFormField = <Props extends FormFieldBaseProps>(
         defaultPosition?: FormFieldBaseProps["position"];
     } = {},
 ) => {
+    "use client";
+
     const { form } = useContext(FormContext);
 
     const {

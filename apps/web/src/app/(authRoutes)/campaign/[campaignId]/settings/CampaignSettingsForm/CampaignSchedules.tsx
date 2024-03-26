@@ -1,8 +1,7 @@
+import { Icon, Tooltip } from "@dndnotes/components";
 import { formatDate, formatDuration, formatRelative } from "date-fns";
 
 import { AddScheduleDialog } from "@/app/(authRoutes)/campaign/[campaignId]/settings/CampaignSettingsForm/AddScheduleDialog";
-import { Icon } from "@/app/components/Icon";
-import { Tooltip } from "@/app/components/Tooltip";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 import { useDialogs } from "@/app/providers/DialogProvider";
 

@@ -2,21 +2,19 @@
 
 import { ComponentProps, useContext } from "react";
 
-import {
-    FormField,
-    FormFieldBaseProps,
-    useFormField,
-} from "@/app/components/Form/FormField";
-import { FormContext } from "@/app/components/Form/index";
-import { Input } from "@/app/components/Input";
+import { FormField, FormFieldBaseProps, useFormField } from "@/Form/FormField";
+import { FormContext } from "@/Form/index";
+import { Input } from "@/Input";
 
-interface FormInputProps
+export interface FormInputProps
     extends Omit<
         ComponentProps<typeof Input> & FormFieldBaseProps,
         "children"
     > {}
 
 export function FormInput({ ...props }: FormInputProps) {
+    "use client";
+
     const { form } = useContext(FormContext);
 
     const {

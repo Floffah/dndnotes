@@ -1,9 +1,11 @@
+"use client";
+
 import "./docs.css";
+import { NavBar } from "@dndnotes/components";
 import clsx from "clsx";
 import { JetBrains_Mono } from "next/font/google";
 import { PropsWithChildren } from "react";
 
-import { NavBar } from "@/app/components/NavBar";
 import { NavList } from "@/app/docs/NavList";
 
 const jetbrainsMono = JetBrains_Mono({

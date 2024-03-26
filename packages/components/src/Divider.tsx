@@ -1,3 +1,5 @@
+"use client";
+
 import * as Separator from "@radix-ui/react-separator";
 import clsx from "clsx";
 import { ComponentProps, PropsWithChildren, forwardRef } from "react";

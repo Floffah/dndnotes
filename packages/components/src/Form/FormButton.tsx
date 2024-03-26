@@ -10,13 +10,15 @@ import {
     useRef,
 } from "react";
 
-import { Button } from "@/app/components/Button";
-import { FormContext } from "@/app/components/Form/index";
+import { Button } from "@/Button";
+import { FormContext } from "@/Form/index";
 
 export const FormButton = forwardRef<
     ComponentRef<typeof Button>,
     ComponentProps<typeof Button>
 >(({ onClick, ...props }, externalRef) => {
+    "use client";
+
     const { form, submit } = useContext(FormContext);
 
     const buttonRef = useRef<ComponentRef<typeof Button>>(null);

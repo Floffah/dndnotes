@@ -1,8 +1,8 @@
 "use client";
 
+import { Button } from "@dndnotes/components";
 import { useRouter } from "next/navigation";
 
-import { Button } from "@/app/components/Button";
 import { useCampaignInvite } from "@/app/providers/CampaignInviteProvider";
 
 export default function CampaignInvitePage() {

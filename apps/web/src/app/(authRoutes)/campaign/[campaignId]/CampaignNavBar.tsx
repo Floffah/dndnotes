@@ -1,10 +1,9 @@
 "use client";
 
+import { Divider, Icon } from "@dndnotes/components";
 import { CampaignSession } from "@dndnotes/models";
 import Link from "next/link";
 
-import { Divider } from "@/app/components/Divider";
-import { Icon } from "@/app/components/Icon";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 
 export function CampaignNavBar({ session }: { session?: CampaignSession }) {

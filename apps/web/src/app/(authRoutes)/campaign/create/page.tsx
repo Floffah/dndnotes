@@ -1,12 +1,12 @@
 "use client";
 
+import { Form } from "@dndnotes/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form } from "@/app/components/Form";
 import { api } from "@/app/lib/api";
 
 const formSchema = z.object({

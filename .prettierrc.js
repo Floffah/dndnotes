@@ -14,7 +14,7 @@ module.exports = {
     importOrder: [
         "reflect-metadata",
         "<THIRD_PARTY_MODULES>",
-        "^@crossant/(.*)$",
+        "^@dndnotes/(.*)$",
         "@/(.*)$",
     ],
     importOrderSeparation: true,

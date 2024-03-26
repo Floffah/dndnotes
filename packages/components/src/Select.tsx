@@ -10,7 +10,7 @@ import {
     useState,
 } from "react";
 
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/Icon";
 
 export const SelectButton = forwardRef<
     HTMLButtonElement,
@@ -69,7 +69,7 @@ export const SelectPanel = forwardRef<
     );
 });
 
-interface SelectItemProps extends RUISelect.SelectItemProps {}
+export interface SelectItemProps extends RUISelect.SelectItemProps {}
 
 export const SelectItem = forwardRef<
     HTMLDivElement,
@@ -95,7 +95,7 @@ export const SelectItem = forwardRef<
     );
 });
 
-interface SelectProps extends Omit<RUISelect.SelectProps, "children"> {}
+export interface SelectProps extends Omit<RUISelect.SelectProps, "children"> {}
 
 export interface SelectRef {
     open: () => void;

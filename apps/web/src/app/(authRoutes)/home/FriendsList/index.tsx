@@ -1,13 +1,10 @@
 "use client";
 
+import { Button, Divider, Loader, User } from "@dndnotes/components";
 import { memo } from "react";
 
 import { AddFriendForm } from "@/app/(authRoutes)/home/FriendsList/AddFriendForm";
 import { FriendRequestsDialog } from "@/app/(authRoutes)/home/FriendsList/FriendRequestsDialog";
-import { Button } from "@/app/components/Button";
-import { Divider } from "@/app/components/Divider";
-import { Loader } from "@/app/components/Loader";
-import { User } from "@/app/components/User";
 import { useUser } from "@/app/providers/UserProvider";
 
 export const FriendsList = memo(() => {

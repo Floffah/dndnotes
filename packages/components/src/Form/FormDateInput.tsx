@@ -3,21 +3,19 @@
 import { ComponentProps, useContext } from "react";
 import { useController } from "react-hook-form";
 
-import { DateInput } from "@/app/components/DateInput";
-import {
-    FormField,
-    FormFieldBaseProps,
-    useFormField,
-} from "@/app/components/Form/FormField";
-import { FormContext } from "@/app/components/Form/index";
+import { DateInput } from "@/DateInput";
+import { FormField, FormFieldBaseProps, useFormField } from "@/Form/FormField";
+import { FormContext } from "@/Form/index";
 
-interface FormDateInputProps
+export interface FormDateInputProps
     extends Omit<
         ComponentProps<typeof DateInput> & FormFieldBaseProps,
         "value"
     > {}
 
 export function FormDateInput(props: FormDateInputProps) {
+    "use client";
+
     const { form } = useContext(FormContext);
 
     const {

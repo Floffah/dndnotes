@@ -1,4 +1,5 @@
 import * as Menubar from "@radix-ui/react-menubar";
+import { Button } from "@dndnotes/components";
 import { tiptapExtensions } from "@dndnotes/lib";
 import { Icon } from "@iconify/react";
 import { JSONContent } from "@tiptap/core";
@@ -13,7 +14,6 @@ import clsx from "clsx";
 import Link from "next/link";
 import { ComponentProps, forwardRef } from "react";
 
-import { Button } from "@/app/components/Button";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 import { useCampaignSession } from "@/app/providers/CampaignSessionProvider";
 

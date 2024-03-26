@@ -1,8 +1,8 @@
 "use client";
 
+import { Icon } from "@dndnotes/components";
 import { useRouter } from "next/navigation";
 
-import { Icon } from "@/app/components/Icon";
 import { api } from "@/app/lib/api";
 import { authenticateUser } from "@/app/lib/authenticateUser";
 

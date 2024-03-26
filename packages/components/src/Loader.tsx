@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { forwardRef } from "react";
 
-import { Icon, IconProps } from "@/app/components/Icon";
+import { Icon, IconProps } from "@/Icon";
 
 export const Loader = forwardRef<
     SVGSVGElement,

@@ -1,9 +1,11 @@
+"use client";
+
 import { ComponentProps, forwardRef } from "react";
 
-import { Button } from "@/app/components/Button";
-import { Dialog, DialogRef } from "@/app/components/Dialog";
+import { Button } from "@/Button";
+import { Dialog, DialogRef } from "@/Dialog";
 
-interface ConfirmationDialogProps
+export interface ConfirmationDialogProps
     extends Omit<ComponentProps<typeof Dialog>, "children"> {
     title: string;
     description: string;

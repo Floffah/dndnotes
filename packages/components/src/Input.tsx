@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ComponentProps, forwardRef } from "react";
 
-interface InputProps extends ComponentProps<"input"> {
+export interface InputProps extends ComponentProps<"input"> {
     error?: boolean;
 }
 

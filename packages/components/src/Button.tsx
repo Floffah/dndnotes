@@ -13,10 +13,10 @@ import {
     useState,
 } from "react";
 
-import { Icon } from "@/app/components/Icon";
-import { Loader } from "@/app/components/Loader";
+import { Icon } from "@/Icon";
+import { Loader } from "@/Loader";
 
-interface ButtonProps extends ComponentProps<"button"> {
+export interface ButtonProps extends ComponentProps<"button"> {
     asChild?: boolean;
     size: "sm" | "md";
     color: "primary" | "secondary" | "danger";
@@ -30,6 +30,8 @@ const ButtonContext = createContext<ButtonProps>(null!);
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     (baseProps, ref) => {
+        "use client";
+
         const {
             asChild,
             className,

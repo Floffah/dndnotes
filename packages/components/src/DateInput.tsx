@@ -1,11 +1,13 @@
+"use client";
+
 import * as Popover from "@radix-ui/react-popover";
 import clsx from "clsx";
 import { ComponentProps, forwardRef, useEffect, useRef, useState } from "react";
 
-import { Icon } from "@/app/components/Icon";
-import { Input } from "@/app/components/Input";
+import { Icon } from "@/Icon";
+import { Input } from "@/Input";
 
-interface DateInputProps
+export interface DateInputProps
     extends Omit<ComponentProps<typeof Input>, "value" | "children" | "ref"> {
     value?: Date;
     minimumDate?: Date;
@@ -13,7 +15,7 @@ interface DateInputProps
     onValueChange?: (value: Date) => void;
 }
 
-const MonthButton = ({
+export const DateInputMonthButton = ({
     children,
     selected,
     ...props
@@ -244,7 +246,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                         "Nov",
                                         "Dec",
                                     ].map((month, index) => (
-                                        <MonthButton
+                                        <DateInputMonthButton
                                             key={index}
                                             selected={
                                                 index === value.getMonth()
@@ -260,7 +262,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                             }}
                                         >
                                             {month}
-                                        </MonthButton>
+                                        </DateInputMonthButton>
                                     ))}
                                 </div>
                                 <button

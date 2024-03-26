@@ -1,9 +1,10 @@
 "use client";
 
+import { NavBar } from "@dndnotes/components";
+
 import { CampaignsList } from "@/app/(authRoutes)/home/CampaignsList";
 import { FriendsList } from "@/app/(authRoutes)/home/FriendsList";
 import { DiscordLoginButton } from "@/app/components/DiscordLoginButton";
-import { NavBar } from "@/app/components/NavBar";
 import { useUser } from "@/app/providers/UserProvider";
 
 export default function HomePage() {

@@ -20,9 +20,9 @@ import {
     useState,
 } from "react";
 
-import { Button } from "@/app/components/Button";
+import { Button } from "@/Button";
 
-const DialogContentTitle = forwardRef<
+export const DialogContentTitle = forwardRef<
     HTMLHeadingElement,
     PropsWithChildren<
         { visuallyHidden?: boolean; asChild?: boolean } & Omit<
@@ -48,7 +48,7 @@ const DialogContentTitle = forwardRef<
     return title;
 });
 
-const DialogContentDescription = forwardRef<
+export const DialogContentDescription = forwardRef<
     HTMLParagraphElement,
     PropsWithChildren<
         { visuallyHidden?: boolean; asChild?: boolean } & Omit<
@@ -74,7 +74,7 @@ const DialogContentDescription = forwardRef<
     return description;
 });
 
-const DialogContentBody = forwardRef<
+export const DialogContentBody = forwardRef<
     HTMLDivElement,
     PropsWithChildren<Omit<ComponentProps<"div">, "children" | "ref">>
 >(({ children, className, ...props }, ref) => {
@@ -85,7 +85,7 @@ const DialogContentBody = forwardRef<
     );
 });
 
-const DialogContentFooterButton = forwardRef<
+export const DialogContentFooterButton = forwardRef<
     HTMLButtonElement,
     PropsWithChildren<
         {
@@ -123,7 +123,7 @@ const DialogContentFooterButton = forwardRef<
     );
 });
 
-const DialogContentFooter = Object.assign(
+export const DialogContentFooter = Object.assign(
     forwardRef<
         HTMLDivElement,
         PropsWithChildren<Omit<ComponentProps<"div">, "children" | "ref">> & {
@@ -148,7 +148,7 @@ const DialogContentFooter = Object.assign(
     },
 );
 
-const DialogOverlay = forwardRef<
+export const DialogOverlay = forwardRef<
     HTMLDivElement,
     Omit<ComponentProps<"div">, "children" | "ref">
 >(({ style, className, ...props }, ref) => {
@@ -198,7 +198,7 @@ const DialogOverlay = forwardRef<
     );
 });
 
-const DialogContent = Object.assign(
+export const DialogContent = Object.assign(
     forwardRef<
         HTMLDivElement,
         {
@@ -296,7 +296,7 @@ export interface DialogRef {
     close: () => void;
 }
 
-interface DialogContextValue {
+export interface DialogContextValue {
     isOpen: boolean;
     closable: boolean;
     portal?: boolean;

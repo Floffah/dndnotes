@@ -1,11 +1,8 @@
+import { Button, Card, Icon, Tooltip } from "@dndnotes/components";
 import { format, formatDistance } from "date-fns";
 import Link from "next/link";
 
 import { StartSessionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/StartSessionDialog";
-import { Button } from "@/app/components/Button";
-import { Card } from "@/app/components/Card";
-import { Icon } from "@/app/components/Icon";
-import { Tooltip } from "@/app/components/Tooltip";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 
 export function SessionList() {

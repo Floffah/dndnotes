@@ -1,9 +1,10 @@
 "use client";
 
+import { Button } from "@dndnotes/components";
+
 import { CampaignNavBar } from "@/app/(authRoutes)/campaign/[campaignId]/CampaignNavBar";
 import { CampaignSessionSummary } from "@/app/(authRoutes)/campaign/[campaignId]/session/[sessionId]/CampaignSessionSummary";
 import { LinkToNotionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/session/[sessionId]/LinkToNotionDialog";
-import { Button } from "@/app/components/Button";
 import { useCampaignSession } from "@/app/providers/CampaignSessionProvider";
 
 export default function CampaignSessionPage() {

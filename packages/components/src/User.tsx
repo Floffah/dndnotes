@@ -1,3 +1,5 @@
+"use client";
+
 import { User } from "@dndnotes/models";
 import clsx from "clsx";
 import {
@@ -8,11 +10,11 @@ import {
     useContext,
 } from "react";
 
-interface UserComponentContextValue extends User {}
+export interface UserComponentContextValue extends User {}
 
 const UserComponentContext = createContext<UserComponentContextValue>(null!);
 
-const UserAvatar = forwardRef<
+export const UserAvatar = forwardRef<
     HTMLDivElement,
     Omit<ComponentProps<"div">, "ref" | "children">
 >(({ className, ...props }, ref) => {
@@ -30,7 +32,7 @@ const UserAvatar = forwardRef<
     );
 });
 
-const UserName = forwardRef<
+export const UserName = forwardRef<
     HTMLDivElement,
     Omit<ComponentProps<"div">, "ref" | "children">
 >(({ className, ...props }, ref) => {
@@ -39,7 +41,7 @@ const UserName = forwardRef<
     return <p className={clsx(className, "font-semibold")}>{user.name}</p>;
 });
 
-const UserRoot = Object.assign(
+export const UserRoot = Object.assign(
     ({ user, children }: PropsWithChildren<{ user: User }>) => {
         return (
             <UserComponentContext.Provider value={user}>

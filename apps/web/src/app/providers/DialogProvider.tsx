@@ -1,5 +1,6 @@
 "use client";
 
+import { ConfirmationDialog, Dialog, DialogRef } from "@dndnotes/components";
 import clsx from "clsx";
 import { nanoid } from "nanoid";
 import {
@@ -15,9 +16,6 @@ import {
     useRef,
     useState,
 } from "react";
-
-import { ConfirmationDialog } from "@/app/components/ConfirmationDialog";
-import { Dialog, DialogRef } from "@/app/components/Dialog";
 
 interface DialogInstance {
     id: string;

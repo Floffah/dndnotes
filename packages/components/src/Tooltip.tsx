@@ -1,8 +1,10 @@
+"use client";
+
 import * as RUITooltip from "@radix-ui/react-tooltip";
 import clsx from "clsx";
 import { forwardRef } from "react";
 
-interface TooltipProps
+export interface TooltipProps
     extends Omit<RUITooltip.TooltipContentProps, "title" | "ref"> {
     title: string;
 }

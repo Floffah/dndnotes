@@ -1,11 +1,11 @@
 "use client";
 
+import { Form } from "@dndnotes/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { CampaignSchedules } from "@/app/(authRoutes)/campaign/[campaignId]/settings/CampaignSettingsForm/CampaignSchedules";
-import { Form } from "@/app/components/Form";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 
 const formSchema = z.object({

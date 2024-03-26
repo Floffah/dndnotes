@@ -1,11 +1,8 @@
+import { Dialog, DialogRef, Divider, Icon, Loader } from "@dndnotes/components";
 import { CampaignInvite } from "@dndnotes/models";
 import clsx from "clsx";
 import { PropsWithChildren, forwardRef, useRef, useState } from "react";
 
-import { Dialog, DialogRef } from "@/app/components/Dialog";
-import { Divider } from "@/app/components/Divider";
-import { Icon } from "@/app/components/Icon";
-import { Loader } from "@/app/components/Loader";
 import { api } from "@/app/lib/api";
 import { useAsyncEffect } from "@/app/lib/hooks/useAsyncEffect";
 import { useCampaign } from "@/app/providers/CampaignProvider";

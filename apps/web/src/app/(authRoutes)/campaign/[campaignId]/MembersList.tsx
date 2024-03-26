@@ -1,9 +1,8 @@
+import { Icon, Loader } from "@dndnotes/components";
 import { CampaignMember, CampaignMemberType } from "@dndnotes/models";
 import clsx from "clsx";
 
 import { CampaignInviteDialog } from "@/app/(authRoutes)/campaign/[campaignId]/CampaignInviteDialog";
-import { Icon } from "@/app/components/Icon";
-import { Loader } from "@/app/components/Loader";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 
 function Member({ member }: { member: CampaignMember }) {

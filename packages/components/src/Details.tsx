@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import { ComponentProps, forwardRef } from "react";
 
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/Icon";
 
-interface DetailsItemProps extends Omit<ComponentProps<"div">, "ref"> {
+export interface DetailsItemProps extends Omit<ComponentProps<"div">, "ref"> {
     icon: string;
     label?: string;
 }

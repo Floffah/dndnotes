@@ -1,3 +1,4 @@
+import { Button, Loader } from "@dndnotes/components";
 import { NotionError } from "@dndnotes/server";
 import clsx from "clsx";
 import dynamic from "next/dynamic";
@@ -6,8 +7,6 @@ import { NotionRenderer } from "react-notion-x";
 import "react-notion-x/src/styles.css";
 
 import { LinkToNotionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/session/[sessionId]/LinkToNotionDialog";
-import { Button } from "@/app/components/Button";
-import { Loader } from "@/app/components/Loader";
 import { api } from "@/app/lib/api";
 import { useCampaignSession } from "@/app/providers/CampaignSessionProvider";
 

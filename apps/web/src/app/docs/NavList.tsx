@@ -1,10 +1,10 @@
 "use client";
 
+import { Icon } from "@dndnotes/components";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Icon } from "@/app/components/Icon";
 import { DocsStructure, docsStructure } from "@/app/docs/structure";
 import { toSentenceCase } from "@/app/lib/toSentenceCase";
 

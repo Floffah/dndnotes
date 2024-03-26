@@ -1,12 +1,12 @@
 "use client";
 
+import { Divider, Loader } from "@dndnotes/components";
+
 import { CampaignNavBar } from "@/app/(authRoutes)/campaign/[campaignId]/CampaignNavBar";
 import { MembersList } from "@/app/(authRoutes)/campaign/[campaignId]/MembersList";
 import { NoCampaignPermissionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/NoCampaignPermissionDialog";
 import { SessionBanner } from "@/app/(authRoutes)/campaign/[campaignId]/SessionBanner";
 import { SessionList } from "@/app/(authRoutes)/campaign/[campaignId]/SessionList";
-import { Divider } from "@/app/components/Divider";
-import { Loader } from "@/app/components/Loader";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 import { useUser } from "@/app/providers/UserProvider";
 

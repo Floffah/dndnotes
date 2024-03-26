@@ -1,13 +1,10 @@
+import { Button, Icon, Loader, Tooltip } from "@dndnotes/components";
 import { CampaignMemberType, CampaignSessionSchedule } from "@dndnotes/models";
 import { formatDistance, formatRelative } from "date-fns";
 import Link from "next/link";
 import { useMemo } from "react";
 
 import { StartSessionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/StartSessionDialog";
-import { Button } from "@/app/components/Button";
-import { Icon } from "@/app/components/Icon";
-import { Loader } from "@/app/components/Loader";
-import { Tooltip } from "@/app/components/Tooltip";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 
 function NextSession() {

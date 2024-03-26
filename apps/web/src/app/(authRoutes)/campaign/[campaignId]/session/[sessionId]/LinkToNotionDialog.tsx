@@ -1,11 +1,10 @@
+import { Dialog, DialogRef, Form } from "@dndnotes/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { composeRefs } from "@radix-ui/react-compose-refs";
 import { PropsWithChildren, forwardRef, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Dialog, DialogRef } from "@/app/components/Dialog";
-import { Form } from "@/app/components/Form";
 import { useCampaign } from "@/app/providers/CampaignProvider";
 import { useCampaignSession } from "@/app/providers/CampaignSessionProvider";
 

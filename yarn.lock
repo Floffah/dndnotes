@@ -614,6 +614,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dndnotes/components@workspace:packages/components"
   dependencies:
+    "@dndnotes/lib": "workspace:*"
+    "@dndnotes/models": "workspace:*"
     "@radix-ui/react-accessible-icon": "npm:^1.0.3"
     "@radix-ui/react-compose-refs": "npm:^1.0.1"
     "@radix-ui/react-dialog": "npm:^1.0.5"

@@ -13,6 +13,8 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
+    "@dndnotes/lib": "workspace:*",
+    "@dndnotes/models": "workspace:*",
     "@radix-ui/react-accessible-icon": "^1.0.3",
     "@radix-ui/react-compose-refs": "^1.0.1",
     "@radix-ui/react-dialog": "^1.0.5",

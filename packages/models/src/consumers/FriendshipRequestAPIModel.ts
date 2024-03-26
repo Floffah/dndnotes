@@ -1,8 +1,8 @@
+import { UserAPIModel } from "@/consumers/UserAPIModel";
 import { FriendshipRequestState } from "@/enums/FriendshipRequestState";
 import { isPopulated } from "@/lib/isPopulated";
 import { FriendshipRequest } from "@/models/FriendshipRequest";
 import { User } from "@/models/User";
-import { UserAPIModel } from "@/consumers/UserAPIModel";
 import { BaseAPIModel } from "@/types/baseModel";
 import { ConsumerContext } from "@/types/consumerContext";
 

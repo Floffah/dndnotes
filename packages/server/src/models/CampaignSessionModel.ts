@@ -1,5 +1,6 @@
-import { CampaignSession, CampaignSessionType } from "@dndnotes/models";
 import { Schema } from "mongoose";
+
+import { CampaignSession, CampaignSessionType } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 

@@ -1,2 +1,41 @@
-@tailwind components;
-@tailwind utilities;
+html {
+    @apply bg-gray-900 text-white;
+}
+
+@layer base {
+    :root {
+        --indicate-color: theme("colors.white/50");
+    }
+}
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .indicate-action {
+        @apply relative after:absolute after:bottom-0 after:left-0 after:mb-1 after:w-3 after:border-b after:border-dashed;
+
+        &::after {
+            border-color: var(--indicate-color);
+        }
+    }
+}

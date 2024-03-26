@@ -1,6 +1,7 @@
-import { ServerError } from "@dndnotes/backend-framework";
 import { NotionAPI } from "notion-client";
 import { z } from "zod";
+
+import { ServerError } from "@dndnotes/backend-framework";
 
 import { NotionError } from "@/errors";
 import { procedure, router } from "@/router/context";

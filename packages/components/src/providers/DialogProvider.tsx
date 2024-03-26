@@ -1,6 +1,5 @@
 "use client";
 
-import { ConfirmationDialog, Dialog, DialogRef } from "@dndnotes/components";
 import clsx from "clsx";
 import { nanoid } from "nanoid";
 import {
@@ -16,6 +15,9 @@ import {
     useRef,
     useState,
 } from "react";
+
+import { ConfirmationDialog } from "@/ConfirmationDialog";
+import { Dialog, DialogRef } from "@/Dialog";
 
 interface DialogInstance {
     id: string;
@@ -39,6 +41,8 @@ export const DialogContext = createContext<DialogContext>(null!);
 export const useDialogs = () => useContext(DialogContext);
 
 export function DialogProvider({ children }: PropsWithChildren) {
+    "use client";
+
     const [dialogs, setDialogs] = useState<DialogInstance[]>([]);
     const refs = useRef(new Map<string, DialogRef>());
 

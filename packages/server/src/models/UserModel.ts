@@ -1,5 +1,6 @@
-import { User } from "@dndnotes/models";
 import { Schema } from "mongoose";
+
+import { User } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 

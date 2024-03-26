@@ -1,11 +1,10 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import {
     PropsWithChildren,
     createContext,
     useLayoutEffect,
-    useRef,
     useState,
 } from "react";
 

@@ -1,12 +1,12 @@
+import { CampaignAPIModel } from "@/consumers/CampaignAPIModel";
+import { CampaignSessionScheduleAPIModel } from "@/consumers/CampaignSessionScheduleAPIModel";
+import { DocumentAPIModel } from "@/consumers/DocumentAPIModel";
 import { CampaignSessionType } from "@/enums/CampaignSessionType";
 import { isPopulated } from "@/lib/isPopulated";
 import { Campaign } from "@/models/Campaign";
-import { CampaignAPIModel } from "@/consumers/CampaignAPIModel";
 import { CampaignSession } from "@/models/CampaignSession";
 import { CampaignSessionSchedule } from "@/models/CampaignSessionSchedule";
-import { CampaignSessionScheduleAPIModel } from "@/consumers/CampaignSessionScheduleAPIModel";
 import { Document } from "@/models/Document";
-import { DocumentAPIModel } from "@/consumers/DocumentAPIModel";
 import { BaseAPIModel } from "@/types/baseModel";
 import { ConsumerContext } from "@/types/consumerContext";
 

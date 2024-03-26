@@ -1,5 +1,6 @@
-import { Character, ViewableBy } from "@dndnotes/models";
 import { Schema } from "mongoose";
+
+import { Character, ViewableBy } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 

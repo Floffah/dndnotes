@@ -1,5 +1,6 @@
-import { CampaignMember, CampaignMemberType } from "@dndnotes/models";
 import { Schema } from "mongoose";
+
+import { CampaignMember, CampaignMemberType } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 

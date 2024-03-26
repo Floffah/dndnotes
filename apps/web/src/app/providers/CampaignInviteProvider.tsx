@@ -1,7 +1,8 @@
 "use client";
 
-import { CampaignInviteAPIModel } from "@dndnotes/models";
 import { PropsWithChildren, createContext, useContext } from "react";
+
+import { CampaignInviteAPIModel } from "@dndnotes/models";
 
 import { api } from "@/app/lib/api";
 

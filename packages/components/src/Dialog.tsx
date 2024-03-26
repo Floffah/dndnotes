@@ -333,6 +333,8 @@ export const Dialog = Object.assign(
             },
             ref,
         ) => {
+            "use client";
+
             const [open, _setOpen] = useState(propsOpen ?? false);
             const setOpen = (open: boolean) =>
                 startTransition(() => _setOpen(open));

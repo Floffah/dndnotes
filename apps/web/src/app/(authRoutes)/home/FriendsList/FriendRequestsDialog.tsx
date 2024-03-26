@@ -1,8 +1,9 @@
 "use client";
 
+import { PropsWithChildren } from "react";
+
 import { Dialog, Icon, Loader } from "@dndnotes/components";
 import { FriendshipRequestState } from "@dndnotes/models";
-import { PropsWithChildren } from "react";
 
 import { useUser } from "@/app/providers/UserProvider";
 

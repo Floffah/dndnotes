@@ -1,10 +1,6 @@
 import { z } from "zod";
 
-import {
-    ProtoBuilderProcedure,
-    ProtoBuilderRouter,
-    ProtoBuilderType,
-} from "@/server";
+import { ProtoBuilderRouter, ProtoBuilderType } from "@/server";
 
 export type TraverseRouter<Router extends ProtoBuilderRouter<any>> = {
     [K in keyof Router["_defs"]["fields"]]: Router["_defs"]["fields"][K]["_defs"]["builderType"] extends ProtoBuilderType.Router

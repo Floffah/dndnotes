@@ -1,7 +1,8 @@
 "use client";
 
-import { createClientProvider } from "@dndnotes/backend-framework/client";
 import { PropsWithChildren } from "react";
+
+import { createClientProvider } from "@dndnotes/backend-framework/client";
 
 import { api } from "@/app/lib/api";
 

@@ -1,12 +1,12 @@
 import { JSONContent } from "@tiptap/core";
 
+import { CampaignAPIModel } from "@/consumers/CampaignAPIModel";
+import { UserAPIModel } from "@/consumers/UserAPIModel";
 import { DocumentFormat } from "@/enums/DocumentFormat";
 import { isPopulated } from "@/lib/isPopulated";
 import { Campaign } from "@/models/Campaign";
-import { CampaignAPIModel } from "@/consumers/CampaignAPIModel";
 import { Document } from "@/models/Document";
 import { User } from "@/models/User";
-import { UserAPIModel } from "@/consumers/UserAPIModel";
 import { BaseAPIModel } from "@/types/baseModel";
 import { ConsumerContext } from "@/types/consumerContext";
 

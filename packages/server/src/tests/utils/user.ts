@@ -1,8 +1,9 @@
-import { UserSession } from "@dndnotes/models";
 import { randomBytes } from "crypto";
 import type { ObjectId } from "mongodb";
 import type { Document } from "mongoose";
 import { generateUsername } from "unique-username-generator";
+
+import { UserSession } from "@dndnotes/models";
 
 import { UserModel } from "@/models/UserModel";
 import { UserSessionModel } from "@/models/UserSessionModel";

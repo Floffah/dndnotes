@@ -1,5 +1,6 @@
-import { FriendshipRequest, FriendshipRequestState } from "@dndnotes/models";
 import { Schema } from "mongoose";
+
+import { FriendshipRequest, FriendshipRequestState } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 

@@ -1,7 +1,8 @@
 "use client";
 
-import { Button, Divider, Loader, User } from "@dndnotes/components";
 import { memo } from "react";
+
+import { Button, Divider, Loader, User } from "@dndnotes/components";
 
 import { AddFriendForm } from "@/app/(authRoutes)/home/FriendsList/AddFriendForm";
 import { FriendRequestsDialog } from "@/app/(authRoutes)/home/FriendsList/FriendRequestsDialog";

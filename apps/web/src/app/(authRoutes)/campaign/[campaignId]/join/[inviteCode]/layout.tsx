@@ -1,6 +1,7 @@
-import { CampaignInviteError } from "@dndnotes/models";
 import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
+
+import { CampaignInviteError } from "@dndnotes/models";
 
 import { getServerHelpers } from "@/app/lib/getServerHelpers";
 import { CampaignInviteProvider } from "@/app/providers/CampaignInviteProvider";

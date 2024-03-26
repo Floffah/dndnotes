@@ -1,7 +1,8 @@
-import { ServerError } from "@dndnotes/backend-framework";
-import { UserAPIModel, UserError } from "@dndnotes/models";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
+
+import { ServerError } from "@dndnotes/backend-framework";
+import { UserAPIModel, UserError } from "@dndnotes/models";
 
 import { UserModel } from "@/models/UserModel";
 import { procedure, router } from "@/router/context";

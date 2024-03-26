@@ -1,12 +1,13 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import { createContext, useContext } from "react";
+
 import {
     FriendshipRequest,
     FriendshipRequestState,
     User,
 } from "@dndnotes/models";
-import { usePathname } from "next/navigation";
-import { createContext, useContext } from "react";
 
 import { api } from "@/app/lib/api";
 

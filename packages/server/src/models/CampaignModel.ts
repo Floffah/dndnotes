@@ -1,5 +1,6 @@
-import { Campaign } from "@dndnotes/models";
 import { Schema } from "mongoose";
+
+import { Campaign } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 

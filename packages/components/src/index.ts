@@ -10,6 +10,7 @@ export * from "./Icon";
 export * from "./Link";
 export * from "./Loader";
 export * from "./NavBar";
+export * from "./providers";
 export * from "./RichTextDocument";
 export * from "./Select";
 export * from "./Switch";

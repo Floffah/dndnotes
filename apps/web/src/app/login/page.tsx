@@ -1,6 +1,7 @@
-import { SESSION_TOKEN } from "@dndnotes/lib";
 import { cookies } from "next/headers";
 import { RedirectType, redirect } from "next/navigation";
+
+import { SESSION_TOKEN } from "@dndnotes/lib";
 
 import { DiscordLoginButton } from "@/app/components/DiscordLoginButton";
 import { getServerHelpers } from "@/app/lib/getServerHelpers";

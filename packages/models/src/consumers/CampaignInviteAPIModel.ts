@@ -1,9 +1,9 @@
+import { CampaignAPIModel } from "@/consumers/CampaignAPIModel";
+import { UserAPIModel } from "@/consumers/UserAPIModel";
 import { isPopulated } from "@/lib/isPopulated";
 import { Campaign } from "@/models/Campaign";
-import { CampaignAPIModel } from "@/consumers/CampaignAPIModel";
 import { CampaignInvite } from "@/models/CampaignInvite";
 import { User } from "@/models/User";
-import { UserAPIModel } from "@/consumers/UserAPIModel";
 import { BaseAPIModel } from "@/types/baseModel";
 import { ConsumerContext } from "@/types/consumerContext";
 

@@ -1,10 +1,11 @@
+import { Schema } from "mongoose";
+
 import {
     CampaignSessionSchedule,
     CampaignSessionType,
     RepeatInterval,
     calculateNextDateInSeries,
 } from "@dndnotes/models";
-import { Schema } from "mongoose";
 
 import { createModel } from "@/lib/createModel";
 

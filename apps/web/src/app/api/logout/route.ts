@@ -1,5 +1,6 @@
-import { SESSION_TOKEN } from "@dndnotes/lib";
 import { cookies } from "next/headers";
+
+import { SESSION_TOKEN } from "@dndnotes/lib";
 
 import { createSuccessResponse } from "@/app/api/apiResponse";
 

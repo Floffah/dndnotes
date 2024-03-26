@@ -1,5 +1,6 @@
-import { Document, DocumentFormat } from "@dndnotes/models";
 import { Schema } from "mongoose";
+
+import { Document, DocumentFormat } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 

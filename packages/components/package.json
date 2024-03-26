@@ -3,14 +3,14 @@
   "exports": {
     ".": {
       "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./styles.css": "./src/styles.css"
+    }
   },
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "dev": "concurrently --kill-others \"tsc -w\" \"tsc-alias -w\""
+    "build": "tsup --minify",
+    "dev": "tsup --watch"
   },
   "dependencies": {
     "@radix-ui/react-accessible-icon": "^1.0.3",

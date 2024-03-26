@@ -1,14 +1,14 @@
+import { CampaignAPIModel } from "@/consumers/CampaignAPIModel";
+import { CampaignMemberAPIModel } from "@/consumers/CampaignMemberAPIModel";
+import { DocumentAPIModel } from "@/consumers/DocumentAPIModel";
+import { ViewableBy } from "@/enums";
 import { isPopulated } from "@/lib/isPopulated";
 import { Campaign } from "@/models/Campaign";
-import { CampaignAPIModel } from "@/consumers/CampaignAPIModel";
 import { CampaignMember } from "@/models/CampaignMember";
-import { CampaignMemberAPIModel } from "@/consumers/CampaignMemberAPIModel";
 import { Character, CharacterSheet } from "@/models/Character";
 import { Document } from "@/models/Document";
-import { DocumentAPIModel } from "@/consumers/DocumentAPIModel";
 import { BaseAPIModel } from "@/types/baseModel";
 import { ConsumerContext } from "@/types/consumerContext";
-import {ViewableBy} from "@/enums";
 
 export class CharacterAPIModel extends BaseAPIModel implements Character {
     name: string;

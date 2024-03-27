@@ -14,14 +14,23 @@ import { UserSessionModel } from "@/models/UserSessionModel";
 const connectionPromise = mongoConnect();
 
 export const createContext = async (opts: FetchHandlerContext) => {
-    if (!opts.req.headers.has("cookie")) {
+    if (
+        !opts.req.headers.has("cookie") &&
+        !opts.req.headers.has("x-session-token")
+    ) {
         return {
             session: null,
         };
     }
 
-    const cookies = parse(opts.req.headers.get("cookie") as string);
-    const token = cookies[SESSION_TOKEN];
+    let token = "";
+
+    if (opts.req.headers.has("x-session-token")) {
+        token = opts.req.headers.get("x-session-token") as string;
+    } else {
+        const cookies = parse(opts.req.headers.get("cookie") as string);
+        token = cookies[SESSION_TOKEN];
+    }
 
     if (!token || token.trim() === "" || token.length < 10) {
         return {

@@ -1,6 +1,7 @@
 import { Schema } from "mongoose";
 
 import { UserSession } from "@dndnotes/models";
+import { UserSessionType } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 
@@ -18,6 +19,12 @@ export const UserSessionSchema = new Schema<UserSession>({
     expiresAt: {
         type: Date,
         required: true,
+    },
+    type: {
+        type: String,
+        enum: UserSessionType,
+        required: true,
+        default: UserSessionType.WEB,
     },
 });
 

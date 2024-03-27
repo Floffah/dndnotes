@@ -9,10 +9,16 @@
     "build": "turbo run build",
     "start": "turbo run start",
     "dev": "turbo run dev",
-    "env": "vercel env pull apps/web/.env"
+    "env": "vercel env pull apps/web/.env",
+    "dev:discord": "yarn dev --filter=@dndnotes/discord-activity",
+    "dev:web": "yarn dev --filter=@dndnotes/web",
+    "tunnel:discord": "sudo cloudflared tunnel run --url http://localhost:3001 discord-activity",
+    "tunnel:web": "sudo cloudflared tunnel run --url http://localhost:3000 dndnotes-web",
+    "tunnel": "concurrently \"yarn tunnel:discord\" \"yarn tunnel:web\""
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "concurrently": "^8.2.2",
     "discord.js": "^14.14.1",
     "isomorphic-git": "^1.25.6",
     "npm-check-updates": "^16.14.18",

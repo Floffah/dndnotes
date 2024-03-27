@@ -504,6 +504,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@discord/embedded-app-sdk@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@discord/embedded-app-sdk@npm:1.0.2"
+  dependencies:
+    "@types/lodash.transform": "npm:^4.6.6"
+    "@types/uuid": "npm:^8.3.1"
+    big-integer: "npm:1.6.48"
+    decimal.js-light: "npm:2.5.0"
+    eventemitter3: "npm:^4.0.7"
+    lodash.transform: "npm:^4.6.0"
+    rollup: "npm:^4.8.0"
+    uuid: "npm:^8.3.2"
+    zod: "npm:^3.9.8"
+  checksum: 10c0/f71e321830f184237802c4026f5a9766af3d6110348f570fce64cd6f1d01fdfaaa351dddd1ec07fbbea52493f1b4768f69b484937c4fb7eace6c1c0d289996ee
+  languageName: node
+  linkType: hard
+
 "@discordjs/builders@npm:^1.7.0":
   version: 1.7.0
   resolution: "@discordjs/builders@npm:1.7.0"
@@ -649,6 +666,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dndnotes/discord-activity@workspace:apps/discord-activity"
   dependencies:
+    "@discord/embedded-app-sdk": "npm:^1.0.2"
     "@dndnotes/components": "workspace:*"
     "@dndnotes/lib": "workspace:*"
     "@dndnotes/models": "workspace:*"
@@ -724,6 +742,7 @@ __metadata:
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.11.30"
     cookie: "npm:^0.6.0"
+    crypto-random-string: "npm:^5.0.0"
     date-fns: "npm:^3.6.0"
     dotenv: "npm:^16.4.5"
     jest: "npm:^29.7.0"
@@ -3839,6 +3858,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash.transform@npm:^4.6.6":
+  version: 4.6.9
+  resolution: "@types/lodash.transform@npm:4.6.9"
+  dependencies:
+    "@types/lodash": "npm:*"
+  checksum: 10c0/857f4d9483dcfbafc1313aa0c59fcf60ba0fa949d516986160855e089cfe9667ced7ad03a3e984b76c148056ab84c91c074debbd287fbd224d32faef6f190ba2
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.17.0
+  resolution: "@types/lodash@npm:4.17.0"
+  checksum: 10c0/4c5b41c9a6c41e2c05d08499e96f7940bcf194dcfa84356235b630da920c2a5e05f193618cea76006719bec61c76617dff02defa9d29934f9f6a76a49291bd8f
+  languageName: node
+  linkType: hard
+
 "@types/mdast@npm:^4.0.0":
   version: 4.0.3
   resolution: "@types/mdast@npm:4.0.3"
@@ -4010,6 +4045,13 @@ __metadata:
   version: 2.0.10
   resolution: "@types/unist@npm:2.0.10"
   checksum: 10c0/5f247dc2229944355209ad5c8e83cfe29419fa7f0a6d557421b1985a1500444719cc9efcc42c652b55aab63c931813c88033e0202c1ac684bcd4829d66e44731
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^8.3.1":
+  version: 8.3.4
+  resolution: "@types/uuid@npm:8.3.4"
+  checksum: 10c0/b9ac98f82fcf35962317ef7dc44d9ac9e0f6fdb68121d384c88fe12ea318487d5585d3480fa003cf28be86a3bbe213ca688ba786601dce4a97724765eb5b1cf2
   languageName: node
   linkType: hard
 
@@ -4982,6 +5024,13 @@ __metadata:
   version: 5.0.4
   resolution: "basic-ftp@npm:5.0.4"
   checksum: 10c0/0bd580652a4f75d5ea8e442e27921ff7089c91764f9eab975235d0b177bb7631339cbf50fb8f4cd5c94087ac6c003a8c80e33076228fd94e23e99d42531e3ac0
+  languageName: node
+  linkType: hard
+
+"big-integer@npm:1.6.48":
+  version: 1.6.48
+  resolution: "big-integer@npm:1.6.48"
+  checksum: 10c0/4012d69592f53ccd159acc0643f8594d341306485fed8b9a31b756a0d6fc8a889d8bc6023ef31b9aac78dba307b41d65e060dafcb8764f04238112b119b885e2
   languageName: node
   linkType: hard
 
@@ -6014,6 +6063,13 @@ __metadata:
   dependencies:
     ms: "npm:^2.1.1"
   checksum: 10c0/37d96ae42cbc71c14844d2ae3ba55adf462ec89fd3a999459dec3833944cd999af6007ff29c780f1c61153bcaaf2c842d1e4ce1ec621e4fc4923244942e4a02a
+  languageName: node
+  linkType: hard
+
+"decimal.js-light@npm:2.5.0":
+  version: 2.5.0
+  resolution: "decimal.js-light@npm:2.5.0"
+  checksum: 10c0/4e39b8ca247fca5d409b7809aaafea59e9fafe8c5d2617af2053c54c8f832ab55145969b0ce1facecb1863c5ed52021e6208462619649c5b06d408f5db6e6024
   languageName: node
   linkType: hard
 
@@ -7342,6 +7398,13 @@ __metadata:
   version: 1.8.1
   resolution: "etag@npm:1.8.1"
   checksum: 10c0/12be11ef62fb9817314d790089a0a49fae4e1b50594135dcb8076312b7d7e470884b5100d249b28c18581b7fd52f8b485689ffae22a11ed9ec17377a33a08f84
+  languageName: node
+  linkType: hard
+
+"eventemitter3@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "eventemitter3@npm:4.0.7"
+  checksum: 10c0/5f6d97cbcbac47be798e6355e3a7639a84ee1f7d9b199a07017f1d2f1e2fe236004d14fa5dfaeba661f94ea57805385e326236a6debbc7145c8877fbc0297c6b
   languageName: node
   linkType: hard
 
@@ -10010,6 +10073,13 @@ __metadata:
   version: 4.7.0
   resolution: "lodash.sortby@npm:4.7.0"
   checksum: 10c0/fc48fb54ff7669f33bb32997cab9460757ee99fafaf72400b261c3e10fde21538e47d8cfcbe6a25a31bcb5b7b727c27d52626386fc2de24eb059a6d64a89cdf5
+  languageName: node
+  linkType: hard
+
+"lodash.transform@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "lodash.transform@npm:4.6.0"
+  checksum: 10c0/ad7f376b00dccff09f8597f19a171f2e074756178ae74887346876e10f6f0d83009460cc0793183cc5ee4e24a72ff86e68031c45b5aa2731c2f681a4dc93fe77
   languageName: node
   linkType: hard
 
@@ -13712,7 +13782,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^4.0.2":
+"rollup@npm:^4.0.2, rollup@npm:^4.8.0":
   version: 4.13.0
   resolution: "rollup@npm:4.13.0"
   dependencies:
@@ -13771,6 +13841,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
+    concurrently: "npm:^8.2.2"
     discord.js: "npm:^14.14.1"
     isomorphic-git: "npm:^1.25.6"
     npm-check-updates: "npm:^16.14.18"
@@ -15661,6 +15732,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uuid@npm:^8.3.2":
+  version: 8.3.2
+  resolution: "uuid@npm:8.3.2"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 10c0/bcbb807a917d374a49f475fae2e87fdca7da5e5530820ef53f65ba1d12131bd81a92ecf259cc7ce317cbe0f289e7d79fdfebcef9bfa3087c8c8a2fa304c9be54
+  languageName: node
+  linkType: hard
+
 "v8-compile-cache-lib@npm:^3.0.1":
   version: 3.0.1
   resolution: "v8-compile-cache-lib@npm:3.0.1"
@@ -16143,7 +16223,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.4":
+"zod@npm:^3.22.4, zod@npm:^3.9.8":
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
   checksum: 10c0/7578ab283dac0eee66a0ad0fc4a7f28c43e6745aadb3a529f59a4b851aa10872b3890398b3160f257f4b6817b4ce643debdda4fb21a2c040adda7862cab0a587

@@ -77,9 +77,16 @@ interface BatcherOptions {
 function createBatcher(opts: BatcherOptions) {
     let batchedQueries: BatchedQuery[] = [];
 
+    const headers = {
+        "Content-Type": "application/json",
+    };
+
     return {
         addQuery: (query: BatchedQuery) => {
             batchedQueries.push(query);
+        },
+        setHeader: (key: string, value: string) => {
+            headers[key] = value;
         },
         execute: async () => {
             if (batchedQueries.length === 0) {
@@ -113,9 +120,7 @@ function createBatcher(opts: BatcherOptions) {
 
             const res = await fetch(url.toString(), {
                 method,
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers,
                 body: method === "POST" ? stringifiedInputs : void 0,
             });
 
@@ -233,6 +238,7 @@ export function createReactEnvironment<Router extends ProtoBuilderRouter<any>>(
             batcher,
         },
         useCache: useCache<Router>,
+        setHeader: batcher.setHeader,
     };
 
     const createCallerProxy = (parent: string[], base: any = () => void 0) => {

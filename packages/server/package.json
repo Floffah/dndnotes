@@ -38,6 +38,7 @@
     "@tiptap/core": "^2.2.4",
     "@tiptap/pm": "^2.2.4",
     "cookie": "^0.6.0",
+    "crypto-random-string": "^5.0.0",
     "date-fns": "^3.6.0",
     "mongodb": "^6.5.0",
     "mongoose": "^8.2.3",

@@ -1,12 +1,14 @@
+import { discordActivitiesRouter } from "@/router/activities";
 import { campaignRouter } from "@/router/campaign";
 import { router } from "@/router/context";
 import { thirdPartyRouter } from "@/router/thirdParty";
 import { userRouter } from "@/router/user";
 
 export const appRouter = router({
-    user: userRouter,
+    activities: discordActivitiesRouter,
     campaign: campaignRouter,
     thirdParty: thirdPartyRouter,
+    user: userRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -14,7 +14,12 @@ export default function RootLayout({ children }) {
             <body className={nunito.className}>
                 <APIProvider>
                     <DiscordProvider>
-                        <DialogProvider>{children}</DialogProvider>
+                        <DialogProvider>
+                            <div className="bg-pattern-random fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-gray-900 p-16 text-center sm:hidden">
+                                <p>Please maximise this window</p>
+                            </div>
+                            {children}
+                        </DialogProvider>
                     </DiscordProvider>
                 </APIProvider>
             </body>

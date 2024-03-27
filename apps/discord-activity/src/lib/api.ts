@@ -7,6 +7,6 @@ import { AppRouter } from "@dndnotes/server";
 registerTransformerTypes();
 
 export const api = createReactEnvironment<AppRouter>({
-    url: process.env.NEXT_PUBLIC_BASE_URL + "/api",
+    url: process.env.NEXT_PUBLIC_BASE_URL + "/dndnotes/api",
     transformer: superjson,
 });

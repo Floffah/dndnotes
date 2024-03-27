@@ -19,6 +19,11 @@ export const CampaignSchema = new Schema<Campaign>({
         required: true,
         default: 0,
     },
+    discordGuild: {
+        type: Schema.Types.ObjectId,
+        ref: "DiscordGuild",
+        required: true,
+    },
 });
 
 CampaignSchema.virtual("sessions", {

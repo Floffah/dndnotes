@@ -607,7 +607,7 @@ __metadata:
     "@dndnotes/lib": "workspace:*"
     "@jest/globals": "npm:^29.7.0"
     "@swc/jest": "npm:^0.2.36"
-    "@tanstack/react-query": "npm:^5.28.8"
+    "@tanstack/react-query": "npm:^5.28.9"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.11.30"
     cookie: "npm:^0.6.0"
@@ -676,11 +676,11 @@ __metadata:
     "@iconify/react": "npm:^4.1.1"
     "@react-spring/web": "npm:^9.7.3"
     "@swc/core": "npm:^1.4.11"
-    "@tanstack/react-query": "npm:^5.28.8"
+    "@tanstack/react-query": "npm:^5.28.9"
     "@types/mdx": "npm:^2.0.12"
     "@types/node": "npm:20.11.30"
     "@types/pubnub": "npm:^7"
-    "@types/react": "npm:^18.2.71"
+    "@types/react": "npm:^18.2.72"
     "@types/react-dom": "npm:^18.2.22"
     "@types/sanitize-html": "npm:^2"
     autoprefixer: "npm:^10.4.19"
@@ -694,7 +694,7 @@ __metadata:
     pubnub: "npm:^7.6.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-hook-form: "npm:^7.51.1"
+    react-hook-form: "npm:^7.51.2"
     superjson: "npm:^2.2.1"
     tailwindcss: "npm:^3.4.1"
     typescript: "npm:5.4.3"
@@ -763,7 +763,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dndnotes/tailwind-preset@workspace:packages/tailwind-preset"
   dependencies:
-    "@tailwindcss/typography": "npm:^0.5.10"
+    "@tailwindcss/typography": "npm:^0.5.11"
     "@types/node": "npm:^20.11.30"
     tailwindcss: "npm:^3.4.1"
     typescript: "npm:^5.4.3"
@@ -786,7 +786,7 @@ __metadata:
     "@next/mdx": "npm:^14.1.4"
     "@react-spring/web": "npm:^9.7.3"
     "@swc/core": "npm:^1.4.11"
-    "@tanstack/react-query": "npm:^5.28.8"
+    "@tanstack/react-query": "npm:^5.28.9"
     "@tiptap/extension-underline": "npm:^2.2.4"
     "@tiptap/html": "npm:^2.2.4"
     "@tiptap/pm": "npm:^2.2.4"
@@ -795,7 +795,7 @@ __metadata:
     "@types/mdx": "npm:^2.0.12"
     "@types/node": "npm:20.11.30"
     "@types/pubnub": "npm:^7"
-    "@types/react": "npm:^18.2.71"
+    "@types/react": "npm:^18.2.72"
     "@types/react-dom": "npm:^18.2.22"
     "@types/sanitize-html": "npm:^2"
     autoprefixer: "npm:^10.4.19"
@@ -811,7 +811,7 @@ __metadata:
     pubnub: "npm:^7.6.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-hook-form: "npm:^7.51.1"
+    react-hook-form: "npm:^7.51.2"
     react-notion-x: "npm:^6.16.0"
     remark-gfm: "npm:^4.0.0"
     superjson: "npm:^2.2.1"
@@ -3262,9 +3262,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/typography@npm:^0.5.10":
-  version: 0.5.10
-  resolution: "@tailwindcss/typography@npm:0.5.10"
+"@tailwindcss/typography@npm:^0.5.11":
+  version: 0.5.11
+  resolution: "@tailwindcss/typography@npm:0.5.11"
   dependencies:
     lodash.castarray: "npm:^4.4.0"
     lodash.isplainobject: "npm:^4.0.6"
@@ -3272,25 +3272,25 @@ __metadata:
     postcss-selector-parser: "npm:6.0.10"
   peerDependencies:
     tailwindcss: "*"
-  checksum: 10c0/0fa9c96bf091fb79fdc39a0244027b3891e9205f714197c8196e7ba2305523ce8695d14b912366de9b77d4b1d3a742fb7f9bc9bb633fddc7c7f13374b41075d2
+  checksum: 10c0/9c41beed7a61e546896f906e724b2289064d9249d300874f039fb79ae973c88314110367e307c228e1006c014843dcd9f4c4a8eb0125809136680960f476f69b
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.28.8":
-  version: 5.28.8
-  resolution: "@tanstack/query-core@npm:5.28.8"
-  checksum: 10c0/6aa66dd77e61d9298268e9428eec5969c3b95ece4f836b4bc2bbe6bd26c6d3f559c17ff6c3e333b5e498b4e91b2caae1d0638804fe72b2f3ecfe9c7034540e1a
+"@tanstack/query-core@npm:5.28.9":
+  version: 5.28.9
+  resolution: "@tanstack/query-core@npm:5.28.9"
+  checksum: 10c0/bba29392deb8eb1c58012cf298452a6ea2c03e1cf0ff17e09b39093777adcf6670c31a039d4c8ffc4a16a1f512af984cceed6351d30f377342963ce4c4b92a2b
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.28.8":
-  version: 5.28.8
-  resolution: "@tanstack/react-query@npm:5.28.8"
+"@tanstack/react-query@npm:^5.28.9":
+  version: 5.28.9
+  resolution: "@tanstack/react-query@npm:5.28.9"
   dependencies:
-    "@tanstack/query-core": "npm:5.28.8"
+    "@tanstack/query-core": "npm:5.28.9"
   peerDependencies:
     react: ^18.0.0
-  checksum: 10c0/439c821b89123d9a20f948d7a1c8a2177db50e4fc043f81a63ae5e6b777f6fac69f2cc2497e619082d060e93228ec5e62f23e92365d8458042f5cd147503d266
+  checksum: 10c0/2f6dcc691074f99cbd52a80f26bbc1dcad536700fda09d156ac430b917f054d1d206459be0deb6baa8933075ffcf6457925db6b76bf8634bee48805fde8d3037
   languageName: node
   linkType: hard
 
@@ -3977,14 +3977,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.71":
-  version: 18.2.71
-  resolution: "@types/react@npm:18.2.71"
+"@types/react@npm:^18.2.72":
+  version: 18.2.72
+  resolution: "@types/react@npm:18.2.72"
   dependencies:
     "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/0b2fc05a33aa83f09880c1172f6112450fa507ea56a168521172161e057277a8a474ff2fae02fa4910ce74853d7b5cff560586f912a0c9d8102cfd316bdb1b19
+  checksum: 10c0/fe8a17a4067ab9d432ab1034967a8b2a773125e47ae84ee00e428a8b6c48912ab22d244ae6128663b119a38716a642bc5be019fcd2b3b2f4ab3c9b0200a6cc2d
   languageName: node
   linkType: hard
 
@@ -13200,12 +13199,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.51.1":
-  version: 7.51.1
-  resolution: "react-hook-form@npm:7.51.1"
+"react-hook-form@npm:^7.51.2":
+  version: 7.51.2
+  resolution: "react-hook-form@npm:7.51.2"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
-  checksum: 10c0/f0acbf27fc548d3cd0e4db40b84d9dfe6c24209e4421fffbd422da15e32cc98f877ab0af9e06cb1deaf4205ec655b56020ff9f8b2bae6ada5e619890f174c374
+  checksum: 10c0/9d5e303b64f77330f244304854522e4f588fd3a5554734d2daebf64230195eb42c44504e074d5acfabd6f33a2272ffca4ebef7a54fad7019ae519471b720327e
   languageName: node
   linkType: hard
 

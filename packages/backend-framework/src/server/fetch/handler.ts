@@ -1,3 +1,5 @@
+import { ZodVoid } from "zod";
+
 import {
     FetchHandlerContext,
     ProcedureType,
@@ -126,7 +128,11 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                 procedures.map(async ([name, procedure], index) => {
                     const input = queryInputs[index];
 
-                    if (!input) {
+                    if (
+                        !input &&
+                        (!procedure._defs.input ||
+                            !(procedure._defs.input instanceof ZodVoid))
+                    ) {
                         throw new ServerError({
                             code: "BAD_REQUEST",
                             message: `No input provided for query ${name}`,

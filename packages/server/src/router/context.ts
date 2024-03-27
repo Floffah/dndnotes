@@ -20,6 +20,7 @@ export const createContext = async (opts: FetchHandlerContext) => {
     ) {
         return {
             session: null,
+            access_token: null,
         };
     }
 
@@ -35,6 +36,7 @@ export const createContext = async (opts: FetchHandlerContext) => {
     if (!token || token.trim() === "" || token.length < 10) {
         return {
             session: null,
+            access_token: null,
         };
     }
 
@@ -49,11 +51,19 @@ export const createContext = async (opts: FetchHandlerContext) => {
     if (!session) {
         return {
             session: null,
+            access_token: null,
         };
+    }
+
+    let access_token: string | null = null;
+
+    if (opts.req.headers.has("x-access-token")) {
+        access_token = opts.req.headers.get("x-access-token") as string;
     }
 
     return {
         session: session as UserSession,
+        access_token,
     };
 };
 export type Context = Awaited<ReturnType<typeof createContext>>;

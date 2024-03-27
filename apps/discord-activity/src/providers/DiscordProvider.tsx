@@ -1,11 +1,10 @@
 "use client";
 
-import { DiscordSDK } from "@discord/embedded-app-sdk";
-// @ts-ignore
-import type { ConsoleLevel } from "@discord/embedded-app-sdk/output/utils/console";
+import { DiscordSDK, patchUrlMappings } from "@discord/embedded-app-sdk";
 import { useQuery } from "@tanstack/react-query";
 import {
     createContext,
+    useContext,
     useEffect,
     useLayoutEffect,
     useRef,
@@ -16,13 +15,31 @@ import { Loader } from "@dndnotes/components";
 
 import { api } from "@/lib/api";
 
+interface MutableActivity {
+    title: string;
+    details: string;
+    party: [number, number];
+}
+
 interface DiscordContextValue {
     loading: boolean;
     sdk: DiscordSDK;
     auth?: Awaited<ReturnType<DiscordSDK["commands"]["authenticate"]>>;
+
+    updateActivity: (activity?: Partial<MutableActivity>) => Promise<void>;
+}
+
+export enum ConsoleLevel {
+    DEBUG = "debug",
+    INFO = "info",
+    WARN = "warn",
+    ERROR = "error",
+    LOG = "log",
 }
 
 export const DiscordContext = createContext<DiscordContextValue>(null!);
+
+export const useDiscord = () => useContext(DiscordContext);
 
 export function DiscordProvider({ children }) {
     const [sdk] = useState(
@@ -30,23 +47,31 @@ export function DiscordProvider({ children }) {
             new DiscordSDK(process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string),
     );
 
-    const log = (message: string, level: ConsoleLevel = "debug") =>
+    const loadedAtRef = useRef(Date.now());
+    const activityRef = useRef<MutableActivity>({
+        title: "Not in a session",
+        details: "Idling",
+        party: [1, 1],
+    });
+
+    const log = (message: string, level: ConsoleLevel = ConsoleLevel.DEBUG) =>
         sdk.commands.captureLog({ message, level });
 
     const authenticateQuery = useQuery({
-        queryKey: [
-            "ESCAPE_MAIN",
-            "authenticate",
-            "discord",
-            "embedded_app_sdk",
-        ],
+        queryKey: ["discord", "authenticate", "embedded_app_sdk"],
         queryFn: async () => {
+            patchUrlMappings([
+                {
+                    prefix: "/dndnotes",
+                    target: process.env.NEXT_PUBLIC_API_DOMAIN as string,
+                },
+            ]);
+
             await sdk.ready();
 
             const { code } = await sdk.commands.authorize({
                 client_id: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
                 response_type: "code",
-                state: "",
                 prompt: "none",
                 scope: [
                     "identify",
@@ -77,6 +102,7 @@ export function DiscordProvider({ children }) {
             const sessionToken = res.data.session_token;
 
             api.setHeader("X-Session-Token", sessionToken);
+            api.setHeader("X-Access-Token", accessToken);
 
             return await sdk.commands.authenticate({
                 access_token: accessToken,
@@ -84,25 +110,40 @@ export function DiscordProvider({ children }) {
         },
     });
 
+    const updateActivity: DiscordContextValue["updateActivity"] = async (
+        activity = {},
+    ) => {
+        if (activity) {
+            activityRef.current = {
+                ...activityRef.current,
+                ...activity,
+            };
+        }
+
+        await sdk.commands.setActivity({
+            activity: {
+                state: activityRef.current.title,
+                details: activityRef.current.details,
+                timestamps: {
+                    start: loadedAtRef.current,
+                },
+                party: activityRef.current.party
+                    ? {
+                          id: "party",
+                          size: activityRef.current.party,
+                      }
+                    : null,
+                secrets: {
+                    match: "match",
+                    join: "join",
+                },
+            },
+        });
+    };
+
     useEffect(() => {
         if (!authenticateQuery.isLoading && !authenticateQuery.error) {
-            sdk.commands.setActivity({
-                activity: {
-                    state: "Not in a session",
-                    details: "Idling",
-                    timestamps: {
-                        start: Date.now(),
-                    },
-                    party: {
-                        id: "party",
-                        size: [1, 1],
-                    },
-                    secrets: {
-                        match: "match",
-                        join: "join",
-                    },
-                },
-            });
+            updateActivity();
         }
     }, [authenticateQuery, sdk.commands]);
 
@@ -112,10 +153,12 @@ export function DiscordProvider({ children }) {
                 loading: authenticateQuery.isLoading,
                 sdk,
                 auth: authenticateQuery.data,
+
+                updateActivity,
             }}
         >
             {authenticateQuery.isLoading ? (
-                <div className="relative flex h-screen w-screen flex-col items-center justify-center gap-2 p-3">
+                <div className="bg-pattern-random relative flex h-screen w-screen flex-col items-center justify-center gap-2 p-3">
                     <p>Connecting to Discord...</p>
                     <Loader />
                 </div>

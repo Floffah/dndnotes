@@ -4,6 +4,7 @@ export * from "./CampaignModel";
 export * from "./CampaignSessionModel";
 export * from "./CampaignSessionScheduleModel";
 export * from "./CharacterModel";
+export * from "./DiscordGuildModel";
 export * from "./DocumentModel";
 export * from "./FriendshipRequestModel";
 export * from "./UserModel";

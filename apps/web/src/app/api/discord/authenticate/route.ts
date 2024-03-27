@@ -2,6 +2,7 @@ import cryptoRandomString from "crypto-random-string";
 
 import { SESSION_TOKEN } from "@dndnotes/lib";
 import { UserAPIModel } from "@dndnotes/models";
+import { UserSessionType } from "@dndnotes/models";
 import {
     UserModel,
     UserSessionModel,
@@ -97,11 +98,13 @@ export const POST = async (req: Request) => {
     const session = await UserSessionModel.findOneAndUpdate(
         {
             user: user._id,
+            type: UserSessionType.WEB,
         },
         {
             user: user._id,
             token: cryptoRandomString({ length: 64 }),
             expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 6),
+            type: UserSessionType.WEB,
         },
         {
             new: true,

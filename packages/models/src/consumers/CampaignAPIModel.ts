@@ -2,6 +2,7 @@ import { CampaignSessionAPIModel } from "@/consumers/CampaignSessionAPIModel";
 import { CampaignSessionScheduleAPIModel } from "@/consumers/CampaignSessionScheduleAPIModel";
 import { UserAPIModel } from "@/consumers/UserAPIModel";
 import { isPopulated } from "@/lib/isPopulated";
+import { DiscordGuild } from "@/models";
 import { Campaign } from "@/models/Campaign";
 import { CampaignSession } from "@/models/CampaignSession";
 import { CampaignSessionSchedule } from "@/models/CampaignSessionSchedule";
@@ -16,6 +17,7 @@ export class CampaignAPIModel extends BaseAPIModel implements Campaign {
 
     sessions: CampaignSession[];
     schedules: CampaignSessionSchedule[];
+    discordGuild: DiscordGuild;
 
     constructor(campaign: Campaign, ctx: ConsumerContext) {
         super(campaign, ctx);
@@ -36,5 +38,6 @@ export class CampaignAPIModel extends BaseAPIModel implements Campaign {
                       new CampaignSessionScheduleAPIModel(schedule, ctx),
               )
             : null!;
+        this.discordGuild = null!;
     }
 }

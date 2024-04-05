@@ -58,15 +58,9 @@ export function DiscordProvider({ children }) {
         sdk.commands.captureLog({ message, level });
 
     const authenticateQuery = useQuery({
+        refetchOnMount: false,
         queryKey: ["discord", "authenticate", "embedded_app_sdk"],
         queryFn: async () => {
-            patchUrlMappings([
-                {
-                    prefix: "/dndnotes",
-                    target: process.env.NEXT_PUBLIC_API_DOMAIN as string,
-                },
-            ]);
-
             await sdk.ready();
 
             const { code } = await sdk.commands.authorize({
@@ -157,14 +151,23 @@ export function DiscordProvider({ children }) {
                 updateActivity,
             }}
         >
-            {authenticateQuery.isLoading ? (
-                <div className="bg-pattern-random relative flex h-screen w-screen flex-col items-center justify-center gap-2 p-3">
+            {authenticateQuery.isLoading && !authenticateQuery.error && (
+                <div className="bg-pattern-topography relative flex h-screen w-screen flex-col items-center justify-center gap-2 p-3">
                     <p>Connecting to Discord...</p>
                     <Loader />
                 </div>
-            ) : (
-                children
             )}
+
+            {authenticateQuery.error && (
+                <div className="bg-pattern-error relative flex h-screen w-screen flex-col items-center justify-center gap-2 p-3">
+                    <p>Failed to authorize with Discord</p>
+                    <p>{authenticateQuery.error.message}</p>
+                </div>
+            )}
+
+            {!authenticateQuery.isLoading &&
+                !authenticateQuery.error &&
+                children}
         </DiscordContext.Provider>
     );
 }

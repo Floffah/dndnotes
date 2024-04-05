@@ -6,11 +6,12 @@ import {
     useMutation,
     useQuery,
 } from "@tanstack/react-query";
-import { z } from "zod";
+import { ZodVoid, z } from "zod";
 
 import { useCache } from "@/client";
 import { getQueryKey } from "@/client/react/queryKeys";
 import {
+    InferProcedureInput,
     ProcedureType,
     ProtoBuilderProcedure,
     ProtoBuilderRouter,
@@ -19,15 +20,16 @@ import {
 import { ServerError, TransformerLike, defaultTransformer } from "@/shared";
 
 export interface ReactQueryProcedureCall<
-    Procedure extends ProtoBuilderProcedure,
+    Procedure extends ProtoBuilderProcedure<any, any>,
+    Input = z.infer<Procedure["_defs"]["input"]>,
 > {
     useQuery: (
-        input: z.infer<Procedure["_defs"]["input"]>,
+        input: InferProcedureInput<Input>,
         opts?: Omit<
             UseQueryOptions<
                 Awaited<Procedure["_defs"]["output"]>,
                 ServerError,
-                z.infer<Procedure["_defs"]["input"]>
+                InferProcedureInput<Procedure["_defs"]["input"]>
             >,
             "queryKey" | "queryFn"
         >,
@@ -35,21 +37,21 @@ export interface ReactQueryProcedureCall<
 }
 
 export interface ReactMutationProcedureCall<
-    Procedure extends ProtoBuilderProcedure,
+    Procedure extends ProtoBuilderProcedure<any, any>,
 > {
     useMutation: (
         opts?: Omit<
             UseMutationOptions<
                 Awaited<Procedure["_defs"]["output"]>,
                 ServerError,
-                z.infer<Procedure["_defs"]["input"]>
+                InferProcedureInput<Procedure["_defs"]["input"]>
             >,
             "mutationKey" | "mutationFn"
         >,
     ) => UseMutationResult<
         Awaited<Procedure["_defs"]["output"]>,
         ServerError,
-        z.infer<Procedure["_defs"]["input"]>
+        InferProcedureInput<Procedure["_defs"]["input"]>
     >;
 }
 
@@ -166,20 +168,12 @@ export function createReactEnvironment<Router extends ProtoBuilderRouter<any>>(
         url: opts.url,
     });
 
-    const procedureFunctions = <Procedure extends ProtoBuilderProcedure>(
+    const procedureFunctions = <
+        Procedure extends ProtoBuilderProcedure<any, any>,
+    >(
         path: string[],
     ) => ({
-        useQuery: (
-            input: z.infer<Procedure["_defs"]["input"]>,
-            opts: Omit<
-                UseQueryOptions<
-                    Awaited<Procedure["_defs"]["output"]>,
-                    unknown,
-                    z.infer<Procedure["_defs"]["input"]>
-                >,
-                "queryKey" | "queryFn"
-            > = {},
-        ): UseQueryResult<Awaited<Procedure["_defs"]["output"]>, unknown> => {
+        useQuery: (input, opts) => {
             return useQuery({
                 ...opts,
                 queryKey: getQueryKey(path, input),
@@ -197,20 +191,7 @@ export function createReactEnvironment<Router extends ProtoBuilderRouter<any>>(
                     ),
             });
         },
-        useMutation: (
-            opts: Omit<
-                UseMutationOptions<
-                    Awaited<Procedure["_defs"]["output"]>,
-                    unknown,
-                    z.infer<Procedure["_defs"]["input"]>
-                >,
-                "mutationKey" | "mutationFn"
-            > = {},
-        ): UseMutationResult<
-            Awaited<Procedure["_defs"]["output"]>,
-            unknown,
-            z.infer<Procedure["_defs"]["input"]>
-        > => {
+        useMutation: (opts) => {
             return useMutation({
                 ...opts,
                 mutationKey: getQueryKey(path),

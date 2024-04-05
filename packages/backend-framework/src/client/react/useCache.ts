@@ -4,20 +4,21 @@ import { z } from "zod";
 
 import { getQueryKey } from "@/client/react/queryKeys";
 import {
+    InferProcedureInput,
     ProtoBuilderProcedure,
     ProtoBuilderRouter,
     ProtoBuilderType,
 } from "@/server";
 
 export interface CacheProcedureFunctions<
-    Procedure extends ProtoBuilderProcedure,
+    Procedure extends ProtoBuilderProcedure<any, any>,
 > {
     setData: (
-        input: z.infer<Procedure["_defs"]["input"]>,
+        input: InferProcedureInput<Procedure["_defs"]["input"]>,
         data: Awaited<Procedure["_defs"]["output"]>,
     ) => void;
     getData: (
-        input: z.infer<Procedure["_defs"]["input"]>,
+        input: InferProcedureInput<Procedure["_defs"]["input"]>,
     ) => Awaited<Procedure["_defs"]["output"]>;
 }
 

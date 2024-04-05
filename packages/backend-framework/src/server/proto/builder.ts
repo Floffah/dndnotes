@@ -1,6 +1,11 @@
-import { ZodType, z } from "zod";
+import { ZodNull, ZodType, ZodUndefined, ZodVoid, z } from "zod";
 
-import { TransformerLike, defaultTransformer } from "@/shared";
+import {
+    ServerError,
+    ServerErrorCode,
+    TransformerLike,
+    defaultTransformer,
+} from "@/shared";
 
 export enum ProtoBuilderType {
     Procedure,
@@ -14,25 +19,30 @@ export interface ProtoBuilder<Context = unknown> {
     };
 
     context: <NewContext>() => ProtoBuilder<NewContext>;
-    procedure: <Input extends ZodType>(
-        input: Input,
-    ) => ProtoBuilderProcedure<Input, Context>;
+    procedure: <Input>(input: Input) => ProtoBuilderProcedure<Context, Input>;
     router: <
         Fields extends Record<
             string,
             | ProtoBuilderRouter<any, Context>
-            | ProtoBuilderProcedure<any, Context>
+            | ProtoBuilderProcedure<Context, any>
         >,
     >(
         fields: Fields,
     ) => ProtoBuilderRouter<Fields, Context>;
 }
 
-export type ProtoBuilderProcedureExecutor<
-    Context,
-    Input extends ZodType,
-    Output = unknown,
-> = (opts: { input: z.infer<Input>; ctx: Context }) => Promise<Output> | Output;
+export type InferProcedureInput<Input> = Input extends undefined | void
+    ? void
+    : Input extends ZodType
+      ? Input extends ZodVoid | ZodUndefined | ZodNull
+          ? void
+          : z.infer<Input>
+      : Input;
+
+export type ProtoBuilderProcedureExecutor<Context, Input, Output> = (opts: {
+    input: InferProcedureInput<Input>;
+    ctx: Context;
+}) => Promise<Output> | Output;
 
 export enum ProcedureType {
     Query,
@@ -40,42 +50,32 @@ export enum ProcedureType {
 }
 
 export interface ProtoBuilderProcedure<
-    Input extends ZodType = ZodType,
-    Context = unknown,
+    Context,
+    Input,
+    Output = any,
     Type extends ProcedureType = ProcedureType,
-    Executor extends ProtoBuilderProcedureExecutor<
-        Context,
-        z.infer<Input>
-    > = ProtoBuilderProcedureExecutor<Context, z.infer<Input>>,
 > {
     _defs: {
         name: string;
         builderType: ProtoBuilderType.Procedure;
         input: Input;
-        output: Promise<Awaited<ReturnType<Executor>>>;
+        output: Output;
         context: Context;
-        executor: Executor;
+        executor: ProtoBuilderProcedureExecutor<Context, Input, Output>;
         type: Type;
         transformer: TransformerLike;
     };
 
-    query: <NewExecutor extends ProtoBuilderProcedureExecutor<Context, Input>>(
-        executor: NewExecutor,
+    query: <NewOutput>(
+        executor: ProtoBuilderProcedureExecutor<Context, Input, NewOutput>,
+    ) => ProtoBuilderProcedure<Context, Input, NewOutput, ProcedureType.Query>;
+    mutation: <NewOutput>(
+        executor: ProtoBuilderProcedureExecutor<Context, Input, NewOutput>,
     ) => ProtoBuilderProcedure<
-        Input,
         Context,
-        ProcedureType.Query,
-        NewExecutor
-    >;
-    mutation: <
-        NewExecutor extends ProtoBuilderProcedureExecutor<Context, Input>,
-    >(
-        executor: NewExecutor,
-    ) => ProtoBuilderProcedure<
         Input,
-        Context,
-        ProcedureType.Mutation,
-        NewExecutor
+        NewOutput,
+        ProcedureType.Mutation
     >;
 }
 
@@ -93,6 +93,7 @@ export interface ProtoBuilderRouter<
         transformer: TransformerLike;
     };
 }
+
 //
 export function createProtoBuilder<Context = unknown>(opts?: {
     transformer?: TransformerLike;
@@ -106,12 +107,7 @@ export function createProtoBuilder<Context = unknown>(opts?: {
         },
         context: <NewContext>() => createProtoBuilder<NewContext>(opts),
         procedure: (input) =>
-            createProtoBuilderProcedure(
-                input,
-                undefined,
-                undefined,
-                transformer,
-            ),
+            createProtoBuilderProcedure(input, undefined, transformer),
         router: (fields) => {
             for (const [name, field] of Object.entries(fields)) {
                 if (
@@ -135,27 +131,31 @@ export function createProtoBuilder<Context = unknown>(opts?: {
 }
 
 export function createProtoBuilderProcedure<
-    Input extends ZodType,
-    Context = unknown,
+    Context,
+    Input,
+    Output = any,
     Type extends ProcedureType = ProcedureType,
-    Executor extends ProtoBuilderProcedureExecutor<
-        Context,
-        z.infer<Input>
-    > = ProtoBuilderProcedureExecutor<Context, z.infer<Input>>,
 >(
     input: Input,
     type?: Type,
-    executor?: Executor,
     transformer?: TransformerLike,
-): ProtoBuilderProcedure<Input, Context, Type, Executor> {
+    executor?: ProtoBuilderProcedureExecutor<Context, Input, Output>,
+): ProtoBuilderProcedure<Context, Input, Output, Type> {
     return {
         _defs: {
             name: "",
             builderType: ProtoBuilderType.Procedure,
             input,
-            output: {} as Promise<Awaited<ReturnType<Executor>>>,
+            output: {} as Output,
             context: {} as Context,
-            executor: executor as Executor,
+            executor:
+                executor ??
+                (() => {
+                    throw new ServerError({
+                        code: ServerErrorCode.BAD_REQUEST,
+                        message: "Not implemented",
+                    });
+                }),
             type: type as Type,
             transformer: transformer ?? defaultTransformer,
         },
@@ -163,16 +163,16 @@ export function createProtoBuilderProcedure<
             return createProtoBuilderProcedure(
                 input,
                 ProcedureType.Query,
-                executor,
                 transformer,
+                executor,
             );
         },
         mutation: (executor) => {
             return createProtoBuilderProcedure(
                 input,
                 ProcedureType.Mutation,
-                executor,
                 transformer,
+                executor,
             );
         },
     };

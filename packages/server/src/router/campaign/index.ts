@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import { FilterQuery } from "mongoose";
 import { z } from "zod";
 
 import { ServerError } from "@dndnotes/backend-framework";
@@ -7,9 +8,11 @@ import {
     CampaignError,
     CampaignMemberType,
 } from "@dndnotes/models";
+import { Campaign, CampaignMember } from "@dndnotes/models";
 
 import { CampaignFilter } from "@/enums";
 import { ensureAuthenticated } from "@/lib/ensureAuthenticated";
+import { DiscordGuildModel } from "@/models";
 import { CampaignMemberModel } from "@/models/CampaignMemberModel";
 import { CampaignModel } from "@/models/CampaignModel";
 import { campaignCharacterRouter } from "@/router/campaign/character";
@@ -51,19 +54,59 @@ export const campaignRouter = router({
     list: procedure(
         z.object({
             filter: z.nativeEnum(CampaignFilter),
+            guildId: z.optional(z.string()),
         }),
     ).query(async (opts) => {
         await ensureAuthenticated(opts.ctx);
 
-        const campaignMembers = await CampaignMemberModel.find({
-            user: new ObjectId(opts.ctx.session!.user.id),
-        });
+        let filter: FilterQuery<Campaign> = {};
+        const campaignMembers: CampaignMember[] = [];
 
-        const campaigns = await CampaignModel.find({
-            _id: {
-                $in: campaignMembers.map((cm) => cm.campaign),
-            },
-        })
+        if (
+            !opts.input.filter ||
+            opts.input.filter === CampaignFilter.MY_CAMPAIGNS
+        ) {
+            campaignMembers.push(
+                ...(await CampaignMemberModel.find({
+                    user: new ObjectId(opts.ctx.session!.user.id),
+                })),
+            );
+
+            filter = {
+                _id: {
+                    $in: campaignMembers.map((cm) => cm.campaign),
+                },
+            };
+        } else if (opts.input.filter === CampaignFilter.GUILD_CAMPAIGNS) {
+            if (!opts.input.guildId) {
+                throw new ServerError({
+                    code: "BAD_REQUEST",
+                    message: CampaignError.NO_GUILD_ID,
+                });
+            }
+
+            const guild = await DiscordGuildModel.findOne({
+                guildId: opts.input.guildId,
+            });
+
+            if (!guild) {
+                throw new ServerError({
+                    code: "NOT_FOUND",
+                    message: CampaignError.GUILD_NOT_FOUND,
+                });
+            }
+
+            filter = {
+                discordGuild: guild._id,
+            };
+        } else {
+            throw new ServerError({
+                code: "BAD_REQUEST",
+                message: "Invalid filter",
+            });
+        }
+
+        const campaigns = await CampaignModel.find(filter)
             .populate("createdBy")
             .populate("schedules")
             .exec();

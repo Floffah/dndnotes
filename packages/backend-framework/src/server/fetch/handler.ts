@@ -12,10 +12,12 @@ import { ServerError, ServerErrorCode } from "@/shared";
 const getProcedureByPath = <TraversingRouter extends ProtoBuilderRouter<any>>(
     path: string,
     currentRouter: TraversingRouter,
-): ProtoBuilderProcedure | undefined => {
+): ProtoBuilderProcedure<any, any> | undefined => {
     const parts = path.split(".");
 
-    const field = parts.reduce<ProtoBuilderRouter<any> | ProtoBuilderProcedure>(
+    const field = parts.reduce<
+        ProtoBuilderRouter<any> | ProtoBuilderProcedure<any, any>
+    >(
         (acc, part) =>
             acc._defs.builderType === ProtoBuilderType.Router
                 ? acc?._defs.fields[part]
@@ -27,7 +29,7 @@ const getProcedureByPath = <TraversingRouter extends ProtoBuilderRouter<any>>(
         return undefined;
     }
 
-    return field as ProtoBuilderProcedure;
+    return field as ProtoBuilderProcedure<any, any>;
 };
 
 interface FetchHandlerOpts<Router extends ProtoBuilderRouter<any>> {

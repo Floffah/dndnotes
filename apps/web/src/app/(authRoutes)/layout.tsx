@@ -5,7 +5,7 @@ import { UserProvider } from "@/app/providers/UserProvider";
 export default async function AuthLayout({ children }) {
     const helpers = await getServerHelpers();
 
-    const user = await helpers.user.me.fetch();
+    await helpers.user.me.prefetch();
 
     return (
         <ServerHydrationBoundary helpers={helpers}>

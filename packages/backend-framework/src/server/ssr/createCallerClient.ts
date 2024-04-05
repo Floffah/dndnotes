@@ -7,17 +7,22 @@ import { z } from "zod";
 import { getQueryKey } from "@/client/react/queryKeys";
 import { getQueryClient } from "@/client/react/reactQuery";
 import {
+    InferProcedureInput,
     ProtoBuilderProcedure,
     ProtoBuilderRouter,
     ProtoBuilderType,
 } from "@/server";
 import { TransformerLike, defaultTransformer } from "@/shared";
 
-interface RouteClientFunctions<Procedure extends ProtoBuilderProcedure> {
+interface RouteClientFunctions<
+    Procedure extends ProtoBuilderProcedure<any, any>,
+> {
     fetch: (
-        input: z.infer<Procedure["_defs"]["input"]>,
+        input: InferProcedureInput<Procedure["_defs"]["input"]>,
     ) => Promise<Procedure["_defs"]["output"]>;
-    prefetch: (input: z.infer<Procedure["_defs"]["input"]>) => void;
+    prefetch: (
+        input: InferProcedureInput<Procedure["_defs"]["input"]>,
+    ) => Promise<void>;
 }
 
 export type RouterClient<Router extends ProtoBuilderRouter<any>> = {

@@ -136,14 +136,6 @@ function createBatcher(opts: BatcherOptions) {
 
                     if (response.status === "ok") {
                         resolve(response.data);
-                    } else if (response.error.type === "ServerError") {
-                        const error = new ServerError({
-                            code: response.error.code,
-                            message: response.error.message,
-                            cause: response.error.cause,
-                        });
-
-                        reject(error);
                     } else {
                         reject(response.error);
                     }

@@ -12,7 +12,7 @@ import { api } from "@/lib/api";
 interface MutableActivity {
     title: string;
     details: string;
-    party: [number, number];
+    party?: [number, number];
 }
 
 interface DiscordContextValue {
@@ -37,14 +37,12 @@ export const DiscordContext = createContext<DiscordContextValue>(null!);
 export const useDiscord = () => useContext(DiscordContext);
 
 const sdk = new DiscordSDK(process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string);
-// const rest = new REST({ version: "10", authPrefix: "Bearer" });
 
 export function DiscordProvider({ children }) {
     const loadedAtRef = useRef(Date.now());
     const activityRef = useRef<MutableActivity>({
         title: "Not in a session",
         details: "Idling",
-        party: [1, 1],
     });
 
     const log = (message: any, level: ConsoleLevel = ConsoleLevel.DEBUG) =>
@@ -104,8 +102,6 @@ export function DiscordProvider({ children }) {
                 }),
             }).then((res) => res.json());
 
-            console.log(res);
-
             log("Response received for Discord access token");
 
             if (!res.ok) {
@@ -116,9 +112,11 @@ export function DiscordProvider({ children }) {
             const accessToken = res.data.access_token;
             const sessionToken = res.data.session_token;
 
-            api.setHeader("X-Session-Token", sessionToken);
-            api.setHeader("X-Access-Token", accessToken);
-            api.setHeader("X-Guild-Id", res.data.guild_id);
+            api.setHeader("x-session-token", sessionToken);
+            api.setHeader("x-access-token", accessToken);
+            if (sdk.guildId) {
+                api.setHeader("x-guild-id", sdk.guildId);
+            }
 
             const auth = await sdk.commands.authenticate({
                 access_token: accessToken,
@@ -147,12 +145,15 @@ export function DiscordProvider({ children }) {
                 timestamps: {
                     start: loadedAtRef.current,
                 },
+                assets: {
+                    large_image: "logo",
+                },
                 party: activityRef.current.party
                     ? {
                           id: "party",
                           size: activityRef.current.party,
                       }
-                    : null,
+                    : {},
                 secrets: {
                     match: "match",
                     join: "join",

@@ -18,6 +18,7 @@ export class CampaignAPIModel extends BaseAPIModel implements Campaign {
     sessions: CampaignSession[];
     schedules: CampaignSessionSchedule[];
     discordGuild: DiscordGuild;
+    isLinkedToGuild: boolean;
 
     constructor(campaign: Campaign, ctx: ConsumerContext) {
         super(campaign, ctx);
@@ -39,5 +40,6 @@ export class CampaignAPIModel extends BaseAPIModel implements Campaign {
               )
             : null!;
         this.discordGuild = null!;
+        this.isLinkedToGuild = !!campaign.discordGuild;
     }
 }

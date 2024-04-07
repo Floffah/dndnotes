@@ -9,6 +9,7 @@ import {
     CampaignError,
     CampaignMember,
     CampaignMemberType,
+    DiscordGuild,
 } from "@dndnotes/models";
 
 import { CampaignFilter } from "@/enums";
@@ -55,7 +56,6 @@ export const campaignRouter = router({
     list: procedure(
         z.object({
             filter: z.nativeEnum(CampaignFilter),
-            guildId: z.optional(z.string()),
         }),
     ).query(async (opts) => {
         await ensureAuthenticated(opts.ctx);
@@ -65,7 +65,7 @@ export const campaignRouter = router({
 
         if (
             !opts.input.filter ||
-            opts.input.filter === CampaignFilter.MY_CAMPAIGNS
+            opts.input.filter === CampaignFilter.MEMBER_OF
         ) {
             campaignMembers.push(
                 ...(await CampaignMemberModel.find({
@@ -78,19 +78,8 @@ export const campaignRouter = router({
                     $in: campaignMembers.map((cm) => cm.campaign),
                 },
             };
-        } else if (opts.input.filter === CampaignFilter.GUILD_CAMPAIGNS) {
-            if (!opts.input.guildId) {
-                throw new ServerError({
-                    code: "BAD_REQUEST",
-                    message: CampaignError.NO_GUILD_ID,
-                });
-            }
-
-            const guild = await DiscordGuildModel.findOne({
-                guildId: opts.input.guildId,
-            });
-
-            if (!guild) {
+        } else if (opts.input.filter === CampaignFilter.GUILD_LINKED) {
+            if (!opts.ctx.guild) {
                 throw new ServerError({
                     code: "NOT_FOUND",
                     message: CampaignError.GUILD_NOT_FOUND,
@@ -98,7 +87,20 @@ export const campaignRouter = router({
             }
 
             filter = {
-                discordGuild: guild._id,
+                discordGuild: opts.ctx.guild._id,
+            };
+        } else if (opts.input.filter === CampaignFilter.CREATED) {
+            campaignMembers.push(
+                ...(await CampaignMemberModel.find({
+                    user: new ObjectId(opts.ctx.session!.user.id),
+                    type: CampaignMemberType.DM,
+                })),
+            );
+
+            filter = {
+                _id: {
+                    $in: campaignMembers.map((cm) => cm.campaign),
+                },
             };
         } else {
             throw new ServerError({
@@ -247,6 +249,60 @@ export const campaignRouter = router({
         });
 
         await campaign.deleteOne();
+
+        return true;
+    }),
+
+    linkGuild: procedure(
+        z.object({
+            campaignId: z.string(),
+        }),
+    ).mutation(async (opts) => {
+        await ensureAuthenticated(opts.ctx);
+
+        if (!ObjectId.isValid(opts.input.campaignId)) {
+            throw new ServerError({
+                code: "NOT_FOUND",
+                message: CampaignError.NOT_FOUND,
+            });
+        }
+
+        if (!opts.ctx.guild) {
+            throw new ServerError({
+                code: "NOT_FOUND",
+                message: CampaignError.NO_GUILD_ID,
+            });
+        }
+
+        const campaign = await CampaignModel.findById(
+            new ObjectId(opts.input.campaignId),
+        );
+
+        if (!campaign) {
+            throw new ServerError({
+                code: "NOT_FOUND",
+                message: CampaignError.NOT_FOUND,
+            });
+        }
+
+        const guild = await DiscordGuildModel.findOneAndUpdate(
+            {
+                guildId: opts.ctx.guild.id,
+            },
+            {
+                guildId: opts.ctx.guild.id,
+            },
+            {
+                upsert: true,
+                new: true,
+            },
+        );
+
+        if (campaign.discordGuild.toString() !== guild._id.toString()) {
+            campaign.discordGuild = guild._id as any;
+
+            await campaign.save();
+        }
 
         return true;
     }),

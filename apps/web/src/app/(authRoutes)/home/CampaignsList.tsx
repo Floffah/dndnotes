@@ -60,7 +60,7 @@ const CampaignCard = ({ campaign }: { campaign: Campaign }) => {
 
 export const CampaignsList = memo(() => {
     const campaigns = api.campaign.list.useQuery({
-        filter: CampaignFilter.MY_CAMPAIGNS,
+        filter: CampaignFilter.MEMBER_OF,
     });
 
     return (

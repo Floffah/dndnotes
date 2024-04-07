@@ -29,7 +29,8 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@radix-ui/react-visually-hidden": "^1.0.3",
     "@react-spring/web": "^9.7.3",
-    "clsx": "^2.1.0"
+    "clsx": "^2.1.0",
+    "nanoid": "^5.0.7"
   },
   "devDependencies": {
     "@dndnotes/tailwind-preset": "workspace:*",

@@ -4,6 +4,7 @@ import { Button, Loader } from "@dndnotes/components";
 import { CampaignError } from "@dndnotes/models";
 import { CampaignFilter, DiscordActivityFeatureFlags } from "@dndnotes/server";
 
+import { LinkCampaignDialog } from "@/app/LinkCampaignDialog";
 import { api } from "@/lib/api";
 import { useDiscord } from "@/providers/DiscordProvider";
 import { useFeatures } from "@/providers/FeaturesProvider";
@@ -14,8 +15,7 @@ export default function Dashboard() {
 
     const guildCampaigns = api.campaign.list.useQuery(
         {
-            filter: CampaignFilter.GUILD_CAMPAIGNS,
-            guildId: discord.sdk.guildId!,
+            filter: CampaignFilter.GUILD_LINKED,
         },
         {
             enabled: !!discord.sdk.guildId,
@@ -32,18 +32,21 @@ export default function Dashboard() {
                 </>
             )}
 
-            {guildCampaigns.error &&
+            {(guildCampaigns.error &&
                 guildCampaigns.error.message ===
-                    CampaignError.GUILD_NOT_FOUND && (
+                    CampaignError.GUILD_NOT_FOUND) ||
+                (guildCampaigns.data?.length == 0 && (
                     <div className="m-4 flex w-fit max-w-sm flex-col gap-2 rounded-lg border border-white/15 bg-gray-800 p-3">
                         <p className="text-lg font-semibold">
                             This server is not linked to any campaigns.
                         </p>
-                        <Button size="md" color="primary">
-                            Link one!
-                        </Button>
+                        <LinkCampaignDialog>
+                            <Button size="md" color="primary">
+                                Link one!
+                            </Button>
+                        </LinkCampaignDialog>
                     </div>
-                )}
+                ))}
 
             {!guildCampaigns.isLoading &&
                 features.discord.includes(

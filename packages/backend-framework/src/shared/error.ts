@@ -17,8 +17,8 @@ export enum ServerErrorCode {
 }
 
 export class ServerError extends Error {
-    readonly cause?: Error;
-    readonly code: ServerErrorCode | string;
+    public readonly cause?: Error;
+    public readonly code: ServerErrorCode | string;
 
     constructor(opts: {
         message?: string;
@@ -27,10 +27,10 @@ export class ServerError extends Error {
     }) {
         const message = opts.message ?? opts.cause?.message ?? opts.code;
 
-        super(opts.message);
+        super(message);
 
         this.code = opts.code;
         this.name = "ServerError";
-        this.cause = opts.cause instanceof Error ? opts.cause : undefined;
+        this.cause = opts.cause;
     }
 }

@@ -11,5 +11,6 @@ export interface Campaign extends IBaseModel {
 
     sessions: CampaignSession[];
     schedules: CampaignSessionSchedule[];
-    discordGuild: DiscordGuild;
+    discordGuild: DiscordGuild; // null in api
+    isLinkedToGuild: boolean; // public in api
 }

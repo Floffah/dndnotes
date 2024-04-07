@@ -49,18 +49,10 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
         });
 
         try {
-            let context: Awaited<Router["_defs"]["context"]>;
-            try {
-                context = await options.createContext({
-                    req,
-                    resHeaders,
-                });
-            } catch (e: any) {
-                throw new ServerError({
-                    code: "INTERNAL_SERVER_ERROR",
-                    cause: e,
-                });
-            }
+            const context = await options.createContext({
+                req,
+                resHeaders,
+            });
 
             const url = new URL(req.url);
 
@@ -149,12 +141,16 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                         });
                     }
 
-                    let result;
                     try {
-                        result = await procedure._defs.executor({
+                        const result = await procedure._defs.executor({
                             input,
                             ctx: context,
                         });
+
+                        return {
+                            status: "ok",
+                            data: result,
+                        };
                     } catch (e: any) {
                         let error: ServerError;
 
@@ -167,25 +163,11 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                             });
                         }
 
-                        result = error;
-                    }
-
-                    if (result instanceof ServerError) {
                         return {
                             status: "error",
-                            error: {
-                                type: "ServerError",
-                                code: result.code,
-                                message: result.message,
-                                cause: result.cause,
-                            },
+                            error: error,
                         };
                     }
-
-                    return {
-                        status: "ok",
-                        data: result,
-                    };
                 }),
             );
 
@@ -229,8 +211,7 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
             return new Response(
                 JSON.stringify(
                     options.appRouter._defs.transformer.serialize({
-                        rawError: error,
-                        error: error?.message ?? error.toString(),
+                        error: error,
                     }),
                 ),
                 { status, headers: resHeaders },

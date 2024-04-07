@@ -1,6 +1,11 @@
 import { REST } from "@discordjs/rest";
 import { parse } from "cookie";
-import { Routes } from "discord-api-types/v10";
+import {
+    RESTGetCurrentUserGuildMemberResult,
+    Routes,
+} from "discord-api-types/v10";
+import { ObjectId } from "mongodb";
+import { Document, HydratedDocument } from "mongoose";
 import superjson from "superjson";
 
 import { ServerError, ServerErrorCode } from "@dndnotes/backend-framework";
@@ -53,7 +58,7 @@ export const createContext = async (opts: FetchHandlerContext) => {
 
     let access_token: string | null = null;
     let guild_id: string | null = null;
-    let guild: DiscordGuild | null = null;
+    let guild: HydratedDocument<DiscordGuild> | null = null;
     let discord_app_client: REST | null = null;
     let discord_bot_client: REST | null = null;
 
@@ -73,7 +78,7 @@ export const createContext = async (opts: FetchHandlerContext) => {
 
             try {
                 await discord_app_client.get(Routes.userGuildMember(guild_id));
-            } catch (e) {
+            } catch (e: any) {
                 throw new ServerError({
                     code: ServerErrorCode.BAD_REQUEST,
                     message: "Invalid guild id",
@@ -81,15 +86,39 @@ export const createContext = async (opts: FetchHandlerContext) => {
                 });
             }
 
+            discord_bot_client = new REST({
+                version: "10",
+                authPrefix: "Bot",
+            }).setToken(process.env.DISCORD_BOT_TOKEN as string);
+
             guild = await DiscordGuildModel.findOne({
                 guildId: guild_id,
             });
 
-            if (guild && guild.botInGuild) {
-                discord_bot_client = new REST({
-                    version: "10",
-                    authPrefix: "Bot",
-                }).setToken(process.env.DISCORD_BOT_TOKEN as string);
+            let botMember: RESTGetCurrentUserGuildMemberResult | null;
+            try {
+                botMember = (await discord_bot_client.get(
+                    Routes.guildMember(
+                        guild_id,
+                        process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
+                    ),
+                )) as any;
+            } catch (e) {
+                botMember = null;
+            }
+
+            if (guild && botMember && !guild.botInGuild) {
+                guild.botInGuild = true;
+                await guild.save();
+            } else if (guild && !botMember && guild.botInGuild) {
+                guild.botInGuild = false;
+                await guild.save();
+            } else if (!guild) {
+                guild = new DiscordGuildModel({
+                    guildId: guild_id,
+                    botInGuild: !!botMember,
+                });
+                await guild.save();
             }
         }
     }

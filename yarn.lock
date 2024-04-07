@@ -725,6 +725,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dndnotes/models@workspace:packages/models"
   dependencies:
+    "@dndnotes/backend-framework": "workspace:*"
     "@types/node": "npm:^20.12.5"
     date-fns: "npm:^3.6.0"
     superjson: "npm:^2.2.1"

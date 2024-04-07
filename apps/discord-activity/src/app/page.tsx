@@ -1,11 +1,8 @@
 "use client";
 
-import { Routes } from "discord-api-types/v10";
-
 import { Button, Loader } from "@dndnotes/components";
 import { CampaignError } from "@dndnotes/models";
-import { CampaignFilter } from "@dndnotes/server";
-import { DiscordActivityFeatureFlags } from "@dndnotes/server";
+import { CampaignFilter, DiscordActivityFeatureFlags } from "@dndnotes/server";
 
 import { api } from "@/lib/api";
 import { useDiscord } from "@/providers/DiscordProvider";
@@ -25,8 +22,6 @@ export default function Dashboard() {
             retry: false,
         },
     );
-
-    console.log(features);
 
     return (
         <div className="bg-pattern-topography relative flex h-screen w-screen flex-col items-center justify-center gap-2 p-3">

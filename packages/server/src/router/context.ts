@@ -8,7 +8,6 @@ import {
     FetchHandlerContext,
     createProtoBuilder,
 } from "@dndnotes/backend-framework/server";
-import { createErrorResponse } from "@dndnotes/discord-activity/src/lib/apiResponse";
 import { SESSION_TOKEN } from "@dndnotes/lib";
 import { UserSession, registerTransformerTypes } from "@dndnotes/models";
 import { DiscordGuild } from "@dndnotes/models/src";

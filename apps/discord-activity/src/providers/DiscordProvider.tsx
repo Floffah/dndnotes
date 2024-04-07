@@ -1,20 +1,9 @@
 "use client";
 
-import {
-    DiscordSDK,
-    RPCCloseCodes,
-    patchUrlMappings,
-} from "@discord/embedded-app-sdk";
+import { DiscordSDK, RPCCloseCodes } from "@discord/embedded-app-sdk";
 import { useQuery } from "@tanstack/react-query";
 import { Routes } from "discord-api-types/v10";
-import {
-    createContext,
-    useContext,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react";
+import { createContext, useContext, useEffect, useRef } from "react";
 
 import { Loader } from "@dndnotes/components";
 

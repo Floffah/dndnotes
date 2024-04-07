@@ -1,7 +1,6 @@
 import { Schema } from "mongoose";
 
-import { UserSession } from "@dndnotes/models";
-import { UserSessionType } from "@dndnotes/models";
+import { UserSession, UserSessionType } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 

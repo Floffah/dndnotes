@@ -6,7 +6,7 @@ import {
     useMutation,
     useQuery,
 } from "@tanstack/react-query";
-import { ZodVoid, z } from "zod";
+import { z } from "zod";
 
 import { useCache } from "@/client";
 import { getQueryKey } from "@/client/react/queryKeys";

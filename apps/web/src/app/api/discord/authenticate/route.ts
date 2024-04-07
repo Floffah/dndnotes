@@ -1,8 +1,7 @@
 import cryptoRandomString from "crypto-random-string";
 
 import { SESSION_TOKEN } from "@dndnotes/lib";
-import { UserAPIModel } from "@dndnotes/models";
-import { UserSessionType } from "@dndnotes/models";
+import { UserAPIModel, UserSessionType } from "@dndnotes/models";
 import {
     UserModel,
     UserSessionModel,

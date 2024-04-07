@@ -1,6 +1,5 @@
 "use client";
 
-import { User } from "@dndnotes/models";
 import clsx from "clsx";
 import {
     ComponentProps,
@@ -9,6 +8,8 @@ import {
     forwardRef,
     useContext,
 } from "react";
+
+import { User } from "@dndnotes/models";
 
 export interface UserComponentContextValue extends User {}
 

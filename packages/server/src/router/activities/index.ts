@@ -1,6 +1,5 @@
 import { DiscordActivityFeatureFlags } from "@/enums";
 import { ensureAuthenticated } from "@/lib/ensureAuthenticated";
-import { DiscordGuildModel } from "@/models";
 import { procedure, router } from "@/router/context";
 
 export const discordActivitiesRouter = router({

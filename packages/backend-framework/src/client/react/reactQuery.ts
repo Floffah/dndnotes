@@ -6,6 +6,8 @@ export const getQueryClient = () =>
             queries: {
                 refetchOnWindowFocus: false,
                 staleTime: 1000 * 60 * 30,
+                refetchOnMount: false,
+                networkMode: "offlineFirst",
             },
         },
     });

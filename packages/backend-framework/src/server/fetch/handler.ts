@@ -49,10 +49,18 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
         });
 
         try {
-            const context = await options.createContext({
-                req,
-                resHeaders,
-            });
+            let context: Awaited<Router["_defs"]["context"]>;
+            try {
+                context = await options.createContext({
+                    req,
+                    resHeaders,
+                });
+            } catch (e: any) {
+                throw new ServerError({
+                    code: "INTERNAL_SERVER_ERROR",
+                    cause: e,
+                });
+            }
 
             const url = new URL(req.url);
 

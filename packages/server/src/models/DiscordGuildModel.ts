@@ -11,6 +11,16 @@ export const DiscordGuildSchema = new Schema<DiscordGuild>({
         unique: true,
         index: true,
     },
+    botInGuild: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    botIgnored: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
 });
 
 export const DiscordGuildModel = createModel(

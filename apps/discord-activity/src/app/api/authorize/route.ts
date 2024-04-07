@@ -1,17 +1,21 @@
+import { REST } from "@discordjs/rest";
 import cryptoRandomString from "crypto-random-string";
+import { RESTGetAPICurrentUserResult, Routes } from "discord-api-types/v10";
 import { NextResponse } from "next/server";
 
 import { SESSION_TOKEN } from "@dndnotes/lib";
 import { UserSessionType } from "@dndnotes/models";
 import { UserModel, UserSessionModel } from "@dndnotes/server/appRouter";
-import { createErrorResponse } from "@dndnotes/web/src/app/api/apiResponse";
+
+import { createErrorResponse } from "@/lib/apiResponse";
 
 export const POST = async (req: Request) => {
     const body = await req.json();
     const code = body.code;
+    const guild_id = body.guild_id;
 
-    if (!code) {
-        return createErrorResponse("No code provided");
+    if (!code || !guild_id) {
+        return createErrorResponse("Invalid payload");
     }
 
     const codeExchangeResponse = await fetch(
@@ -38,14 +42,23 @@ export const POST = async (req: Request) => {
 
     const accessToken = codeExchangeResponse.access_token;
 
-    const userResponse = await fetch("https://discord.com/api/users/@me", {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-    }).then((res) => res.json());
+    const discord = new REST({ version: "10", authPrefix: "Bearer" }).setToken(
+        accessToken,
+    );
 
-    if (userResponse.error || !userResponse.id) {
-        return createErrorResponse(userResponse.error ?? "No user id provided");
+    let userResponse: RESTGetAPICurrentUserResult;
+    try {
+        userResponse = (await discord.get(
+            Routes.user("@me"),
+        )) as RESTGetAPICurrentUserResult;
+    } catch (e) {
+        return createErrorResponse("Invalid access token");
+    }
+
+    try {
+        await discord.get(Routes.userGuildMember(guild_id));
+    } catch (e) {
+        return createErrorResponse("Invalid guild id");
     }
 
     let username = userResponse.username.toLowerCase() as string;

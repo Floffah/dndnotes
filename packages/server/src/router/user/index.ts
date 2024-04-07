@@ -11,7 +11,7 @@ import { userFriendsRouter } from "@/router/user/friends";
 export const userRouter = router({
     friends: userFriendsRouter,
 
-    me: procedure(z.void()).query((opts) => {
+    me: procedure().query((opts) => {
         if (!opts.ctx.session) return null;
 
         return new UserAPIModel(opts.ctx.session.user, {

@@ -19,7 +19,9 @@ export interface ProtoBuilder<Context = unknown> {
     };
 
     context: <NewContext>() => ProtoBuilder<NewContext>;
-    procedure: <Input>(input: Input) => ProtoBuilderProcedure<Context, Input>;
+    procedure: <Input = ZodVoid>(
+        input?: Input,
+    ) => ProtoBuilderProcedure<Context, Input>;
     router: <
         Fields extends Record<
             string,
@@ -106,8 +108,12 @@ export function createProtoBuilder<Context = unknown>(opts?: {
             transformer,
         },
         context: <NewContext>() => createProtoBuilder<NewContext>(opts),
-        procedure: (input) =>
-            createProtoBuilderProcedure(input, undefined, transformer),
+        procedure: <Input>(input?: Input) =>
+            createProtoBuilderProcedure(
+                (input ?? z.void()) as Input,
+                undefined,
+                transformer,
+            ),
         router: (fields) => {
             for (const [name, field] of Object.entries(fields)) {
                 if (

@@ -1,7 +1,12 @@
 "use client";
 
-import { DiscordSDK, patchUrlMappings } from "@discord/embedded-app-sdk";
+import {
+    DiscordSDK,
+    RPCCloseCodes,
+    patchUrlMappings,
+} from "@discord/embedded-app-sdk";
 import { useQuery } from "@tanstack/react-query";
+import { Routes } from "discord-api-types/v10";
 import {
     createContext,
     useContext,
@@ -27,6 +32,7 @@ interface DiscordContextValue {
     auth?: Awaited<ReturnType<DiscordSDK["commands"]["authenticate"]>>;
 
     updateActivity: (activity?: Partial<MutableActivity>) => Promise<void>;
+    inviteBot: () => Promise<void>;
 }
 
 export enum ConsoleLevel {
@@ -41,12 +47,10 @@ export const DiscordContext = createContext<DiscordContextValue>(null!);
 
 export const useDiscord = () => useContext(DiscordContext);
 
-export function DiscordProvider({ children }) {
-    const [sdk] = useState(
-        () =>
-            new DiscordSDK(process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string),
-    );
+const sdk = new DiscordSDK(process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string);
+// const rest = new REST({ version: "10", authPrefix: "Bearer" });
 
+export function DiscordProvider({ children }) {
     const loadedAtRef = useRef(Date.now());
     const activityRef = useRef<MutableActivity>({
         title: "Not in a session",
@@ -54,27 +58,49 @@ export function DiscordProvider({ children }) {
         party: [1, 1],
     });
 
-    const log = (message: string, level: ConsoleLevel = ConsoleLevel.DEBUG) =>
+    const log = (message: any, level: ConsoleLevel = ConsoleLevel.DEBUG) =>
         sdk.commands.captureLog({ message, level });
 
     const authenticateQuery = useQuery({
-        refetchOnMount: false,
+        staleTime: Infinity,
+        retry: false,
         queryKey: ["discord", "authenticate", "embedded_app_sdk"],
         queryFn: async () => {
+            console.debug("Waiting for SDK to be ready");
+
             await sdk.ready();
 
-            const { code } = await sdk.commands.authorize({
-                client_id: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
-                response_type: "code",
-                prompt: "none",
-                scope: [
-                    "identify",
-                    "email",
-                    "guilds",
-                    "guilds.members.read",
-                    "rpc.activities.write",
-                ],
-            });
+            log("SDK is ready");
+
+            let code: string;
+
+            try {
+                const authorization = await sdk.commands.authorize({
+                    client_id: process.env
+                        .NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
+                    response_type: "code",
+                    prompt: "none",
+                    scope: [
+                        "identify",
+                        "email",
+                        "guilds",
+                        "guilds.members.read",
+                        "rpc.activities.write",
+                    ],
+                });
+                code = authorization.code;
+            } catch (e: any) {
+                log(e, ConsoleLevel.ERROR);
+
+                if (e.message.includes("denied")) {
+                    sdk.close(
+                        RPCCloseCodes.CLOSE_ABNORMAL,
+                        "User denied authorization. Unable to to authenticate with Discord.",
+                    );
+                }
+
+                throw e;
+            }
 
             log("Received code from Discord");
 
@@ -85,10 +111,16 @@ export function DiscordProvider({ children }) {
                 },
                 body: JSON.stringify({
                     code,
+                    guild_id: sdk.guildId,
                 }),
             }).then((res) => res.json());
 
+            console.log(res);
+
+            log("Response received for Discord access token");
+
             if (!res.ok) {
+                log(`Error: ${res.error}`, ConsoleLevel.ERROR);
                 throw new Error(res.error);
             }
 
@@ -97,10 +129,15 @@ export function DiscordProvider({ children }) {
 
             api.setHeader("X-Session-Token", sessionToken);
             api.setHeader("X-Access-Token", accessToken);
+            api.setHeader("X-Guild-Id", res.data.guild_id);
 
-            return await sdk.commands.authenticate({
+            const auth = await sdk.commands.authenticate({
                 access_token: accessToken,
             });
+
+            log("Authenticated with Discord");
+
+            return auth;
         },
     });
 
@@ -138,8 +175,27 @@ export function DiscordProvider({ children }) {
     useEffect(() => {
         if (!authenticateQuery.isLoading && !authenticateQuery.error) {
             updateActivity();
+
+            sdk.commands.encourageHardwareAcceleration();
         }
     }, [authenticateQuery, sdk.commands]);
+
+    const inviteBot = async () => {
+        const url = new URL(
+            Routes.oauth2Authorization(),
+            "https://discord.com/api",
+        );
+
+        url.searchParams.set(
+            "client_id",
+            process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
+        );
+        url.searchParams.set("permissions", "1175918193181741057");
+        url.searchParams.set("scope", "bot applications.commands");
+        url.searchParams.set("guild_id", sdk.guildId as string);
+
+        await sdk.commands.openExternalLink({ url: url.toString() });
+    };
 
     return (
         <DiscordContext.Provider
@@ -149,6 +205,7 @@ export function DiscordProvider({ children }) {
                 auth: authenticateQuery.data,
 
                 updateActivity,
+                inviteBot,
             }}
         >
             {authenticateQuery.isLoading && !authenticateQuery.error && (

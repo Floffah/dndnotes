@@ -14,5 +14,6 @@ export * from "./providers";
 export * from "./RichTextDocument";
 export * from "./Select";
 export * from "./Switch";
+export * from "./Toast";
 export * from "./Tooltip";
 export * from "./User";

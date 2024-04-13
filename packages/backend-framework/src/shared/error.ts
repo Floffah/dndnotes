@@ -34,3 +34,31 @@ export class ServerError extends Error {
         this.cause = opts.cause;
     }
 }
+
+export function serializeError(err: any) {
+    if (err instanceof ServerError) {
+        return {
+            _type: "ServerError",
+            code: err.code,
+            message: err.message,
+            cause: err.cause,
+        };
+    }
+
+    return err;
+}
+
+export function deserializeError(err: any): ServerError {
+    if ("_type" in err && err._type === "ServerError") {
+        return new ServerError({
+            code: err.code,
+            message: err.message,
+            cause: err.cause,
+        });
+    }
+
+    return new ServerError({
+        code: ServerErrorCode.INTERNAL_SERVER_ERROR,
+        cause: err,
+    });
+}

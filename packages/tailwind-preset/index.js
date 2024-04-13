@@ -2,10 +2,6 @@ const plugin = require("tailwindcss/plugin");
 const flattenColorPalette =
     require("tailwindcss/lib/util/flattenColorPalette").default;
 
-const { resolve } = require("path");
-
-const componentsDirectory = resolve(__dirname, "../components");
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     theme: {

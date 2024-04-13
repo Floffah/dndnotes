@@ -22,7 +22,7 @@ export const CampaignSchema = new Schema<Campaign>({
     discordGuild: {
         type: Schema.Types.ObjectId,
         ref: "DiscordGuild",
-        required: true,
+        required: false,
     },
 });
 

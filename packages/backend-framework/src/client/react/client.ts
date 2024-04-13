@@ -17,7 +17,12 @@ import {
     ProtoBuilderRouter,
     ProtoBuilderType,
 } from "@/server";
-import { ServerError, TransformerLike, defaultTransformer } from "@/shared";
+import {
+    ServerError,
+    TransformerLike,
+    defaultTransformer,
+    deserializeError,
+} from "@/shared";
 
 export interface ReactQueryProcedureCall<
     Procedure extends ProtoBuilderProcedure<any, any>,
@@ -129,7 +134,8 @@ function createBatcher(opts: BatcherOptions) {
             const results = opts.transformer.deserialize(await res.json());
 
             if (results?.error) {
-                currentBatch.forEach(({ reject }) => reject(results.error));
+                const error = deserializeError(results.error);
+                currentBatch.forEach(({ reject }) => reject(error));
             } else {
                 currentBatch.forEach(({ resolve, reject }, i) => {
                     const response = results[i];
@@ -137,7 +143,8 @@ function createBatcher(opts: BatcherOptions) {
                     if (response.status === "ok") {
                         resolve(response.data);
                     } else {
-                        reject(response.error);
+                        const error = deserializeError(response.error);
+                        reject(error);
                     }
                 });
             }

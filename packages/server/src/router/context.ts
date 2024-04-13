@@ -1,11 +1,10 @@
-import { REST } from "@discordjs/rest";
+import { REST, RequestMethod } from "@discordjs/rest";
 import { parse } from "cookie";
 import {
     RESTGetCurrentUserGuildMemberResult,
     Routes,
 } from "discord-api-types/v10";
-import { ObjectId } from "mongodb";
-import { Document, HydratedDocument } from "mongoose";
+import { HydratedDocument } from "mongoose";
 import superjson from "superjson";
 
 import { ServerError, ServerErrorCode } from "@dndnotes/backend-framework";
@@ -17,6 +16,7 @@ import { SESSION_TOKEN } from "@dndnotes/lib";
 import { UserSession, registerTransformerTypes } from "@dndnotes/models";
 import { DiscordGuild } from "@dndnotes/models/src";
 
+import { cacheDiscordResponse } from "@/lib/cacheDiscordResponse";
 import { mongoConnect } from "@/lib/mongoDB";
 import { DiscordGuildModel } from "@/models";
 import { UserSessionModel } from "@/models/UserSessionModel";
@@ -65,6 +65,7 @@ export const createContext = async (opts: FetchHandlerContext) => {
     if (opts.req.headers.has("x-access-token")) {
         access_token = opts.req.headers.get("x-access-token") as string;
 
+        console.log(1);
         discord_app_client = new REST({
             version: "10",
             authPrefix: "Bearer",
@@ -77,7 +78,11 @@ export const createContext = async (opts: FetchHandlerContext) => {
             guild_id = opts.req.headers.get("x-guild-id") as string;
 
             try {
-                await discord_app_client.get(Routes.userGuildMember(guild_id));
+                await cacheDiscordResponse(
+                    discord_app_client,
+                    RequestMethod.Get,
+                    Routes.userGuildMember(guild_id),
+                );
             } catch (e: any) {
                 throw new ServerError({
                     code: ServerErrorCode.BAD_REQUEST,
@@ -97,7 +102,9 @@ export const createContext = async (opts: FetchHandlerContext) => {
 
             let botMember: RESTGetCurrentUserGuildMemberResult | null;
             try {
-                botMember = (await discord_bot_client.get(
+                botMember = (await cacheDiscordResponse(
+                    discord_bot_client,
+                    RequestMethod.Get,
                     Routes.guildMember(
                         guild_id,
                         process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,

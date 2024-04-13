@@ -7,7 +7,7 @@ import {
     ProtoBuilderRouter,
     ProtoBuilderType,
 } from "@/server";
-import { ServerError, ServerErrorCode } from "@/shared";
+import { ServerError, ServerErrorCode, serializeError } from "@/shared";
 
 const getProcedureByPath = <TraversingRouter extends ProtoBuilderRouter<any>>(
     path: string,
@@ -165,7 +165,7 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
 
                         return {
                             status: "error",
-                            error: error,
+                            error: serializeError(error),
                         };
                     }
                 }),
@@ -211,7 +211,7 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
             return new Response(
                 JSON.stringify(
                     options.appRouter._defs.transformer.serialize({
-                        error: error,
+                        error: serializeError(error),
                     }),
                 ),
                 { status, headers: resHeaders },

@@ -14,17 +14,17 @@ import { CampaignFilter } from "@dndnotes/server";
 
 import { api } from "@/lib/api";
 import { useDiscord } from "@/providers/DiscordProvider";
+import { useGuildCampaigns } from "@/providers/GuildCampaignsProvider";
 
 export const LinkCampaignDialog = forwardRef<DialogRef, PropsWithChildren>(
     ({ children }, ref) => {
         const discord = useDiscord();
         const dialogs = useDialogs();
+        const guildCampaigns = useGuildCampaigns();
 
         const campaigns = api.campaign.list.useQuery({
             filter: CampaignFilter.CREATED,
         });
-
-        const linkCampaignMutation = api.campaign.linkGuild.useMutation();
 
         return (
             <Dialog ref={ref} open={true}>
@@ -86,9 +86,6 @@ export const LinkCampaignDialog = forwardRef<DialogRef, PropsWithChildren>(
                                                         : "primary"
                                                 }
                                                 key={campaign.id}
-                                                disabled={
-                                                    linkCampaignMutation.isPending
-                                                }
                                                 onClick={async () => {
                                                     if (
                                                         campaign.isLinkedToGuild
@@ -109,11 +106,8 @@ export const LinkCampaignDialog = forwardRef<DialogRef, PropsWithChildren>(
                                                         }
                                                     }
 
-                                                    await linkCampaignMutation.mutateAsync(
-                                                        {
-                                                            campaignId:
-                                                                campaign.id,
-                                                        },
+                                                    await guildCampaigns.linkCampaign(
+                                                        campaign.id,
                                                     );
 
                                                     close();

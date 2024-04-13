@@ -24,7 +24,7 @@
     "prettier-plugin-tailwindcss": "^0.5.13",
     "tsx": "^4.7.2",
     "turbo": "^1.13.2",
-    "vercel": "^33.7.0"
+    "vercel": "^34.0.0"
   },
   "packageManager": "yarn@4.1.1+sha256.f3cc0eda8e5560e529c7147565b30faa43b4e472d90e8634d7134a37c7f59781"
 }

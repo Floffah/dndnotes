@@ -17,7 +17,7 @@ export class CampaignAPIModel extends BaseAPIModel implements Campaign {
 
     sessions: CampaignSession[];
     schedules: CampaignSessionSchedule[];
-    discordGuild: DiscordGuild;
+    discordGuild?: DiscordGuild;
     isLinkedToGuild: boolean;
 
     constructor(campaign: Campaign, ctx: ConsumerContext) {

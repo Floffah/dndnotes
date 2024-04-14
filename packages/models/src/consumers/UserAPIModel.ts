@@ -6,11 +6,13 @@ export class UserAPIModel extends BaseAPIModel implements User {
     email: string;
     name: string;
     providers: User["providers"];
+    lastActiveAt: Date;
 
     constructor(user: User, ctx: ConsumerContext) {
         super(user, ctx);
         this.name = user.name;
         this.email = ctx.user && user.id === ctx.user.id ? user.email : null!;
-        this.providers = null!;
+        this.providers = undefined!;
+        this.lastActiveAt = undefined!;
     }
 }

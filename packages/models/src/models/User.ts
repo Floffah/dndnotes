@@ -9,4 +9,5 @@ export interface User extends IBaseModel {
             username: string;
         };
     };
+    lastActiveAt: Date;
 }

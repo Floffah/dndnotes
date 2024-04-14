@@ -4,26 +4,25 @@ import {
     RESTGetCurrentUserGuildMemberResult,
     Routes,
 } from "discord-api-types/v10";
+import { ObjectId } from "mongodb";
 import { HydratedDocument } from "mongoose";
 import superjson from "superjson";
 
 import { ServerError, ServerErrorCode } from "@dndnotes/backend-framework";
-import {
-    FetchHandlerContext,
-    createProtoBuilder,
-} from "@dndnotes/backend-framework/server";
+import { createProtoBuilder } from "@dndnotes/backend-framework/server";
+import { CreateContextArgs } from "@dndnotes/backend-framework/server";
 import { SESSION_TOKEN } from "@dndnotes/lib";
 import { UserSession, registerTransformerTypes } from "@dndnotes/models";
 import { DiscordGuild } from "@dndnotes/models/src";
 
 import { cacheDiscordResponse } from "@/lib/cacheDiscordResponse";
 import { mongoConnect } from "@/lib/mongoDB";
-import { DiscordGuildModel } from "@/models";
+import { DiscordGuildModel, UserModel } from "@/models";
 import { UserSessionModel } from "@/models/UserSessionModel";
 
 const connectionPromise = mongoConnect();
 
-export const createContext = async (opts: FetchHandlerContext) => {
+export const createContext = async (opts: CreateContextArgs) => {
     if (
         !opts.req.headers.has("cookie") &&
         !opts.req.headers.has("x-session-token")
@@ -56,6 +55,17 @@ export const createContext = async (opts: FetchHandlerContext) => {
         return {};
     }
 
+    opts.defer(async () => {
+        await UserModel.updateOne(
+            {
+                _id: new ObjectId(session.user.id),
+            },
+            {
+                lastActiveAt: new Date(),
+            },
+        );
+    });
+
     let access_token: string | null = null;
     let guild_id: string | null = null;
     let guild: HydratedDocument<DiscordGuild> | null = null;
@@ -65,7 +75,6 @@ export const createContext = async (opts: FetchHandlerContext) => {
     if (opts.req.headers.has("x-access-token")) {
         access_token = opts.req.headers.get("x-access-token") as string;
 
-        console.log(1);
         discord_app_client = new REST({
             version: "10",
             authPrefix: "Bearer",

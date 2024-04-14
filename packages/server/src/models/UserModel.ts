@@ -43,6 +43,11 @@ export const UserSchema = new Schema<User>({
         type: UserProvidersSchema,
         required: false,
     },
+    lastActiveAt: {
+        type: Date,
+        required: true,
+        default: () => new Date(),
+    },
 });
 
 export const UserModel = createModel("User", UserSchema);

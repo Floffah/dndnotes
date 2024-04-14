@@ -1,7 +1,7 @@
 import { ZodVoid } from "zod";
 
 import {
-    FetchHandlerContext,
+    CreateContextArgs,
     ProcedureType,
     ProtoBuilderProcedure,
     ProtoBuilderRouter,
@@ -35,7 +35,7 @@ const getProcedureByPath = <TraversingRouter extends ProtoBuilderRouter<any>>(
 interface FetchHandlerOpts<Router extends ProtoBuilderRouter<any>> {
     appRouter: Router;
     createContext: (
-        context: FetchHandlerContext,
+        context: CreateContextArgs,
     ) => Promise<Router["_defs"]["context"]> | Router["_defs"]["context"];
     prefix?: string;
 }
@@ -48,10 +48,19 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
             "Content-Type": "application/json",
         });
 
+        const deferredPromises: Promise<unknown>[] = [];
+        const awaitDeferredFns = () => Promise.all(deferredPromises);
+
         try {
             const context = await options.createContext({
                 req,
                 resHeaders,
+
+                defer: (fn) => {
+                    const promise = fn();
+                    deferredPromises.push(promise);
+                    return promise;
+                },
             });
 
             const url = new URL(req.url);
@@ -171,6 +180,7 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                 }),
             );
 
+            await awaitDeferredFns();
             return new Response(
                 JSON.stringify(
                     options.appRouter._defs.transformer.serialize(results),
@@ -208,6 +218,7 @@ export function createFetchHandler<Router extends ProtoBuilderRouter<any>>(
                 }
             }
 
+            await awaitDeferredFns();
             return new Response(
                 JSON.stringify(
                     options.appRouter._defs.transformer.serialize({

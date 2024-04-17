@@ -1,17 +1,38 @@
-import { REST, RequestData, RequestMethod, RouteLike } from "@discordjs/rest";
+import {
+    InternalRequest,
+    REST,
+    RequestData,
+    RequestMethod,
+    RouteLike,
+} from "@discordjs/rest";
+
+import { User, UserSession } from "@dndnotes/models";
 
 import { CachedDiscordResponseModel } from "@/models/CachedDiscordResponseModel";
 
 export async function cacheDiscordResponse<ResponseType>(
     restClient: REST,
-    method: RequestMethod,
-    route: RouteLike,
-    options?: RequestData,
+    request: InternalRequest,
+    ctx?: {
+        session?: UserSession & { user: User };
+        guild_id?: string;
+    },
 ) {
+    let context: string | null = null;
+
+    if (ctx?.session) {
+        context = ctx.session.user.id;
+    }
+
+    if (ctx?.guild_id) {
+        context = (context ? context + ":" : "") + ctx.guild_id;
+    }
+
     const existingResponse = await CachedDiscordResponseModel.findOne({
-        path: route,
-        method: method,
-        requestBody: options?.body ?? null,
+        path: request.fullRoute,
+        method: request.method,
+        requestBody: request.body ?? null,
+        context,
     });
 
     if (existingResponse && existingResponse.expiresAt > new Date()) {
@@ -27,9 +48,7 @@ export async function cacheDiscordResponse<ResponseType>(
 
     try {
         response = await restClient.request({
-            ...options,
-            fullRoute: route,
-            method: method,
+            ...request,
             signal: abortController.signal,
         });
     } catch (e) {
@@ -46,16 +65,18 @@ export async function cacheDiscordResponse<ResponseType>(
 
     await CachedDiscordResponseModel.updateOne(
         {
-            path: route,
-            method: method,
-            requestBody: options?.body ?? null,
+            path: request.fullRoute,
+            method: request.method,
+            requestBody: request.body ?? null,
+            context,
         },
         {
-            path: route,
-            method: method,
-            requestBody: options?.body ?? null,
+            path: request.fullRoute,
+            method: request.method,
+            requestBody: request.body ?? null,
             expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
             response: response,
+            context,
         },
         {
             upsert: true,

@@ -9,11 +9,16 @@ import { HydratedDocument } from "mongoose";
 import superjson from "superjson";
 
 import { ServerError, ServerErrorCode } from "@dndnotes/backend-framework";
-import { createProtoBuilder } from "@dndnotes/backend-framework/server";
-import { CreateContextArgs } from "@dndnotes/backend-framework/server";
+import {
+    CreateContextArgs,
+    createProtoBuilder,
+} from "@dndnotes/backend-framework/server";
 import { SESSION_TOKEN } from "@dndnotes/lib";
-import { UserSession, registerTransformerTypes } from "@dndnotes/models";
-import { DiscordGuild } from "@dndnotes/models/src";
+import {
+    DiscordGuild,
+    UserSession,
+    registerTransformerTypes,
+} from "@dndnotes/models";
 
 import { cacheDiscordResponse } from "@/lib/cacheDiscordResponse";
 import { mongoConnect } from "@/lib/mongoDB";
@@ -89,8 +94,14 @@ export const createContext = async (opts: CreateContextArgs) => {
             try {
                 await cacheDiscordResponse(
                     discord_app_client,
-                    RequestMethod.Get,
-                    Routes.userGuildMember(guild_id),
+                    {
+                        method: RequestMethod.Get,
+                        fullRoute: Routes.userGuildMember(guild_id),
+                    },
+                    {
+                        session,
+                        guild_id,
+                    },
                 );
             } catch (e: any) {
                 throw new ServerError({
@@ -113,11 +124,17 @@ export const createContext = async (opts: CreateContextArgs) => {
             try {
                 botMember = (await cacheDiscordResponse(
                     discord_bot_client,
-                    RequestMethod.Get,
-                    Routes.guildMember(
+                    {
+                        method: RequestMethod.Get,
+                        fullRoute: Routes.guildMember(
+                            guild_id,
+                            process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
+                        ),
+                    },
+                    {
+                        session,
                         guild_id,
-                        process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
-                    ),
+                    },
                 )) as any;
             } catch (e) {
                 botMember = null;

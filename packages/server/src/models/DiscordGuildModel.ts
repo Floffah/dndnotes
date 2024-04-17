@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-import { DiscordGuild } from "@dndnotes/models/src";
+import { DiscordGuild } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
 

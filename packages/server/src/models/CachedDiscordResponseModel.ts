@@ -1,3 +1,4 @@
+import { RequestMethod } from "@discordjs/rest";
 import { Schema } from "mongoose";
 
 import { createModel } from "@/lib/createModel";
@@ -9,7 +10,13 @@ export const CachedDiscordResponseSchema = new Schema({
     },
     method: {
         type: String,
+        enum: RequestMethod,
         required: true,
+    },
+    context: {
+        type: String,
+        required: false,
+        default: null,
     },
     requestBody: {
         type: String,

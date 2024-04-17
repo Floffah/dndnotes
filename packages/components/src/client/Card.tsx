@@ -4,7 +4,7 @@ import { Slot } from "@radix-ui/react-slot";
 import clsx from "clsx";
 import { ComponentProps, forwardRef } from "react";
 
-import { Details } from "@/Details";
+import { Details } from "@/client/Details";
 
 export const CardTitle = forwardRef<HTMLHeadingElement, ComponentProps<"h1">>(
     ({ className, children, ...props }, ref) => (

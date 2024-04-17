@@ -2,7 +2,7 @@ import clsx from "clsx";
 import NextLink from "next/link";
 import { ComponentProps, forwardRef } from "react";
 
-import { Tooltip } from "@/Tooltip";
+import { Tooltip } from "@/client/Tooltip";
 
 export interface LinkProps extends ComponentProps<typeof NextLink> {
     label?: string;

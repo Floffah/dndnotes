@@ -3,9 +3,13 @@
 import { ComponentProps, useContext } from "react";
 import { Controller } from "react-hook-form";
 
-import { FormField, FormFieldBaseProps, useFormField } from "@/Form/FormField";
-import { FormContext } from "@/Form/index";
-import { Select } from "@/Select";
+import {
+    FormField,
+    FormFieldBaseProps,
+    useFormField,
+} from "@/client/Form/FormField";
+import { FormContext } from "@/client/Form/index";
+import { Select } from "@/client/Select";
 
 export type BaseFormSelectProps = ComponentProps<typeof Select> &
     FormFieldBaseProps;

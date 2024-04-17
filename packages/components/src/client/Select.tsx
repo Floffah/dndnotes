@@ -10,7 +10,7 @@ import {
     useState,
 } from "react";
 
-import { Icon } from "@/Icon";
+import { Icon } from "@/client/Icon";
 
 export const SelectButton = forwardRef<
     HTMLButtonElement,

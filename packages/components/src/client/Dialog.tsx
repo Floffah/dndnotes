@@ -20,7 +20,7 @@ import {
     useState,
 } from "react";
 
-import { Button } from "@/Button";
+import { Button } from "@/client/Button";
 
 export const DialogContentTitle = forwardRef<
     HTMLHeadingElement,

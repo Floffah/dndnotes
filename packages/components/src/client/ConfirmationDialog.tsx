@@ -2,8 +2,8 @@
 
 import { ComponentProps, forwardRef } from "react";
 
-import { Button } from "@/Button";
-import { Dialog, DialogRef } from "@/Dialog";
+import { Button } from "@/client/Button";
+import { Dialog, DialogRef } from "@/client/Dialog";
 
 export interface ConfirmationDialogProps
     extends Omit<ComponentProps<typeof Dialog>, "children"> {

@@ -4,7 +4,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { EventHandler, MouseEvent, useEffect, useState } from "react";
 
-import { Icon } from "@/Icon";
+import { Icon } from "@/client/Icon";
 
 function NavLink({
     icon,

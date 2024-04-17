@@ -4,8 +4,8 @@ import * as RUIToast from "@radix-ui/react-toast";
 import { animated, useTransition } from "@react-spring/web";
 import { useLayoutEffect, useState } from "react";
 
-import { Button, ButtonProps } from "@/Button";
-import { Icon } from "@/Icon";
+import { Button, ButtonProps } from "@/client/Button";
+import { Icon } from "@/client/Icon";
 
 export interface ToastProps {
     open: boolean;

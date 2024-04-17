@@ -3,9 +3,13 @@
 import { ComponentProps, useContext } from "react";
 import { Controller } from "react-hook-form";
 
-import { FormField, FormFieldBaseProps, useFormField } from "@/Form/FormField";
-import { FormContext } from "@/Form/index";
-import { Switch } from "@/Switch";
+import {
+    FormField,
+    FormFieldBaseProps,
+    useFormField,
+} from "@/client/Form/FormField";
+import { FormContext } from "@/client/Form/index";
+import { Switch } from "@/client/Switch";
 
 type BaseFormSwitchProps = ComponentProps<typeof Switch> & FormFieldBaseProps;
 

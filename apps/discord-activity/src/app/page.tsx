@@ -3,11 +3,9 @@
 import Link from "next/link";
 
 import { Button, Loader } from "@dndnotes/components";
-import { CampaignError } from "@dndnotes/models";
-import { CampaignFilter, DiscordActivityFeatureFlags } from "@dndnotes/server";
+import { DiscordActivityFeatureFlags } from "@dndnotes/server";
 
 import { LinkCampaignDialog } from "@/app/LinkCampaignDialog";
-import { api } from "@/lib/api";
 import { useDiscord } from "@/providers/DiscordProvider";
 import { useFeatures } from "@/providers/FeaturesProvider";
 import { useGuildCampaigns } from "@/providers/GuildCampaignsProvider";
@@ -70,7 +68,9 @@ export default function Dashboard() {
                             >
                                 <p className="flex-1">{campaign.name}</p>
                                 <Button size="sm" color="primary" asChild>
-                                    <Link href={`/${campaign.id}`}>Open</Link>
+                                    <Link href={`/${campaign.id}`} prefetch>
+                                        Open
+                                    </Link>
                                 </Button>
                             </div>
                         ))}

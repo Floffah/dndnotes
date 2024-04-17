@@ -16,8 +16,8 @@ import {
     useState,
 } from "react";
 
-import { ConfirmationDialog } from "@/ConfirmationDialog";
-import { Dialog, DialogRef } from "@/Dialog";
+import { ConfirmationDialog } from "@/client/ConfirmationDialog";
+import { Dialog, DialogRef } from "@/client/Dialog";
 
 interface DialogInstance {
     id: string;

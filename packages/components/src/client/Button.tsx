@@ -13,8 +13,8 @@ import {
     useState,
 } from "react";
 
-import { Icon } from "@/Icon";
-import { Loader } from "@/Loader";
+import { Icon } from "@/client/Icon";
+import { Loader } from "@/client/Loader";
 
 export interface ButtonProps extends ComponentProps<"button"> {
     asChild?: boolean;

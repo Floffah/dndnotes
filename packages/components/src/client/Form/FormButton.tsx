@@ -10,8 +10,8 @@ import {
     useRef,
 } from "react";
 
-import { Button } from "@/Button";
-import { FormContext } from "@/Form/index";
+import { Button } from "@/client/Button";
+import { FormContext } from "@/client/Form/index";
 
 export const FormButton = forwardRef<
     ComponentRef<typeof Button>,

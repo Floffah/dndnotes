@@ -16,12 +16,12 @@ import {
     UseFormReturn,
 } from "react-hook-form";
 
-import { FormButton } from "@/Form/FormButton";
-import { FormDateInput } from "@/Form/FormDateInput";
-import { FormField } from "@/Form/FormField";
-import { FormInput } from "@/Form/FormInput";
-import { FormSelect } from "@/Form/FormSelect";
-import { FormSwitch } from "@/Form/FormSwitch";
+import { FormButton } from "@/client/Form/FormButton";
+import { FormDateInput } from "@/client/Form/FormDateInput";
+import { FormField } from "@/client/Form/FormField";
+import { FormInput } from "@/client/Form/FormInput";
+import { FormSelect } from "@/client/Form/FormSelect";
+import { FormSwitch } from "@/client/Form/FormSwitch";
 
 export interface FormProps {
     form: UseFormReturn<any, any, any>;

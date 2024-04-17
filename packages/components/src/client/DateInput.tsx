@@ -4,8 +4,8 @@ import * as Popover from "@radix-ui/react-popover";
 import clsx from "clsx";
 import { ComponentProps, forwardRef, useEffect, useRef, useState } from "react";
 
-import { Icon } from "@/Icon";
-import { Input } from "@/Input";
+import { Icon } from "@/client/Icon";
+import { Input } from "@/client/Input";
 
 export interface DateInputProps
     extends Omit<ComponentProps<typeof Input>, "value" | "children" | "ref"> {

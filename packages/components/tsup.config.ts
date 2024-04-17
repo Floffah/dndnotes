@@ -1,19 +1,35 @@
-import { defineConfig } from "tsup";
+import { Options, defineConfig } from "tsup";
 
-export default defineConfig({
-    name: "components",
-    outDir: "dist",
-    entry: ["./src/index.ts"],
+const commonOptions: Options = {
     target: ["chrome90", "firefox88", "safari14", "edge90", "node18"],
     bundle: true,
     format: ["cjs", "esm"],
     dts: true,
     clean: false,
     sourcemap: true,
-    esbuildOptions: (opts) => {
-        opts.banner = {
-            js: '"use client";',
-        };
-        // all components are clients. server components in almost any case should be in the frontend project, if one neds to be here then a separate bundle will be created
+};
+
+export default defineConfig([
+    {
+        ...commonOptions,
+        name: "components-client",
+        outDir: "dist/client",
+        entry: ["./src/client/index.ts"],
+        esbuildOptions: (opts) => {
+            opts.banner = {
+                js: '"use client";',
+            };
+        },
     },
-});
+    {
+        ...commonOptions,
+        name: "components-server",
+        outDir: "dist/server",
+        entry: ["./src/server/index.ts"],
+        esbuildOptions: (opts) => {
+            opts.banner = {
+                js: '"use server";',
+            };
+        },
+    },
+]);

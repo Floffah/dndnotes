@@ -8,7 +8,7 @@ import {
 
 import { User, UserSession } from "@dndnotes/models";
 
-import { CachedDiscordResponseModel } from "@/models/CachedDiscordResponseModel";
+import { CachedDiscordResponseModel } from "@/models/server/CachedDiscordResponseModel";
 
 export async function cacheDiscordResponse<ResponseType>(
     restClient: REST,

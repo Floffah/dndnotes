@@ -1,8 +1,24 @@
 import { Schema } from "mongoose";
 
 import { UserSession, UserSessionType } from "@dndnotes/models";
+import { RealtimeToken } from "@dndnotes/models";
 
 import { createModel } from "@/lib/createModel";
+
+const RealtimeTokenSchema = new Schema<RealtimeToken>({
+    token: {
+        type: String,
+        required: true,
+    },
+    expiresAt: {
+        type: Date,
+        required: true,
+    },
+    channels: {
+        type: [String],
+        required: true,
+    },
+});
 
 export const UserSessionSchema = new Schema<UserSession>({
     user: {
@@ -24,6 +40,10 @@ export const UserSessionSchema = new Schema<UserSession>({
         enum: UserSessionType,
         required: true,
         default: UserSessionType.WEB,
+    },
+    realTimeToken: {
+        type: RealtimeTokenSchema,
+        required: true,
     },
 });
 

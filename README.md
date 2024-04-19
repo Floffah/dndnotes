@@ -35,6 +35,7 @@ Then link these domains to discord. In your developer dashboard, go to the "URL 
 - `/` - dndatunnel.floffah.dev
 - `/dndnotes` - dndnotestunnel.floffah.dev
 - `/icons` - api.iconify.design
+- `/pubnub` - ps.pndsn.com
 
 ### Environment variables
 

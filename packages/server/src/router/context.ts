@@ -6,6 +6,7 @@ import {
 } from "discord-api-types/v10";
 import { ObjectId } from "mongodb";
 import { HydratedDocument } from "mongoose";
+import Pubnub from "pubnub";
 import superjson from "superjson";
 
 import { ServerError, ServerErrorCode } from "@dndnotes/backend-framework";

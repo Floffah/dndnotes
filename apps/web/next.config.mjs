@@ -16,6 +16,19 @@ const nextConfig = {
         serverComponentsExternalPackages: ["mongoose"], // <-- and this
     },
     pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+    webpack: (config) => {
+        if (!config.resolve) {
+            config.resolve = {}
+        }
+
+        if (!config.resolve.alias) {
+            config.resolve.alias = {}
+        }
+
+        config.resolve.alias.hexoid = 'hexoid/dist/index.js'
+
+        return config
+    }
 };
 
 export default withMDX(nextConfig);

@@ -7,6 +7,8 @@ import { APIProvider } from "@/providers/APIProvider";
 import { DiscordProvider } from "@/providers/DiscordProvider";
 import { FeaturesProvider } from "@/providers/FeaturesProvider";
 import { GuildCampaignsProvider } from "@/providers/GuildCampaignsProvider";
+import { RealtimeProvider } from "@/providers/RealtimeProvider";
+import { UserProvider } from "@/providers/UserProvider";
 
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -16,17 +18,23 @@ export default function RootLayout({ children }) {
             <body className={nunito.className}>
                 <APIProvider>
                     <DiscordProvider>
-                        <FeaturesProvider>
-                            <GuildCampaignsProvider>
-                                <DialogProvider>
-                                    <div className="bg-pattern-topography fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-gray-900 p-16 text-center sm:hidden">
-                                        <p>Please maximise this window</p>
-                                    </div>
+                        <UserProvider>
+                            <RealtimeProvider>
+                                <FeaturesProvider>
+                                    <GuildCampaignsProvider>
+                                        <DialogProvider>
+                                            <div className="bg-pattern-topography fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-gray-900 p-16 text-center sm:hidden">
+                                                <p>
+                                                    Please maximise this window
+                                                </p>
+                                            </div>
 
-                                    {children}
-                                </DialogProvider>
-                            </GuildCampaignsProvider>
-                        </FeaturesProvider>
+                                            {children}
+                                        </DialogProvider>
+                                    </GuildCampaignsProvider>
+                                </FeaturesProvider>
+                            </RealtimeProvider>
+                        </UserProvider>
                     </DiscordProvider>
                 </APIProvider>
             </body>

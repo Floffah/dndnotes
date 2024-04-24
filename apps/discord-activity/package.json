@@ -2,6 +2,7 @@
   "name": "@dndnotes/discord-activity",
   "scripts": {
     "dev": "next dev -p 3001",
+    "dev:env": "vercel env pull .env",
     "build": "next build"
   },
   "engines": {
@@ -9,7 +10,7 @@
     "yarn": "4.1.0"
   },
   "dependencies": {
-    "@discord/embedded-app-sdk": "^1.1.2",
+    "@discord/embedded-app-sdk": "^1.2.0",
     "@discordjs/rest": "^2.2.0",
     "@dndnotes/components": "workspace:*",
     "@dndnotes/lib": "workspace:*",
@@ -19,20 +20,20 @@
     "@hookform/resolvers": "^3.3.4",
     "@iconify/react": "^4.1.1",
     "@react-spring/web": "^9.7.3",
-    "@tanstack/react-query": "^5.29.2",
-    "clsx": "^2.1.0",
+    "@tanstack/react-query": "^5.32.0",
+    "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
-    "discord-api-types": "^0.37.79",
+    "discord-api-types": "^0.37.81",
     "next": "^14.2.2",
-    "pubnub": "^7.6.3",
+    "pubnub": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
     "superjson": "^2.2.1",
-    "zod": "^3.22.5"
+    "zod": "^3.23.4"
   },
   "devDependencies": {
-    "@swc/core": "^1.4.16",
+    "@swc/core": "^1.5.0",
     "@types/mdx": "^2.0.13",
     "@types/node": "20.12.7",
     "@types/pubnub": "^7",

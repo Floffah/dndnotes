@@ -1,5 +1,5 @@
 {
-  "name": "@dndnotes/backend-framework",
+  "name": "@dndnotes/srpc",
   "exports": {
     ".": {
       "types": "./dist/shared/index.d.ts",
@@ -38,7 +38,6 @@
     "build": "tsup --minify --clean"
   },
   "dependencies": {
-    "@dndnotes/lib": "workspace:*",
     "@tanstack/react-query": "^5.32.0",
     "cookie": "^0.6.0",
     "date-fns": "^3.6.0",
@@ -47,6 +46,7 @@
     "nanoid": "^5.0.7",
     "notion-client": "^6.16.0",
     "superjson": "^2.2.1",
+    "ws": "^8.16.0",
     "zod": "^3.23.4"
   },
   "devDependencies": {

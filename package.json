@@ -9,7 +9,7 @@
     "build": "turbo run build",
     "start": "turbo run start",
     "dev": "turbo run dev",
-    "env": "vercel env pull apps/web/.env",
+    "env": "turbo run dev:env",
     "tunnel:discord": "sudo cloudflared tunnel run --url http://localhost:3001 discord-activity",
     "tunnel:web": "sudo cloudflared tunnel run --url http://localhost:3000 dndnotes-web",
     "tunnel": "concurrently \"yarn tunnel:discord\" \"yarn tunnel:web\""

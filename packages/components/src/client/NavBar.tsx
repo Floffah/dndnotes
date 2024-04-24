@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { EventHandler, MouseEvent, useEffect, useState } from "react";
 
 import { Icon } from "@/client/Icon";
@@ -17,13 +18,8 @@ function NavLink({
     onClick?: EventHandler<MouseEvent<HTMLButtonElement>>;
     children: string;
 }) {
-    const [active, setActive] = useState(false);
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            setActive(window.location.pathname === link);
-        }
-    }, [link]);
+    const pathName = usePathname();
+    const active = pathName === link;
 
     const button = (
         <button

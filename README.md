@@ -1,5 +1,20 @@
 # DNDNotes
 
+## Future plans
+
+### "sRPC" like API rewrite
+
+I want to rewrite the backend framework to a socket-based rpc system (custom "sRPC"), with a programmatic API similar to the current implementation/tRPC, under-the-hood network implementation similar to a cross between gRPC and Discord's gateway api, and advanced caching capabilities similar to that of Apollo Client but with automatic overwriting of cache entries when returned from a subscription. 
+
+If QUIC and WebTransport has matured when I get to this point, I will use that as the transport layer, otherwise, I will use WebSockets.
+
+Debating whether to implement this in Bun, Rust, or Ruby. (Probably Bun, unless they don't implement QUIC/WebTransport support by the time I get here)
+
+Reasoning for this: I dislike using a REST-like API but then using these path arrays and a single query string that contains the inputs for ALL procedure calls, and also that its limited to just GET and POST.
+In my mind a socket-based API is much more efficient and can allow for better DX and more advanced features for an RPC api.
+I also dislike running this rest-based RPC api for queries and mutations, but then using a separate service for realtime (Pubnub). I want it all to be using the same API to use less network, to have control over the code, and write less code in the frontend with it all being handled in one place: the backend framework.
+Using just REST on its own would still have these issues, and I don't like the idea of GraphQL as it uses FAR more network, doesn't support batching very well, and unless you spend A LOT of time getting it right, the DX is terrible. However, the advanced caching patterns that Apollo provides for GraphQL are VERY attractive, but not enough to make me want to commit to using GraphQL. At least with the way I have it implemented now, I can implement this sRPC system as a drop-in replacement for the current tRPC-like system, and have these caching capabilities I want immediately available in the entirety of both frontends with barely any refactoring. The same cannot be said for GraphQL.
+
 ## Development
 
 You need to have corepack enabled in your current node installation.

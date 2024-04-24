@@ -9,6 +9,10 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
       "dependsOn": ["^build"]
     },
-    "lint": {}
+    "lint": {},
+    "dev:env": {
+      "cache": false,
+      "persistent": false
+    }
   }
 }

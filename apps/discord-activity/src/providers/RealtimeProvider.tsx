@@ -26,44 +26,28 @@ export function RealtimeProvider({ children }: PropsWithChildren) {
     const realtimeTokenQuery = api.user.getRealtimeToken.useQuery();
 
     const pubnubClient = useMemo(() => {
-        if (!user.authenticated) {
+        if (!user.authenticated || !realtimeTokenQuery.data) {
             return null;
         }
 
-        const client = new Pubnub({
+        return new Pubnub({
             subscribeKey: process.env.NEXT_PUBLIC_PUBNUB_SUBKEY as string,
             userId: user.id,
             origin:
                 process.env.NEXT_PUBLIC_BASE_URL!.split("/").pop() + "/pubnub",
+            authKey: realtimeTokenQuery.data.token,
+            keepAlive: true,
         });
-
-        // prevent race conditions
-        if (realtimeTokenQuery.data?.token) {
-            client.setToken(realtimeTokenQuery.data.token);
-        }
-
-        return client;
-    }, [user.authenticated, user.id]);
+    }, [realtimeTokenQuery.data, user.authenticated, user.id]);
 
     useEffect(() => {
-        if (!pubnubClient) return;
+        if (!pubnubClient || !realtimeTokenQuery.data) return;
 
-        if (pubnubClient.getUUID() !== user.id) {
-            pubnubClient.setUUID(user.id);
-        }
-    }, [pubnubClient, user.id]);
-
-    useEffect(() => {
-        if (!pubnubClient) return;
-
-        if (realtimeTokenQuery.data?.token) {
-            pubnubClient.subscribe({
-                channels: realtimeTokenQuery.data.channels,
-            });
-
-            pubnubClient.setToken(realtimeTokenQuery.data.token);
-        }
-    }, [pubnubClient, realtimeTokenQuery.data?.token]);
+        pubnubClient.subscribe({
+            channels: realtimeTokenQuery.data.channels,
+            withPresence: true,
+        });
+    }, [pubnubClient, realtimeTokenQuery.data]);
 
     return (
         <RealtimeContext.Provider

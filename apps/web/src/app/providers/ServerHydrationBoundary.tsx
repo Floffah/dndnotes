@@ -14,7 +14,10 @@ export async function ServerHydrationBoundary({
     helpers?: Awaited<ReturnType<typeof getServerHelpers>>;
     state?: DehydratedState;
 }>) {
-    const hydratedState = state ? state : helpers?.dehydrate?.();
+    const hydratedState = state
+        ? state
+        : helpers?.dehydrate?.() ??
+          (await getServerHelpers().then((h) => h.dehydrate()));
 
     if (!hydratedState) {
         throw new Error("No hydrated state provided or could be generated");

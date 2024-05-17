@@ -17,6 +17,10 @@ export class WebSocketHandler<Router extends ProtoBuilderRouter<any>> {
         this.connections.push(connection);
         await connection.open();
 
+        socket.onMessage((data) => {
+            connection.handleMessage(data);
+        });
+
         socket.onClose(() => {
             connection.cleanup();
             this.connections = this.connections.filter((c) => c !== connection);

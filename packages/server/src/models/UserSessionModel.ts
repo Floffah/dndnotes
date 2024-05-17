@@ -43,7 +43,7 @@ export const UserSessionSchema = new Schema<UserSession>({
     },
     realTimeToken: {
         type: RealtimeTokenSchema,
-        required: true,
+        required: false,
     },
 });
 

@@ -13,10 +13,14 @@ function wrapWebSocket(socket: WebSocket): WebSocketHandle {
         close: (code?: number, reason?: string) => socket.close(code, reason),
         send: (data: string) => socket.send(data),
         onMessage: (cb: (data: string) => void) => {
-            socket.on("message", cb);
+            socket.addEventListener("message", (event) =>
+                cb(event.data.toString()),
+            );
         },
         onClose: (cb: (code: number, reason: string) => void) => {
-            socket.on("close", cb);
+            socket.addEventListener("close", (event) =>
+                cb(event.code, event.reason),
+            );
         },
     };
 }

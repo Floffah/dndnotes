@@ -2,10 +2,10 @@
   "name": "@dndnotes/tailwind-preset",
   "main": "./index.js",
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.12"
+    "@tailwindcss/typography": "^0.5.13"
   },
   "devDependencies": {
-    "@types/node": "^20.12.7",
+    "@types/node": "^20.12.12",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5"
   }

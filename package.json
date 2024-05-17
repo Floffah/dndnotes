@@ -10,6 +10,7 @@
     "start": "turbo run start",
     "dev": "turbo run dev",
     "env": "turbo run dev:env",
+    "test": "turbo run test",
     "tunnel:discord": "sudo cloudflared tunnel run --url http://localhost:3001 discord-activity",
     "tunnel:web": "sudo cloudflared tunnel run --url http://localhost:3000 dndnotes-web",
     "tunnel": "concurrently \"yarn tunnel:discord\" \"yarn tunnel:web\""
@@ -17,14 +18,11 @@
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "concurrently": "^8.2.2",
-    "discord.js": "^14.14.1",
-    "isomorphic-git": "^1.25.7",
-    "npm-check-updates": "^16.14.18",
+    "isomorphic-git": "^1.25.10",
+    "npm-check-updates": "^16.14.20",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "tsx": "^4.7.2",
-    "turbo": "^1.13.2",
-    "vercel": "^34.1.1"
+    "turbo": "^1.13.3"
   },
-  "packageManager": "yarn@4.1.1+sha256.f3cc0eda8e5560e529c7147565b30faa43b4e472d90e8634d7134a37c7f59781"
+  "packageManager": "yarn@4.2.2+sha512.c44e283c54e02de9d1da8687025b030078c1b9648d2895a65aab8e64225bfb7becba87e1809fc0b4b6778bbd47a1e2ab6ac647de4c5e383a53a7c17db6c3ff4b"
 }

@@ -1,23 +1,29 @@
+import { ZodNull, ZodType, ZodUndefined, ZodVoid, z } from "zod";
+
 import {
+    ProcedureType,
     ServerError,
     ServerErrorCode,
     TransformerLike,
     defaultTransformer,
-} from "src/shared";
-import { ZodNull, ZodType, ZodUndefined, ZodVoid, z } from "zod";
+} from "@/shared";
 
 export enum ProtoBuilderType {
     Procedure,
     Router,
 }
 
-export interface ProtoBuilder<Context = unknown> {
+export interface ProtoBuilder<Context = unknown, AuthInput = any> {
     _defs: {
         context: Context;
         transformer: TransformerLike;
+        authInput: AuthInput;
     };
 
-    context: <NewContext>() => ProtoBuilder<NewContext>;
+    context: <NewContext>() => ProtoBuilder<NewContext, AuthInput>;
+    authInput: <NewAuthInput>(
+        authInput?: NewAuthInput,
+    ) => ProtoBuilder<Context, NewAuthInput>;
     procedure: <Input = ZodVoid>(
         input?: Input,
     ) => ProtoBuilderProcedure<Context, Input>;
@@ -44,11 +50,6 @@ export type ProtoBuilderProcedureExecutor<Context, Input, Output> = (opts: {
     input: InferProcedureInput<Input>;
     ctx: Context;
 }) => Promise<Output> | Output;
-
-export enum ProcedureType {
-    Query,
-    Mutation,
-}
 
 export interface ProtoBuilderProcedure<
     Context,
@@ -86,17 +87,20 @@ export interface ProtoBuilderRouter<
         ProtoBuilderRouter<any, any> | ProtoBuilderProcedure<any, any>
     >,
     Context = unknown,
+    AuthInput = any,
 > {
     _defs: {
         builderType: ProtoBuilderType.Router;
         fields: Fields;
         context: Context;
+        authInput: AuthInput;
         transformer: TransformerLike;
     };
 }
 
-export function createProtoBuilder<Context = unknown>(opts?: {
+export function createProtoBuilder<Context = unknown, AuthInput = any>(opts?: {
     transformer?: TransformerLike;
+    authInput?: AuthInput;
 }): ProtoBuilder<Context> {
     const transformer = opts?.transformer ?? defaultTransformer;
 
@@ -104,8 +108,14 @@ export function createProtoBuilder<Context = unknown>(opts?: {
         _defs: {
             context: {} as Context,
             transformer,
+            authInput: opts?.authInput,
         },
         context: <NewContext>() => createProtoBuilder<NewContext>(opts),
+        authInput: <NewAuthInput>(authInput?: NewAuthInput) =>
+            createProtoBuilder<Context, NewAuthInput>({
+                transformer,
+                authInput,
+            }),
         procedure: <Input>(input?: Input) =>
             createProtoBuilderProcedure(
                 (input ?? z.void()) as Input,
@@ -128,6 +138,7 @@ export function createProtoBuilder<Context = unknown>(opts?: {
                     fields,
                     context: {} as Context,
                     transformer,
+                    authInput: opts?.authInput,
                 },
             } as ProtoBuilderRouter<typeof fields, Context>;
         },

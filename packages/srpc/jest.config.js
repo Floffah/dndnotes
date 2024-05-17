@@ -10,7 +10,6 @@ module.exports = {
     transform: {
         "^.+\\.tsx?$": ["@swc/jest"],
     },
-    setupFilesAfterEnv: ["./src/tests/setup/mongo.setup.ts"],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
         prefix: "<rootDir>/",
     }),

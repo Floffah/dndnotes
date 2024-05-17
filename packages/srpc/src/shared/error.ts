@@ -32,6 +32,7 @@ export class ServerError extends Error {
         this.code = opts.code;
         this.name = "ServerError";
         this.cause = opts.cause;
+        this.message = message;
     }
 }
 

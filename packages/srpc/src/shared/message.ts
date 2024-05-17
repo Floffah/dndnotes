@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { ProcedureType } from "@/server";
 import { ServerErrorCode } from "@/shared/error";
+import { ProcedureType } from "@/shared/procedure";
 
 /**
  * The type of message being sent
@@ -9,7 +9,8 @@ import { ServerErrorCode } from "@/shared/error";
 export enum SocketMessageType {
     REQUEST = "REQUEST",
     RESPONSE = "RESPONSE",
-    AUTHENTICATION = "AUTHENTICATION",
+    AUTH_REQUEST = "AUTH_REQUEST",
+    AUTH_RESPONSE = "AUTH_RESPONSE",
     CONNECTION_ERROR = "CONNECTION_ERROR",
 }
 
@@ -118,6 +119,37 @@ export const socketResponse = baseSocketMessage.extend({
 });
 
 /**
+ * Authentication request message
+ * Sent by the client to authenticate with the server
+ */
+export const socketAuthRequest = baseSocketMessage.extend({
+    type: z.literal(SocketMessageType.AUTH_REQUEST),
+    content: z.any(),
+});
+
+/**
+ * Base content of an authentication response
+ */
+export const baseSocketAuthResponseContent = z.object({
+    type: z.literal(SocketMessageType.AUTH_RESPONSE),
+    status: z.nativeEnum(ResponseStatus),
+});
+
+/**
+ * Authentication response message
+ * Sent by the server in response to an authentication request
+ */
+export const socketAuthResponse = z.union([
+    baseSocketAuthResponseContent.extend({
+        status: z.literal(ResponseStatus.OK),
+    }),
+    baseSocketAuthResponseContent.extend({
+        status: z.literal(ResponseStatus.ERROR),
+        error: socketError,
+    }),
+]);
+
+/**
  * Connection error message
  * Sent when an error occurs relating to the connection, but outwith the normal request/response flow
  * Errors that occur during the request/response flow are sent as part of the response
@@ -132,10 +164,16 @@ export const socketConnectionError = baseSocketMessage.extend({
 export const socketMessage = z.union([
     socketRequest,
     socketResponse,
+    socketAuthRequest,
+    socketAuthResponse,
     socketConnectionError,
 ]);
-export const serverBoundSocketMessage = socketRequest;
+export const serverBoundSocketMessage = z.union([
+    socketRequest,
+    socketAuthRequest,
+]);
 export const clientBoundSocketMessage = z.union([
     socketResponse,
+    socketAuthResponse,
     socketConnectionError,
 ]);

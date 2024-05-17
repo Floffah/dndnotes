@@ -13,4 +13,4 @@ V0:
 V1:
 - [ ] Typeinfo support
 - [ ] Caching based on ^
-- 
+- [ ] Remove concept of query and mutation. Everything is either a callable or streamable procedure

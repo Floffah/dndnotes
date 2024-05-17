@@ -70,14 +70,14 @@ export interface ProtoBuilderProcedure<
 
     query: <NewOutput>(
         executor: ProtoBuilderProcedureExecutor<Context, Input, NewOutput>,
-    ) => ProtoBuilderProcedure<Context, Input, NewOutput, ProcedureType.Query>;
+    ) => ProtoBuilderProcedure<Context, Input, NewOutput, ProcedureType.QUERY>;
     mutation: <NewOutput>(
         executor: ProtoBuilderProcedureExecutor<Context, Input, NewOutput>,
     ) => ProtoBuilderProcedure<
         Context,
         Input,
         NewOutput,
-        ProcedureType.Mutation
+        ProcedureType.MUTATION
     >;
 }
 
@@ -177,7 +177,7 @@ export function createProtoBuilderProcedure<
         query: (executor) => {
             return createProtoBuilderProcedure(
                 input,
-                ProcedureType.Query,
+                ProcedureType.QUERY,
                 transformer,
                 executor,
             );
@@ -185,7 +185,7 @@ export function createProtoBuilderProcedure<
         mutation: (executor) => {
             return createProtoBuilderProcedure(
                 input,
-                ProcedureType.Mutation,
+                ProcedureType.MUTATION,
                 transformer,
                 executor,
             );

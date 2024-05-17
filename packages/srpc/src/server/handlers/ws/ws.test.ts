@@ -11,11 +11,18 @@ import {
 } from "../../../../dist/shared";
 import { ServerErrorCode } from "../../../../dist/shared";
 import { ResponseStatus } from "../../../../dist/shared";
+import { SocketRequestType, socketResponse } from "../../../../dist/shared";
 import { createServer } from "http";
 import { AddressInfo } from "ws";
 import { z } from "zod";
 
-const createContext = async () => {
+const createContext = async ({ authInput }: any) => {
+    if (!authInput) {
+        return {
+            user: null,
+        };
+    }
+
     return {
         user: {
             id: 1,
@@ -167,6 +174,33 @@ describe("Server with no authentication", () => {
         ws.ws.close();
     });
 
+    test("Execute an auth-dependent procedure", async () => {
+        const ws = await createTestableWebSocketClient(server);
+
+        ws.ws.send(
+            JSON.stringify({
+                type: SocketMessageType.REQUEST,
+                id: "1",
+                content: {
+                    type: SocketRequestType.QUERY,
+                    path: "user.me",
+                },
+            }),
+        );
+
+        const nextMessage = (await ws.getNextMessage({
+            timeout: 1000,
+        })) as z.infer<typeof socketResponse>;
+
+        expect(nextMessage.content.status).toBe(ResponseStatus.OK);
+        expect(
+            nextMessage.content.status === ResponseStatus.OK &&
+                nextMessage.content.payload,
+        ).toEqual(null);
+
+        ws.ws.close();
+    });
+
     afterAll(() => {
         server.close();
     });
@@ -247,61 +281,73 @@ describe("Server with required authentication", () => {
         ws.ws.close();
     });
 
-    test("Connect with correct authentication payload", async () => {
-        const ws = await createTestableWebSocketClient(server);
+    describe("Connect with correct authentication payload", () => {
+        let ws: Awaited<ReturnType<typeof createTestableWebSocketClient>>;
 
-        ws.ws.send(
-            JSON.stringify({
-                type: SocketMessageType.AUTH_REQUEST,
-                content: "Bearer test",
-            }),
-        );
+        beforeAll(async () => {
+            ws = await createTestableWebSocketClient(server);
+        });
 
-        const nextMessage = (await ws.getNextMessage({
-            timeout: 1000,
-        })) as z.infer<typeof socketAuthResponse>;
+        test("Authenticate", async () => {
+            ws.ws.send(
+                JSON.stringify({
+                    type: SocketMessageType.AUTH_REQUEST,
+                    content: "Bearer test",
+                }),
+            );
 
-        expect(nextMessage.type).toBe(SocketMessageType.AUTH_RESPONSE);
-        expect(nextMessage.status).toBe(ResponseStatus.OK);
+            const nextMessage = (await ws.getNextMessage({
+                timeout: 1000,
+            })) as z.infer<typeof socketAuthResponse>;
 
-        ws.ws.close();
-    });
+            expect(nextMessage.type).toBe(SocketMessageType.AUTH_RESPONSE);
+            expect(nextMessage.status).toBe(ResponseStatus.OK);
+        });
 
-    test("Connect and authenticate twice", async () => {
-        const ws = await createTestableWebSocketClient(server);
+        test("Attempt to authenticate again", async () => {
+            ws.ws.send(
+                JSON.stringify({
+                    type: SocketMessageType.AUTH_REQUEST,
+                    content: "Bearer test",
+                }),
+            );
 
-        ws.ws.send(
-            JSON.stringify({
-                type: SocketMessageType.AUTH_REQUEST,
-                content: "Bearer test",
-            }),
-        );
+            const nextMessage = (await ws.getNextMessage({
+                timeout: 1000,
+            })) as z.infer<typeof socketAuthResponse> & {
+                status: ResponseStatus.ERROR;
+            };
 
-        const nextMessage = (await ws.getNextMessage({
-            timeout: 1000,
-        })) as z.infer<typeof socketAuthResponse>;
+            expect(nextMessage.status).toBe(ResponseStatus.ERROR);
+            expect(nextMessage.error.code).toBe(ServerErrorCode.BAD_REQUEST);
+        });
 
-        expect(nextMessage.type).toBe(SocketMessageType.AUTH_RESPONSE);
-        expect(nextMessage.status).toBe(ResponseStatus.OK);
+        test("Execute an auth-dependent procedure", async () => {
+            ws.ws.send(
+                JSON.stringify({
+                    type: SocketMessageType.REQUEST,
+                    id: "1",
+                    content: {
+                        type: SocketRequestType.QUERY,
+                        path: "user.me",
+                    },
+                }),
+            );
 
-        ws.ws.send(
-            JSON.stringify({
-                type: SocketMessageType.AUTH_REQUEST,
-                content: "Bearer test",
-            }),
-        );
+            const nextMessage = (await ws.getNextMessage({
+                timeout: 1000,
+            })) as z.infer<typeof socketResponse>;
 
-        const nextMessage2 = (await ws.getNextMessage({
-            timeout: 1000,
-        })) as z.infer<typeof socketAuthResponse> & {
-            status: ResponseStatus.ERROR;
-        };
+            expect(nextMessage.content.status).toBe(ResponseStatus.OK);
+            expect(
+                nextMessage.content.status === ResponseStatus.OK &&
+                    nextMessage.content.payload,
+            ).toEqual({ id: 1 });
+        });
 
-        console.log(nextMessage2);
-        expect(nextMessage2.status).toBe(ResponseStatus.ERROR);
-        expect(nextMessage2.error.code).toBe(ServerErrorCode.BAD_REQUEST);
-
-        ws.ws.close();
+        afterAll(() => {
+            ws.ws.close();
+        });
     });
 
     afterAll(() => {

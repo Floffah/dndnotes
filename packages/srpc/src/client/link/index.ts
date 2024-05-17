@@ -14,11 +14,6 @@ export type ClientMessageDraft = {
 
 export interface LinkLike {
     /**
-     * Effectively a constructor
-     */
-    init?(): MaybePromise<void>;
-
-    /**
      * Implement this to modify the message before it is sent. More links will be called after this.
      */
     decorateMessage?(request: ClientMessageDraft): MaybePromise<void>;

@@ -88,14 +88,14 @@ export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
         path: Path,
         payload: ProcedureFromPath<Router, Path>,
     ) {
-        return this.sendRequest(path, ProcedureType.Query, payload);
+        return this.sendRequest(path, ProcedureType.QUERY, payload);
     }
 
     public mutation<Path extends FlattenProcedureNames<Router>>(
         path: Path,
         payload: ProcedureFromPath<Router, Path>,
     ) {
-        return this.sendRequest(path, ProcedureType.Mutation, payload);
+        return this.sendRequest(path, ProcedureType.MUTATION, payload);
     }
 
     public async subscribe<Path extends FlattenProcedureNames<Router>>(

@@ -13,6 +13,7 @@ import {
     SocketMessageType,
     SocketRequestType,
     clientBoundSocketMessage,
+    procedureTypeMap,
     serializeError,
     serverBoundSocketMessage,
     socketAuthRequest,
@@ -110,7 +111,7 @@ export class WebSocketConnection<Router extends ProtoBuilderRouter<any>> {
                     id: rawMessage.id,
                     content: {
                         status: ResponseStatus.ERROR,
-                        error,
+                        error: serializeError(error),
                     },
                 });
             } else {
@@ -133,10 +134,12 @@ export class WebSocketConnection<Router extends ProtoBuilderRouter<any>> {
                 id: message.id,
                 content: {
                     status: ResponseStatus.ERROR,
-                    error: new ServerError({
-                        code: ServerErrorCode.UNAUTHORIZED,
-                        message: "Not authenticated",
-                    }),
+                    error: serializeError(
+                        new ServerError({
+                            code: ServerErrorCode.UNAUTHORIZED,
+                            message: "Not authenticated",
+                        }),
+                    ),
                 },
             });
             return;
@@ -157,28 +160,31 @@ export class WebSocketConnection<Router extends ProtoBuilderRouter<any>> {
                     id: message.id,
                     content: {
                         status: ResponseStatus.ERROR,
-                        error: new ServerError({
-                            code: ServerErrorCode.BAD_REQUEST,
-                            message: `Procedure '${message.content.path}' not found`,
-                        }),
+                        error: serializeError(
+                            new ServerError({
+                                code: ServerErrorCode.BAD_REQUEST,
+                                message: `Procedure '${message.content.path}' not found`,
+                            }),
+                        ),
                     },
                 });
                 return;
             }
 
             if (
-                procedure._defs.type !==
-                socketRequestTypeMap[message.content.type]
+                procedure._defs.type !== procedureTypeMap[message.content.type]
             ) {
                 this.send({
                     type: SocketMessageType.RESPONSE,
                     id: message.id,
                     content: {
                         status: ResponseStatus.ERROR,
-                        error: new ServerError({
-                            code: ServerErrorCode.BAD_REQUEST,
-                            message: `Procedure type mismatch for procedure '${message.content.path}'`,
-                        }),
+                        error: serializeError(
+                            new ServerError({
+                                code: ServerErrorCode.BAD_REQUEST,
+                                message: `Procedure type mismatch for procedure '${message.content.path}'`,
+                            }),
+                        ),
                     },
                 });
                 return;
@@ -195,11 +201,13 @@ export class WebSocketConnection<Router extends ProtoBuilderRouter<any>> {
                         id: message.id,
                         content: {
                             status: ResponseStatus.ERROR,
-                            error: new ServerError({
-                                code: ServerErrorCode.BAD_REQUEST,
-                                message: `Invalid input for procedure '${message.content.path}'`,
-                                cause: e,
-                            }),
+                            error: serializeError(
+                                new ServerError({
+                                    code: ServerErrorCode.BAD_REQUEST,
+                                    message: `Invalid input for procedure '${message.content.path}'`,
+                                    cause: e,
+                                }),
+                            ),
                         },
                     });
                     return;
@@ -236,7 +244,7 @@ export class WebSocketConnection<Router extends ProtoBuilderRouter<any>> {
                     id: message.id,
                     content: {
                         status: ResponseStatus.ERROR,
-                        error,
+                        error: serializeError(error),
                     },
                 });
             }

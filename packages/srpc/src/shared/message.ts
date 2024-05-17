@@ -32,8 +32,12 @@ export enum SocketRequestType {
 }
 
 export const socketRequestTypeMap = {
-    [ProcedureType.Mutation]: SocketRequestType.MUTATION,
-    [ProcedureType.Query]: SocketRequestType.QUERY,
+    [ProcedureType.MUTATION]: SocketRequestType.MUTATION,
+    [ProcedureType.QUERY]: SocketRequestType.QUERY,
+};
+export const procedureTypeMap = {
+    [SocketRequestType.MUTATION]: ProcedureType.MUTATION,
+    [SocketRequestType.QUERY]: ProcedureType.QUERY,
 };
 
 /**

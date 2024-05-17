@@ -1,4 +1,4 @@
 export enum ProcedureType {
-    Query,
-    Mutation,
+    QUERY,
+    MUTATION,
 }

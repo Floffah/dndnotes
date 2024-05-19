@@ -38,7 +38,7 @@ export interface ProtoBuilder<Context = unknown, AuthInput = any> {
     ) => ProtoBuilderRouter<Fields, Context>;
 }
 
-export type InferProcedureInput<Input> = Input extends undefined | void
+export type InferInput<Input> = Input extends undefined | void
     ? void
     : Input extends ZodType
       ? Input extends ZodVoid | ZodUndefined | ZodNull
@@ -47,7 +47,7 @@ export type InferProcedureInput<Input> = Input extends undefined | void
       : Input;
 
 export type ProtoBuilderProcedureExecutor<Context, Input, Output> = (opts: {
-    input: InferProcedureInput<Input>;
+    input: InferInput<Input>;
     ctx: Context;
 }) => Promise<Output> | Output;
 

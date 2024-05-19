@@ -1,7 +1,12 @@
 import { nanoid } from "nanoid";
 
-import { ClientMessageDraft, LinkLike } from "@/client/link";
-import { ProtoBuilderRouter } from "@/server";
+import {
+    ClientMessageAuthRequestDraft,
+    ClientMessageRequestDraft,
+    ClientMessageSubscriptionDraft,
+    LinkLike,
+} from "@/client/link";
+import { InferInput, ProtoBuilderRouter } from "@/server";
 import {
     FlattenProcedureNames,
     ProcedureFromPath,
@@ -10,11 +15,16 @@ import {
     ServerError,
     SocketMessageType,
     SocketRequestType,
+    TransformerLike,
+    defaultTransformer,
+    deserializeError,
+    isSerializedError,
     socketRequestTypeMap,
 } from "@/shared";
 
 export interface CreateSRPCClientOptions {
     links: LinkLike[];
+    transformer?: TransformerLike;
 }
 
 export function createSRPCClient<Router extends ProtoBuilderRouter<any>>(
@@ -26,7 +36,11 @@ export function createSRPCClient<Router extends ProtoBuilderRouter<any>>(
 export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
     public authenticated = false;
 
-    constructor(private opts: CreateSRPCClientOptions) {}
+    public transformer: TransformerLike;
+
+    constructor(private opts: CreateSRPCClientOptions) {
+        this.transformer = opts.transformer ?? defaultTransformer;
+    }
 
     private async sendRequest<Path extends FlattenProcedureNames<Router>>(
         path: Path,
@@ -35,8 +49,7 @@ export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
     ) {
         const id = nanoid();
 
-        const request: ClientMessageDraft = {
-            type: "request",
+        const request: ClientMessageRequestDraft = {
             message: {
                 type: SocketMessageType.REQUEST,
                 id,
@@ -47,12 +60,14 @@ export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
                 },
             },
             decorations: {},
+            client: this,
         };
 
         for (const link of this.opts.links) {
             if (link.decorateMessage) {
                 await link.decorateMessage(request);
-            } else if (link.handleMessage) {
+            }
+            if (link.handleMessage) {
                 const response = await link.handleMessage(request);
 
                 if (response.type !== SocketMessageType.RESPONSE) {
@@ -64,7 +79,9 @@ export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
                 if (response.content.status === ResponseStatus.ERROR) {
                     let error = response.content.error;
 
-                    if (!(error instanceof Error)) {
+                    if (isSerializedError(error)) {
+                        error = deserializeError(error);
+                    } else if (!(error instanceof Error)) {
                         error = new ServerError({
                             code: error.code,
                             message: error.message,
@@ -104,8 +121,7 @@ export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
     ) {
         const id = nanoid();
 
-        const request: ClientMessageDraft = {
-            type: "subscription",
+        const request: ClientMessageSubscriptionDraft = {
             message: {
                 type: SocketMessageType.REQUEST,
                 id,
@@ -116,18 +132,81 @@ export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
                 },
             },
             decorations: {},
+            client: this,
         };
 
         for (const link of this.opts.links) {
             if (link.decorateMessage) {
                 await link.decorateMessage(request);
-            } else if (link.handleSubscription) {
+            }
+            if (link.handleSubscription) {
                 return link.handleSubscription(request);
             }
         }
 
         throw new Error(
             "No link was found to handle the subscription. Are you missing a link that handles the message?",
+        );
+    }
+
+    public async authenticate(
+        authInput: InferInput<Router["_defs"]["authInput"]>,
+    ) {
+        const request: ClientMessageAuthRequestDraft = {
+            message: {
+                type: SocketMessageType.AUTH_REQUEST,
+                content: authInput ?? undefined,
+            },
+            decorations: {},
+            client: this,
+        };
+
+        for (const link of this.opts.links) {
+            if (link.decorateAuthRequest) {
+                await link.decorateAuthRequest(request);
+            }
+            if (link.handleAuthRequest) {
+                const response = await link.handleAuthRequest(request);
+
+                if (response.type !== SocketMessageType.AUTH_RESPONSE) {
+                    throw new Error(
+                        "Expected auth response but got something else.",
+                    );
+                }
+
+                if (response.status === ResponseStatus.ERROR) {
+                    let error = response.error;
+
+                    if (isSerializedError(error)) {
+                        error = deserializeError(error);
+                    } else if (!(error instanceof Error)) {
+                        error = new ServerError({
+                            code: error.code,
+                            message: error.message,
+                            cause: error,
+                        });
+                    }
+
+                    throw error;
+                }
+
+                this.authenticated = true;
+                return;
+            }
+        }
+
+        throw new Error(
+            "No link was found to handle the authentication request. Are you missing a link that handles the message?",
+        );
+    }
+
+    public close() {
+        return Promise.all(
+            this.opts.links.map((link) => {
+                if (link.close) {
+                    return link.close({ client: this });
+                }
+            }),
         );
     }
 }

@@ -1,16 +1,10 @@
-import {
-    InferProcedureInput,
-    ProtoBuilderRouter,
-    ProtoBuilderType,
-} from "@/server";
+import { InferInput, ProtoBuilderRouter, ProtoBuilderType } from "@/server";
 
 export type RouterCaller<Router extends ProtoBuilderRouter<any>> = {
     [K in keyof Router["_defs"]["fields"]]: Router["_defs"]["fields"][K]["_defs"]["builderType"] extends ProtoBuilderType.Router
         ? RouterCaller<Router["_defs"]["fields"][K]>
         : (
-              input: InferProcedureInput<
-                  Router["_defs"]["fields"][K]["_defs"]["input"]
-              >,
+              input: InferInput<Router["_defs"]["fields"][K]["_defs"]["input"]>,
           ) => Router["_defs"]["fields"][K]["_defs"]["output"];
 };
 

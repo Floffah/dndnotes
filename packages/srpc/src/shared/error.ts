@@ -63,3 +63,8 @@ export function deserializeError(err: any): ServerError {
         cause: err,
     });
 }
+
+export function isSerializedError(err: any): boolean {
+    //): err is ReturnType<typeof serializeError> {
+    return "_type" in err && err._type === "ServerError";
+}

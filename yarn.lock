@@ -558,7 +558,7 @@ __metadata:
     "@dndnotes/lib": "workspace:*"
     "@jest/globals": "npm:^29.7.0"
     "@swc/jest": "npm:^0.2.36"
-    "@tanstack/react-query": "npm:^5.36.2"
+    "@tanstack/react-query": "npm:^5.37.1"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.12.12"
     cookie: "npm:^0.6.0"
@@ -633,7 +633,7 @@ __metadata:
     "@iconify/react": "npm:^4.1.1"
     "@react-spring/web": "npm:^9.7.3"
     "@swc/core": "npm:^1.5.7"
-    "@tanstack/react-query": "npm:^5.36.2"
+    "@tanstack/react-query": "npm:^5.37.1"
     "@types/mdx": "npm:^2.0.13"
     "@types/node": "npm:20.12.12"
     "@types/pubnub": "npm:^7"
@@ -730,7 +730,7 @@ __metadata:
   dependencies:
     "@jest/globals": "npm:^29.7.0"
     "@swc/jest": "npm:^0.2.36"
-    "@tanstack/react-query": "npm:^5.36.2"
+    "@tanstack/react-query": "npm:^5.37.1"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.12.12"
     "@types/ws": "npm:^8.5.10"
@@ -779,7 +779,7 @@ __metadata:
     "@next/mdx": "npm:^14.2.3"
     "@react-spring/web": "npm:^9.7.3"
     "@swc/core": "npm:^1.5.7"
-    "@tanstack/react-query": "npm:^5.36.2"
+    "@tanstack/react-query": "npm:^5.37.1"
     "@tiptap/extension-underline": "npm:^2.4.0"
     "@tiptap/html": "npm:^2.4.0"
     "@tiptap/pm": "npm:^2.4.0"
@@ -3124,14 +3124,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.36.2":
-  version: 5.36.2
-  resolution: "@tanstack/react-query@npm:5.36.2"
+"@tanstack/react-query@npm:^5.37.1":
+  version: 5.37.1
+  resolution: "@tanstack/react-query@npm:5.37.1"
   dependencies:
     "@tanstack/query-core": "npm:5.36.1"
   peerDependencies:
     react: ^18.0.0
-  checksum: 10c0/c6f7eacf2d41e5e417770daa1fd45a0bb2d87e9377713160ec0564a2a3a9acb85d4b0a4954f191a0a41a6b8b0e85ee3c49108ff3f64862d4a72b502bd9d2ad6f
+  checksum: 10c0/f0b33ec31c68bdc10f4aea9c3288ca969d77c57c87da7c77d0965fb9f82b5cb9d658868769fdaa3d4dc3deffd12b80c7debaa99cb702c52f41040fb7091162f7
   languageName: node
   linkType: hard
 

@@ -18,7 +18,6 @@ import {
     serverBoundSocketMessage,
     socketAuthRequest,
     socketRequest,
-    socketRequestTypeMap,
 } from "@/shared";
 import { extractTypeInfo } from "@/shared/typeInfo";
 

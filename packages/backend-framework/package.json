@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@dndnotes/lib": "workspace:*",
-    "@tanstack/react-query": "^5.36.2",
+    "@tanstack/react-query": "^5.37.1",
     "cookie": "^0.6.0",
     "date-fns": "^3.6.0",
     "mongodb": "^6.6.2",

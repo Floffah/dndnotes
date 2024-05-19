@@ -10,7 +10,10 @@ V0:
 - [x] Basic websocket server & client (no typeinfo)
 - [x] Error handling
 
-V1:
+Future plans:
 - [ ] Typeinfo support
 - [ ] Caching based on ^
 - [ ] Remove concept of query and mutation. Everything is either a callable or streamable procedure
+- [ ] Add support for QUIC/WebTransport once supported by Bun/Node/Web (faster & smaller packets)
+- [ ] Add support for REST based procedure calling (for serverless setups or clients that don't support websockets e.g. nextjs, discord activities)
+- [ ] Add support for streamed xhr requests for subscriptions (for serverless setups or clients that don't support websockets e.g. nextjs, discord activities)

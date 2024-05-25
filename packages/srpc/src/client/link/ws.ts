@@ -25,25 +25,27 @@ export function createWebSocketLink(
 
     const url = new URL(`${secure ? "wss" : "ws"}://` + opts.url);
 
-    let _ws: WebSocket | null = null;
+    let _currentSocket: WebSocket | null = null;
     let lastMessageSent = Date.now();
     const subscriptionIds: string[] = [];
 
     async function getSocket() {
-        if (_ws) {
-            return _ws;
+        if (_currentSocket) {
+            return _currentSocket;
         }
 
-        return new Promise<WebSocket>((resolve) => {
-            _ws = new WebSocket(url.toString());
+        return new Promise<WebSocket>((resolve, reject) => {
+            _currentSocket = new WebSocket(url.toString());
 
-            if (!_ws.readyState) {
-                _ws.addEventListener("error", (e) => {
-                    console.error("WebSocket error", e);
+            if (!_currentSocket.readyState) {
+                _currentSocket.addEventListener("error", (e) => {
+                    reject(e);
                 });
-                _ws.addEventListener("open", () => {
-                    resolve(_ws as WebSocket);
+                _currentSocket.addEventListener("open", () => {
+                    resolve(_currentSocket as WebSocket);
                 });
+            } else {
+                resolve(_currentSocket);
             }
         });
     }
@@ -51,11 +53,11 @@ export function createWebSocketLink(
     const disconnectInterval = setInterval(() => {
         if (
             subscriptionIds.length === 0 &&
-            _ws &&
+            _currentSocket &&
             Date.now() - lastMessageSent > 10000
         ) {
-            _ws.close();
-            _ws = null;
+            _currentSocket.close();
+            _currentSocket = null;
         }
     }, 10000);
 
@@ -211,9 +213,9 @@ export function createWebSocketLink(
         async close() {
             clearInterval(disconnectInterval);
 
-            if (_ws) {
-                _ws.close();
-                _ws = null;
+            if (_currentSocket) {
+                _currentSocket.close();
+                _currentSocket = null;
             }
         },
     };

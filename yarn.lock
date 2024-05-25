@@ -558,7 +558,7 @@ __metadata:
     "@dndnotes/lib": "workspace:*"
     "@jest/globals": "npm:^29.7.0"
     "@swc/jest": "npm:^0.2.36"
-    "@tanstack/react-query": "npm:^5.37.1"
+    "@tanstack/react-query": "npm:^5.39.0"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.12.12"
     cookie: "npm:^0.6.0"
@@ -569,7 +569,7 @@ __metadata:
     nanoid: "npm:^5.0.7"
     notion-client: "npm:^6.16.0"
     superjson: "npm:^2.2.1"
-    ts-jest: "npm:^29.1.2"
+    ts-jest: "npm:^29.1.3"
     tsup: "npm:^8.0.2"
     typescript: "npm:^5.4.5"
     zod: "npm:^3.23.8"
@@ -613,7 +613,7 @@ __metadata:
     "@tiptap/starter-kit": ^2.4.0
     next: ^14.2.3
     react: ^18.3.1
-    react-hook-form: ^7.51.4
+    react-hook-form: ^7.51.5
     tailwindcss: ^3.4.3
   languageName: unknown
   linkType: soft
@@ -629,34 +629,34 @@ __metadata:
     "@dndnotes/models": "workspace:*"
     "@dndnotes/server": "workspace:*"
     "@dndnotes/tailwind-preset": "workspace:*"
-    "@hookform/resolvers": "npm:^3.4.0"
+    "@hookform/resolvers": "npm:^3.4.2"
     "@iconify/react": "npm:^4.1.1"
     "@react-spring/web": "npm:^9.7.3"
     "@swc/core": "npm:^1.5.7"
-    "@tanstack/react-query": "npm:^5.37.1"
+    "@tanstack/react-query": "npm:^5.39.0"
     "@types/mdx": "npm:^2.0.13"
     "@types/node": "npm:20.12.12"
     "@types/pubnub": "npm:^7"
-    "@types/react": "npm:^18.3.2"
+    "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/sanitize-html": "npm:^2"
     autoprefixer: "npm:^10.4.19"
     clsx: "npm:^2.1.1"
     date-fns: "npm:^3.6.0"
-    discord-api-types: "npm:^0.37.84"
+    discord-api-types: "npm:^0.37.85"
     eslint: "npm:^8.57.0"
     eslint-config-next: "npm:^14.2.3"
     next: "npm:^14.2.3"
     postcss: "npm:8.4.38"
     postcss-import: "npm:^16.1.0"
-    pubnub: "npm:^8.1.0"
+    pubnub: "npm:^8.2.1"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
-    react-hook-form: "npm:^7.51.4"
+    react-hook-form: "npm:^7.51.5"
     superjson: "npm:^2.2.1"
     tailwindcss: "npm:^3.4.3"
     typescript: "npm:5.4.5"
-    vercel: "npm:^34.2.0"
+    vercel: "npm:^34.2.3"
     zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
@@ -705,22 +705,22 @@ __metadata:
     cookie: "npm:^0.6.0"
     crypto-random-string: "npm:^5.0.0"
     date-fns: "npm:^3.6.0"
-    discord-api-types: "npm:^0.37.84"
+    discord-api-types: "npm:^0.37.85"
     dotenv: "npm:^16.4.5"
     jest: "npm:^29.7.0"
     mongodb: "npm:^6.6.2"
     mongoose: "npm:^8.4.0"
     nanoid: "npm:^5.0.7"
     notion-client: "npm:^6.16.0"
-    pubnub: "npm:^8.1.0"
+    pubnub: "npm:^8.2.1"
     superjson: "npm:^2.2.1"
-    ts-jest: "npm:^29.1.2"
+    ts-jest: "npm:^29.1.3"
     tsup: "npm:^8.0.2"
     typescript: "npm:^5.4.5"
     unique-username-generator: "npm:^1.3.0"
     zod: "npm:^3.23.8"
   peerDependencies:
-    pubnub: ^8.1.0
+    pubnub: ^8.2.1
   languageName: unknown
   linkType: soft
 
@@ -730,7 +730,7 @@ __metadata:
   dependencies:
     "@jest/globals": "npm:^29.7.0"
     "@swc/jest": "npm:^0.2.36"
-    "@tanstack/react-query": "npm:^5.37.1"
+    "@tanstack/react-query": "npm:^5.39.0"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.12.12"
     "@types/ws": "npm:^8.5.10"
@@ -742,7 +742,7 @@ __metadata:
     nanoid: "npm:^5.0.7"
     notion-client: "npm:^6.16.0"
     superjson: "npm:^2.2.1"
-    ts-jest: "npm:^29.1.2"
+    ts-jest: "npm:^29.1.3"
     tsup: "npm:^8.0.2"
     typescript: "npm:^5.4.5"
     ws: "npm:^8.17.0"
@@ -772,14 +772,14 @@ __metadata:
     "@dndnotes/models": "workspace:*"
     "@dndnotes/server": "workspace:*"
     "@dndnotes/tailwind-preset": "workspace:*"
-    "@hookform/resolvers": "npm:^3.4.0"
+    "@hookform/resolvers": "npm:^3.4.2"
     "@iconify/react": "npm:^4.1.1"
     "@mdx-js/loader": "npm:^3.0.1"
     "@mdx-js/react": "npm:^3.0.1"
     "@next/mdx": "npm:^14.2.3"
     "@react-spring/web": "npm:^9.7.3"
     "@swc/core": "npm:^1.5.7"
-    "@tanstack/react-query": "npm:^5.37.1"
+    "@tanstack/react-query": "npm:^5.39.0"
     "@tiptap/extension-underline": "npm:^2.4.0"
     "@tiptap/html": "npm:^2.4.0"
     "@tiptap/pm": "npm:^2.4.0"
@@ -788,7 +788,7 @@ __metadata:
     "@types/mdx": "npm:^2.0.13"
     "@types/node": "npm:20.12.12"
     "@types/pubnub": "npm:^7"
-    "@types/react": "npm:^18.3.2"
+    "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/sanitize-html": "npm:^2"
     autoprefixer: "npm:^10.4.19"
@@ -801,16 +801,16 @@ __metadata:
     next: "npm:^14.2.3"
     postcss: "npm:8.4.38"
     postcss-import: "npm:^16.1.0"
-    pubnub: "npm:^8.1.0"
+    pubnub: "npm:^8.2.1"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
-    react-hook-form: "npm:^7.51.4"
+    react-hook-form: "npm:^7.51.5"
     react-notion-x: "npm:^6.16.0"
     remark-gfm: "npm:^4.0.0"
     superjson: "npm:^2.2.1"
     tailwindcss: "npm:^3.4.3"
     typescript: "npm:5.4.5"
-    vercel: "npm:^34.2.0"
+    vercel: "npm:^34.2.3"
     zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
@@ -1114,12 +1114,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "@hookform/resolvers@npm:3.4.0"
+"@hookform/resolvers@npm:^3.4.2":
+  version: 3.4.2
+  resolution: "@hookform/resolvers@npm:3.4.2"
   peerDependencies:
     react-hook-form: ^7.0.0
-  checksum: 10c0/017b2620b2496c0a2aa4f30f16a58e10b05a12fd3a603338c9aae92b20404c30dfaf86fb1f4f873db95f4756707cf5c4b88cd4e22327f2ca9a43daf495946f86
+  checksum: 10c0/cb8a3e0cc1c9aeaf2adad585f29badf342a96da9cfdf4efa1168aadb7ef52f440cac5cc6fedf0fda6a52effd27a5c859692c89bb99ed5c76d03064aea1f0d684
   languageName: node
   linkType: hard
 
@@ -3117,21 +3117,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.36.1":
-  version: 5.36.1
-  resolution: "@tanstack/query-core@npm:5.36.1"
-  checksum: 10c0/53ba44c9934c99035122e586ae21bdc10a9978054d555f9608241c20b931c357eb60364e9d17adb1f30501494427bd63c00684923c8d08f41d41c5f346922d47
+"@tanstack/query-core@npm:5.38.0":
+  version: 5.38.0
+  resolution: "@tanstack/query-core@npm:5.38.0"
+  checksum: 10c0/d617cb5a571f0ff147b07717ae71764fb5a4cca9765f5a642d2deff80d08c4fafb497a63824c8f84eec5ea4177fe79d5ef2f6f9381bcee4ebb8a22a033e8d5fc
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.37.1":
-  version: 5.37.1
-  resolution: "@tanstack/react-query@npm:5.37.1"
+"@tanstack/react-query@npm:^5.39.0":
+  version: 5.39.0
+  resolution: "@tanstack/react-query@npm:5.39.0"
   dependencies:
-    "@tanstack/query-core": "npm:5.36.1"
+    "@tanstack/query-core": "npm:5.38.0"
   peerDependencies:
     react: ^18.0.0
-  checksum: 10c0/f0b33ec31c68bdc10f4aea9c3288ca969d77c57c87da7c77d0965fb9f82b5cb9d658868769fdaa3d4dc3deffd12b80c7debaa99cb702c52f41040fb7091162f7
+  checksum: 10c0/b43271d60eb1a28b91f81d60ad2421ef863e6e5ab22b2601f5593321357e6f0e6c2fa535038b2fd04f5ca429695501be35917e147cb59d90d86c56235b0fdb07
   languageName: node
   linkType: hard
 
@@ -3818,13 +3818,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.3.2":
-  version: 18.3.2
-  resolution: "@types/react@npm:18.3.2"
+"@types/react@npm:^18.3.3":
+  version: 18.3.3
+  resolution: "@types/react@npm:18.3.3"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/9fb2f1fcf7e889ee4ea7c3c5978df595c66e770e5fd3a245dbdd2589b9b911524c11dab25a6275d8af4e336e4cb5fa850d447884b84c335a187a338c89df99ba
+  checksum: 10c0/fe455f805c5da13b89964c3d68060cebd43e73ec15001a68b34634604a78140e6fc202f3f61679b9d809dde6d7a7c2cb3ed51e0fd1462557911db09879b55114
   languageName: node
   linkType: hard
 
@@ -4089,12 +4089,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/next@npm:4.2.11":
-  version: 4.2.11
-  resolution: "@vercel/next@npm:4.2.11"
+"@vercel/next@npm:4.2.14":
+  version: 4.2.14
+  resolution: "@vercel/next@npm:4.2.14"
   dependencies:
     "@vercel/nft": "npm:0.27.0"
-  checksum: 10c0/a353edd2b866b2a0434170afb195151013a70281a18413f804bdff25e84ad932a4e4d4bf8cf5bc5255ebee6d8df750405898cb668f0e1e63cfb9287a6da7f8b6
+  checksum: 10c0/27ef48093d1a6c3d7e79ae2de900aa8ff47519014556d5c46824822f48a5366b7ba1d203521330f1072d4152900227ce30221364656b7cff8dfbf9f61cc98ea8
   languageName: node
   linkType: hard
 
@@ -6079,10 +6079,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord-api-types@npm:^0.37.84":
-  version: 0.37.84
-  resolution: "discord-api-types@npm:0.37.84"
-  checksum: 10c0/bd3bf472c9bbbc741cceec371bc2aa478a3774635e942fb0fbd1398f32f5f27af5e9179d61e79072ae457e0e3280954f69ddcb6d74911b1af97dae2f0fdc8a50
+"discord-api-types@npm:^0.37.85":
+  version: 0.37.85
+  resolution: "discord-api-types@npm:0.37.85"
+  checksum: 10c0/d11eb7be045004e200e06834923f616cbac6113f47c8457c8969cd922f3239a9344d36313f91b5436d146343876050ddfe6d7fc06302f001ae35a9d7795ad25c
   languageName: node
   linkType: hard
 
@@ -12687,9 +12687,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pubnub@npm:^8.1.0":
-  version: 8.1.0
-  resolution: "pubnub@npm:8.1.0"
+"pubnub@npm:^8.2.1":
+  version: 8.2.1
+  resolution: "pubnub@npm:8.2.1"
   dependencies:
     agentkeepalive: "npm:^3.5.2"
     buffer: "npm:^6.0.3"
@@ -12701,7 +12701,7 @@ __metadata:
     proxy-agent: "npm:^6.3.0"
     react-native-url-polyfill: "npm:^2.0.0"
     text-encoding: "npm:^0.7.0"
-  checksum: 10c0/e95a5e8e0db6f07d36382b470d812a07eb193454760e4f7e17a90ee2a32464d66717d9e8851cf40f89c334362cd24a1d87c1aec129f8316bb6924d9d4c578b26
+  checksum: 10c0/c41d5667662317636fd4b46bdbab078b36d0c68a3ab25204828aad76e8a487f26fc6a1daa9e4e8a3167c579a850b6ddfb28f6995a15a08962bb9c2e2bb8f7177
   languageName: node
   linkType: hard
 
@@ -12823,12 +12823,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.51.4":
-  version: 7.51.4
-  resolution: "react-hook-form@npm:7.51.4"
+"react-hook-form@npm:^7.51.5":
+  version: 7.51.5
+  resolution: "react-hook-form@npm:7.51.5"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
-  checksum: 10c0/73b585adb80bd99ae1fc21208e389fd9830f82c8c8bab4b6c4d5853f858a3259b8dc8fd4aa4608a0bd95bc69883c9332f2fa5e8c80dc17dbb2866de9744dbdb6
+  checksum: 10c0/5b13f99a125d92ee618f2d4e218d5ec854f8cac1b568e83b4b125efb002cc79eef0f5c06b54015c78e16a830cf1ea356a646e8c6abb00b7ca8225dba9a92091e
   languageName: node
   linkType: hard
 
@@ -14633,9 +14633,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^29.1.2":
-  version: 29.1.2
-  resolution: "ts-jest@npm:29.1.2"
+"ts-jest@npm:^29.1.3":
+  version: 29.1.3
+  resolution: "ts-jest@npm:29.1.3"
   dependencies:
     bs-logger: "npm:0.x"
     fast-json-stable-stringify: "npm:2.x"
@@ -14647,12 +14647,15 @@ __metadata:
     yargs-parser: "npm:^21.0.1"
   peerDependencies:
     "@babel/core": ">=7.0.0-beta.0 <8"
+    "@jest/transform": ^29.0.0
     "@jest/types": ^29.0.0
     babel-jest: ^29.0.0
     jest: ^29.0.0
     typescript: ">=4.3 <6"
   peerDependenciesMeta:
     "@babel/core":
+      optional: true
+    "@jest/transform":
       optional: true
     "@jest/types":
       optional: true
@@ -14662,7 +14665,7 @@ __metadata:
       optional: true
   bin:
     ts-jest: cli.js
-  checksum: 10c0/c2f51f0241f89d127d41392decbcb83b5dfd5e57ab9d50220aa7b7e2f9b3f3b07ccdbba33311284df1c41941879e4ddfad44b15a9d0da4b74bd1b98702b729df
+  checksum: 10c0/7810882f53c7d722dfcd9fbe65c1c80258ec4bd216a21448f27759f2f06d57a2f3f2472e1efe4a5e29fd4064dce07a93c8dbf3b13e77dac0e32419a30756f8f5
   languageName: node
   linkType: hard
 
@@ -15373,15 +15376,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vercel@npm:^34.2.0":
-  version: 34.2.0
-  resolution: "vercel@npm:34.2.0"
+"vercel@npm:^34.2.3":
+  version: 34.2.3
+  resolution: "vercel@npm:34.2.3"
   dependencies:
     "@vercel/build-utils": "npm:8.2.0"
     "@vercel/fun": "npm:1.1.0"
     "@vercel/go": "npm:3.1.1"
     "@vercel/hydrogen": "npm:1.0.2"
-    "@vercel/next": "npm:4.2.11"
+    "@vercel/next": "npm:4.2.14"
     "@vercel/node": "npm:3.1.5"
     "@vercel/python": "npm:4.2.0"
     "@vercel/redwood": "npm:2.0.9"
@@ -15392,7 +15395,7 @@ __metadata:
   bin:
     vc: dist/index.js
     vercel: dist/index.js
-  checksum: 10c0/fe1e3dd799778c4bda33c0490b4b6f894a78496f27fca1ffb6f29a37f78014b53cc6b3e16e2764381b3704af7633b51ca2ae378d0ba90b48baaa8f21e1547666
+  checksum: 10c0/110029002e8c87f53c802067ab820204e3b66872dcc9acf7d59b0e1bdf2d599f5c9f72a67425db0e08172153825cfdc2fe22d147cbbff84baeaeb06af4a59530
   languageName: node
   linkType: hard
 

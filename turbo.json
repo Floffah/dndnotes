@@ -16,6 +16,14 @@
     "dev:env": {
       "cache": false,
       "persistent": false
+    },
+    "dev:docs": {
+      "cache": false,
+      "persistent": false
+    },
+    "build:docs": {
+        "outputs": ["docs/.vuepress/dist/**"],
+        "dependsOn": ["^build"]
     }
   }
 }

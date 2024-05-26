@@ -290,3 +290,5 @@ sketch
 
 # End of https://www.toptal.com/developers/gitignore/api/node,yarn,react,turbo,jetbrains,visualstudiocode,vercel
 .env*.local
+
+*storybook.log

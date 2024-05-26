@@ -17,5 +17,6 @@
       "@/*": ["./src/*"]
     }
   },
+  "include": ["src/**/*", ".storybook/**/*"],
   "$schema": "https://json.schemastore.org/tsconfig"
 }

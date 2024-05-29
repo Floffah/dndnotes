@@ -50,16 +50,17 @@ export function createWebSocketLink(
         });
     }
 
-    const disconnectInterval = setInterval(() => {
-        if (
-            subscriptionIds.length === 0 &&
-            _currentSocket &&
-            Date.now() - lastMessageSent > 10000
-        ) {
-            _currentSocket.close();
-            _currentSocket = null;
-        }
-    }, 10000);
+    // TODO: implement socket reconnection
+    // const disconnectInterval = setInterval(() => {
+    //     if (
+    //         subscriptionIds.length === 0 &&
+    //         _currentSocket &&
+    //         Date.now() - lastMessageSent > 10000
+    //     ) {
+    //         _currentSocket.close();
+    //         _currentSocket = null;
+    //     }
+    // }, 10000);
 
     return {
         handleAuthRequest(request) {
@@ -71,6 +72,7 @@ export function createWebSocketLink(
                         request.client.transformer.serialize(request.message),
                     ),
                 );
+                lastMessageSent = Date.now();
 
                 const onMessage = Object.assign(
                     (event: MessageEvent) => {
@@ -111,6 +113,7 @@ export function createWebSocketLink(
                         request.client.transformer.serialize(request.message),
                     ),
                 );
+                lastMessageSent = Date.now();
 
                 const onMessage = Object.assign(
                     (event: MessageEvent) => {
@@ -153,6 +156,7 @@ export function createWebSocketLink(
                     request.client.transformer.serialize(request.message),
                 ),
             );
+            lastMessageSent = Date.now();
 
             subscriptionIds.push(request.message.id);
 
@@ -211,7 +215,9 @@ export function createWebSocketLink(
             }
         },
         async close() {
-            clearInterval(disconnectInterval);
+            // clearInterval(disconnectInterval);
+
+            subscriptionIds.splice(0, subscriptionIds.length);
 
             if (_currentSocket) {
                 _currentSocket.close();

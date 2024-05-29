@@ -6,7 +6,11 @@ import {
     ClientMessageSubscriptionDraft,
     LinkLike,
 } from "@/client/link";
-import { InferInput, ProtoBuilderRouter } from "@/server";
+import {
+    InferInput,
+    ProtoBuilderProcedure,
+    ProtoBuilderRouter,
+} from "@/server";
 import {
     FlattenProcedureNames,
     ProcedureFromPath,
@@ -27,12 +31,6 @@ export interface CreateSRPCClientOptions {
     transformer?: TransformerLike;
 }
 
-export function createSRPCClient<Router extends ProtoBuilderRouter<any>>(
-    opts: CreateSRPCClientOptions,
-) {
-    return new SRPCClient<Router>(opts);
-}
-
 export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
     public authenticated = false;
 
@@ -42,11 +40,17 @@ export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
         this.transformer = opts.transformer ?? defaultTransformer;
     }
 
-    private async sendRequest<Path extends FlattenProcedureNames<Router>>(
+    private async sendRequest<
+        Path extends FlattenProcedureNames<Router>,
+        Procedure extends ProtoBuilderProcedure<any, any> = ProcedureFromPath<
+            Router,
+            Path
+        >,
+    >(
         path: Path,
         type: ProcedureType,
-        payload: ProcedureFromPath<Router, Path>,
-    ) {
+        payload: InferInput<Procedure["_defs"]["input"]>,
+    ): Promise<Awaited<Procedure["_defs"]["output"]>> {
         const id = nanoid();
 
         const request: ClientMessageRequestDraft = {
@@ -92,7 +96,7 @@ export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
                     throw error;
                 }
 
-                return response.content;
+                return response.content.payload;
             }
         }
 
@@ -101,17 +105,23 @@ export class SRPCClient<Router extends ProtoBuilderRouter<any>> {
         );
     }
 
-    public query<Path extends FlattenProcedureNames<Router>>(
-        path: Path,
-        payload: ProcedureFromPath<Router, Path>,
-    ) {
+    public query<
+        Path extends FlattenProcedureNames<Router>,
+        Procedure extends ProtoBuilderProcedure<any, any> = ProcedureFromPath<
+            Router,
+            Path
+        >,
+    >(path: Path, payload: InferInput<Procedure["_defs"]["input"]>) {
         return this.sendRequest(path, ProcedureType.QUERY, payload);
     }
 
-    public mutation<Path extends FlattenProcedureNames<Router>>(
-        path: Path,
-        payload: ProcedureFromPath<Router, Path>,
-    ) {
+    public mutation<
+        Path extends FlattenProcedureNames<Router>,
+        Procedure extends ProtoBuilderProcedure<any, any> = ProcedureFromPath<
+            Router,
+            Path
+        >,
+    >(path: Path, payload: InferInput<Procedure["_defs"]["input"]>) {
         return this.sendRequest(path, ProcedureType.MUTATION, payload);
     }
 

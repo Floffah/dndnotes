@@ -56,7 +56,7 @@ describe("Test WebSocket link", () => {
         });
 
         // @ts-ignore
-        await expect(() => client.authenticate()).rejects.toThrow();
+        await expect(client.authenticate()).rejects.toThrow();
 
         await client.close();
     });
@@ -66,7 +66,7 @@ describe("Test WebSocket link", () => {
             server: wss,
         });
 
-        await expect(() =>
+        await expect(
             client.authenticate({
                 token: "Bearer invalid",
             }),

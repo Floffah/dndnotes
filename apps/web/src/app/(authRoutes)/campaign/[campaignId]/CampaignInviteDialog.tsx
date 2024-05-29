@@ -16,7 +16,7 @@ export const CampaignInviteDialog = forwardRef<DialogRef, PropsWithChildren>(
 
         const [invite, setInvite] = useState<CampaignInvite | null>(null);
         const [linkCopied, setLinkCopied] = useState(false);
-        const copiedTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+        const copiedTimeoutRef = useRef<Timer | null>(null);
 
         const createInviteMutation = api.campaign.invite.create.useMutation();
 

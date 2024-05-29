@@ -25,7 +25,7 @@ export class WebSocketConnection<Router extends ProtoBuilderRouter<any>> {
     context!: Router["_defs"]["context"];
 
     authenticated = false;
-    authTimeout: NodeJS.Timeout | null = null;
+    authTimeout: Timer | null = null;
 
     constructor(
         public handler: WebSocketHandler<Router>,

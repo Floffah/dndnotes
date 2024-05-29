@@ -1,8 +1,5 @@
-import {
-    LinkLike,
-    createSRPCClient,
-    createWebSocketLink,
-} from "../../dist/client";
+import { LinkLike, createWebSocketLink } from "../../dist/client";
+import { SRPCClient } from "../../dist/client";
 import {
     CreateWebSocketHandlerOptions,
     ProtoBuilderRouter,
@@ -147,7 +144,7 @@ export function createTestableSRPCClient<
 }) {
     const url = `localhost:${(opts.server.address() as AddressInfo).port}`;
 
-    return createSRPCClient<Router>({
+    return new SRPCClient<Router>({
         links: opts.links
             ? opts.links({ url })
             : [createWebSocketLink({ url })],

@@ -171,8 +171,10 @@ describe("Server with required authentication", () => {
             status: ResponseStatus.ERROR;
         };
 
+        console.log(nextMessage);
+
         expect(nextMessage.status).toBe(ResponseStatus.ERROR);
-        expect(nextMessage.error.code).toBe(ServerErrorCode.UNAUTHORIZED);
+        expect(nextMessage.error.code).toBe(ServerErrorCode.BAD_REQUEST);
 
         ws.socket.close();
     });

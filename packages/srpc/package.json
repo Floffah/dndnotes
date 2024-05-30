@@ -43,12 +43,12 @@
     }
   },
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup --minify --clean",
-    "test": "bun test",
-    "dev:docs": "storybook dev -p 6007 --no-open",
-    "build:docs": "yarn build-storybook",
-    "build-storybook": "storybook build"
+    "disabled:dev": "tsup --watch",
+    "disabled:build": "tsup --minify --clean",
+    "disabled:test": "bun test",
+    "disabled:dev:docs": "storybook dev -p 6007 --no-open",
+    "disabled:build:docs": "yarn build-storybook",
+    "disabled:build-storybook": "storybook build"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.40.0",

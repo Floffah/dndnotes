@@ -1,15 +1,12 @@
 import { QueryClient, QueryClientConfig } from "@tanstack/react-query";
 
-import { CreateSRPCClientOptions, SRPCClient } from "@/client";
+import { SRPCClient } from "@/client";
 
 export function createQueryClient(
-    opts: CreateSRPCClientOptions & { queryClientConfig?: QueryClientConfig },
+    srpc: SRPCClient<any>,
+    queryClientConfig: QueryClientConfig,
 ) {
-    const { queryClientConfig, ...srpcOpts } = opts;
-
-    const srpc = new SRPCClient(srpcOpts);
-
-    const queryClient = new QueryClient({
+    return new QueryClient({
         defaultOptions: {
             queries: {
                 queryFn: async ({ queryKey }) => {
@@ -18,12 +15,12 @@ export function createQueryClient(
                     return await srpc.query(path, input);
                 },
 
-                staleTime: 1000 * 60 * 5,
-                refetchOnWindowFocus: false,
-                refetchIntervalInBackground: false,
-                networkMode: "offlineFirst",
-
-                ...((queryClientConfig?.defaultOptions?.queries ?? {}) as any),
+                ...(queryClientConfig?.defaultOptions?.queries ?? {
+                    staleTime: 1000 * 60 * 5,
+                    refetchOnWindowFocus: false,
+                    refetchIntervalInBackground: false,
+                    networkMode: "offlineFirst",
+                }),
             },
             mutations: {
                 mutationFn: async ({ path, variables }: any) => {
@@ -38,9 +35,4 @@ export function createQueryClient(
 
         ...(queryClientConfig ?? {}),
     });
-
-    return {
-        queryClient,
-        srpc,
-    };
 }

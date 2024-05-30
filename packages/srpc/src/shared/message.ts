@@ -15,13 +15,6 @@ export enum SocketMessageType {
 }
 
 /**
- * Base message type
- */
-export const baseSocketMessage = z.object({
-    type: z.nativeEnum(SocketMessageType),
-});
-
-/**
  * The type of server bound request being made
  */
 export enum SocketRequestType {
@@ -39,6 +32,13 @@ export const procedureTypeMap = {
     [SocketRequestType.MUTATION]: ProcedureType.MUTATION,
     [SocketRequestType.QUERY]: ProcedureType.QUERY,
 };
+
+/**
+ * Base message type
+ */
+export const baseSocketMessage = z.object({
+    type: z.nativeEnum(SocketMessageType),
+});
 
 /**
  * Server bound request message

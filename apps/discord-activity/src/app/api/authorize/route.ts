@@ -112,7 +112,7 @@ export const POST = async (req: Request) => {
         secure: process.env.NODE_ENV === "production",
         domain:
             process.env.NODE_ENV === "production"
-                ? ".dnda.floffah.dev"
+                ? ".activity.dndnotes.app"
                 : "localhost",
         sameSite: "strict",
     });

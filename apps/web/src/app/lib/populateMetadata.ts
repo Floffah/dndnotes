@@ -11,7 +11,7 @@ export function populateMetadata(
     override: Metadata = {},
 ): Metadata {
     return {
-        metadataBase: new URL("https://dndnotes.floffah.dev"),
+        metadataBase: new URL("https://dndnotes.app"),
         title,
         description,
         openGraph: {

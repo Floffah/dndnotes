@@ -15,7 +15,6 @@
     "build": "tsup --minify --clean"
   },
   "dependencies": {
-    "@dndnotes/backend-framework": "workspace:*",
     "date-fns": "^3.6.0",
     "superjson": "^2.2.1",
     "zod": "^3.23.8"

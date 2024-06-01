@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@discordjs/rest": "^2.3.0",
-    "@dndnotes/backend-framework": "workspace:*",
     "@dndnotes/lib": "workspace:*",
     "@dndnotes/models": "workspace:*",
     "@tiptap/core": "^2.4.0",

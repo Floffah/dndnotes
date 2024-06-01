@@ -27,5 +27,5 @@
     "turbo": "^1.13.3",
     "turbo-ignore": "^1.13.3"
   },
-  "packageManager": "bun@1.10.0"
+  "packageManager": "bun@1.1.10"
 }

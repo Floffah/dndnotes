@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
+import { deserialize } from "superjson";
+
+import { authenticateDiscord } from "@/app/api/discord/redirect/action";
 
 // not bad practice, react encourages it for this kind of thing here :) https://react.dev/learn/you-might-not-need-an-effect
 let didAuthenticate = false;
@@ -19,19 +22,9 @@ export default function DiscordRedirectPage({
 
             if (code) {
                 const onReady = async () => {
-                    const res = await fetch("/api/discord/authenticate", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            code: new URLSearchParams(
-                                window.location.search,
-                            ).get("code"),
-                        }),
-                    }).then((res) => res.json());
+                    const user = deserialize(await authenticateDiscord(code));
 
-                    window.opener.callback(res.data.user);
+                    window.opener.callback(user);
                     window.close();
                 };
 

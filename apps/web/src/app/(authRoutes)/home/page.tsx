@@ -2,6 +2,7 @@
 
 import { NavBar } from "@dndnotes/components";
 
+import { logout } from "@/actions/logout";
 import { CampaignsList } from "@/app/(authRoutes)/home/CampaignsList";
 import { FriendsList } from "@/app/(authRoutes)/home/FriendsList";
 import { DiscordLoginButton } from "@/app/components/DiscordLoginButton";
@@ -12,7 +13,13 @@ export default function HomePage() {
 
     return (
         <div className="relative flex h-screen w-screen flex-col gap-3 p-3">
-            <NavBar />
+            <NavBar
+                onLogout={async () => {
+                    await logout();
+
+                    window.location.href = "/";
+                }}
+            />
 
             <div className="flex h-full flex-1 gap-3">
                 {user.authenticated && <FriendsList />}

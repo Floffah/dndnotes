@@ -1,22 +1,23 @@
+"use server";
+
 import cryptoRandomString from "crypto-random-string";
+import { cookies } from "next/headers";
+import { serialize } from "superjson";
 
 import { UserModel, UserSessionModel, mongoConnect } from "@dndnotes/api";
 import { SESSION_TOKEN } from "@dndnotes/lib";
-import { UserAPIModel, UserSessionType } from "@dndnotes/models";
-
 import {
-    createErrorResponse,
-    createSuccessResponse,
-} from "@/app/api/apiResponse";
+    UserAPIModel,
+    UserSessionType,
+    registerTransformerTypes,
+} from "@dndnotes/models";
 
-mongoConnect();
+registerTransformerTypes();
+const mongoPromise = mongoConnect();
 
-export const POST = async (req: Request) => {
-    const body = await req.json();
-    const code = body.code;
-
+export async function authenticateDiscord(code: string) {
     if (!code) {
-        return createErrorResponse("No code provided");
+        throw new Error("No code provided");
     }
 
     const discordOauthResponse = await fetch(
@@ -39,9 +40,7 @@ export const POST = async (req: Request) => {
     const discordOauthJson = await discordOauthResponse.json();
 
     if (discordOauthJson.error || !discordOauthJson.access_token) {
-        return createErrorResponse(
-            discordOauthJson.error ?? "No access token provided",
-        );
+        throw new Error(discordOauthJson.error ?? "No access token provided");
     }
 
     const discordUserResponse = await fetch(
@@ -55,13 +54,12 @@ export const POST = async (req: Request) => {
     const discordUserJson = await discordUserResponse.json();
 
     if (discordUserJson.error || !discordUserJson.id) {
-        return createErrorResponse(
-            discordUserJson.error ?? "No user id provided",
-        );
+        throw new Error(discordUserJson.error ?? "No user id provided");
     }
 
     let username = discordUserJson.username.toLowerCase() as string;
 
+    await mongoPromise;
     const existingUsersWithUsername = await UserModel.find({
         name: {
             $regex: new RegExp(`^${username}`, "i"),
@@ -107,11 +105,7 @@ export const POST = async (req: Request) => {
         },
     );
 
-    const response = createSuccessResponse({
-        user: new UserAPIModel(user, { user }),
-    });
-
-    response.cookies.set({
+    cookies().set({
         name: SESSION_TOKEN,
         value: session.token,
         path: "/",
@@ -123,5 +117,5 @@ export const POST = async (req: Request) => {
         sameSite: "strict",
     });
 
-    return response;
-};
+    return serialize(new UserAPIModel(user, { user }));
+}

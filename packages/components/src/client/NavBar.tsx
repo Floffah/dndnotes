@@ -47,7 +47,7 @@ function NavLink({
     return button;
 }
 
-export function NavBar() {
+export function NavBar({ onLogout }: { onLogout?: () => void }) {
     return (
         <nav className="flex flex-shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/5">
             <NavLink icon="mdi:home" link="/home">
@@ -65,16 +65,11 @@ export function NavBar() {
             <NavLink icon="mdi:book" link="/docs">
                 Docs
             </NavLink>
-            <NavLink
-                icon="mdi:logout"
-                onClick={async () => {
-                    await fetch("/api/logout");
-
-                    window.location.href = "/";
-                }}
-            >
-                Logout
-            </NavLink>
+            {onLogout && (
+                <NavLink icon="mdi:logout" onClick={onLogout}>
+                    Logout
+                </NavLink>
+            )}
         </nav>
     );
 }

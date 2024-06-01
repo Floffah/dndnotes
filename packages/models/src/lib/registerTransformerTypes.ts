@@ -26,7 +26,4 @@ export function registerTransformerTypes() {
         identifier: "FriendshipRequest",
     });
     registerClass(UserAPIModel, { identifier: "User" });
-
-    // external
-    // registerClass(ServerError, { identifier: "ServerError" });
 }

@@ -6,12 +6,26 @@
       "persistent": true
     },
     "build": {
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "dependsOn": ["^build", "lint"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**"
+      ],
+      "dependsOn": [
+        "^build",
+        "lint"
+      ]
     },
-    "lint": {},
+    "lint": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
     "test": {
-        "dependsOn": ["lint", "build"]
+      "dependsOn": [
+        "lint",
+        "build"
+      ]
     },
     "dev:env": {
       "cache": false,
@@ -22,8 +36,12 @@
       "persistent": false
     },
     "build:docs": {
-        "outputs": ["docs/.vuepress/dist/**"],
-        "dependsOn": ["^build"]
+      "outputs": [
+        "docs/.vuepress/dist/**"
+      ],
+      "dependsOn": [
+        "^build"
+      ]
     }
   }
 }

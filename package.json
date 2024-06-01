@@ -24,7 +24,8 @@
     "npm-check-updates": "^16.14.20",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "turbo": "^1.13.3"
+    "turbo": "^1.13.3",
+    "turbo-ignore": "^1.13.3"
   },
   "packageManager": "bun@1.10.0"
 }

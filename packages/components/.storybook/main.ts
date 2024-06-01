@@ -16,15 +16,6 @@ const config: StorybookConfig = {
         docsMode: false,
         defaultName: "Documentation",
     },
-    refs: (config, { configType }) => ({
-        srpc: {
-            title: "sRPC",
-            url:
-                configType === "DEVELOPMENT"
-                    ? "http://localhost:6007/"
-                    : "https://srpc.dndnotes.app",
-        },
-    }),
 };
 
 export default config;

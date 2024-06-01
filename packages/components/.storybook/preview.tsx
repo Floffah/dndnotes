@@ -20,16 +20,6 @@ const preview: Preview = {
         },
         docs: {
             toc: true,
-            page: () => (
-                <>
-                    <Title />
-                    <Subtitle />
-                    <Description />
-                    <Primary />
-                    <ArgTypes />
-                    <Stories />
-                </>
-            ),
         },
     },
     tags: ["autodocs"],

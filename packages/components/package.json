@@ -28,7 +28,7 @@
     "build": "tsup --minify",
     "dev": "tsup --watch",
     "dev:docs": "storybook dev -p 6006 --no-open",
-    "build:docs": "yarn build-storybook",
+    "build:docs": "bun run build-storybook",
     "build-storybook": "storybook build"
   },
   "dependencies": {

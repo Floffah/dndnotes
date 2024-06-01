@@ -6,8 +6,7 @@ import Link from "next/link";
 import { memo, useMemo } from "react";
 
 import { Button, Card, Loader } from "@dndnotes/components";
-import { Campaign } from "@dndnotes/models";
-import { CampaignFilter } from "@dndnotes/server";
+import { Campaign, CampaignFilter } from "@dndnotes/models";
 
 import { api } from "@/app/lib/api";
 

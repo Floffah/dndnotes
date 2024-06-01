@@ -3,16 +3,14 @@
 import { addMilliseconds } from "date-fns";
 import { PropsWithChildren, createContext, useContext } from "react";
 
-import { InputTypes } from "@dndnotes/backend-framework";
 import {
     Campaign,
     CampaignMember,
     CampaignSession,
     CampaignSessionSchedule,
 } from "@dndnotes/models";
-import { AppRouter } from "@dndnotes/server";
 
-import { api } from "@/app/lib/api";
+import { TRPCInputTypes, api } from "@/app/lib/api";
 import { serializableClone } from "@/app/lib/serializableClone";
 import { useUser } from "@/app/providers/UserProvider";
 
@@ -24,14 +22,14 @@ export interface CampaignContextValue extends Campaign {
     schedules: CampaignSessionSchedule[];
 
     startSession: (
-        data: InputTypes<AppRouter>["campaign"]["session"]["start"],
+        data: TRPCInputTypes["campaign"]["session"]["start"],
     ) => Promise<void>;
     update: (id: string, data: Partial<Campaign>) => Promise<void>;
     createSchedule: (
-        data: InputTypes<AppRouter>["campaign"]["session"]["createSchedule"],
+        data: TRPCInputTypes["campaign"]["session"]["createSchedule"],
     ) => Promise<void>;
     deleteSchedule: (
-        data: InputTypes<AppRouter>["campaign"]["session"]["deleteSchedule"],
+        data: TRPCInputTypes["campaign"]["session"]["deleteSchedule"],
     ) => Promise<void>;
 }
 
@@ -43,7 +41,7 @@ export function CampaignProvider({
     campaignId,
     children,
 }: PropsWithChildren<{ campaignId: string }>) {
-    const cache = api.useCache();
+    const cache = api.useUtils();
     const user = useUser();
 
     const campaign = api.campaign.get.useQuery(campaignId);

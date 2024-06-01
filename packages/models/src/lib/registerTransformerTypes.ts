@@ -1,7 +1,5 @@
 import { registerClass } from "superjson";
 
-import { ServerError } from "@dndnotes/backend-framework";
-
 import { CampaignAPIModel } from "@/consumers/CampaignAPIModel";
 import { CampaignInviteAPIModel } from "@/consumers/CampaignInviteAPIModel";
 import { CampaignMemberAPIModel } from "@/consumers/CampaignMemberAPIModel";
@@ -30,5 +28,5 @@ export function registerTransformerTypes() {
     registerClass(UserAPIModel, { identifier: "User" });
 
     // external
-    registerClass(ServerError, { identifier: "ServerError" });
+    // registerClass(ServerError, { identifier: "ServerError" });
 }

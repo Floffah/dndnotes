@@ -15,6 +15,10 @@ const nextConfig = {
         esmExternals: "loose", // <-- add this
         serverComponentsExternalPackages: ["mongoose"], // <-- and this
     },
+    typescript: {
+        // part of lint step, next ignores tsconfig references and breaks trpc
+        ignoreBuildErrors: true,
+    },
     pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
     webpack: (config) => {
         if (!config.resolve) {

@@ -10,7 +10,7 @@ import {
     Loader,
     useDialogs,
 } from "@dndnotes/components";
-import { CampaignFilter } from "@dndnotes/server";
+import { CampaignFilter } from "@dndnotes/models";
 
 import { api } from "@/lib/api";
 import { useDiscord } from "@/providers/DiscordProvider";

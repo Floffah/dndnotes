@@ -3,9 +3,9 @@ import cryptoRandomString from "crypto-random-string";
 import { RESTGetAPICurrentUserResult, Routes } from "discord-api-types/v10";
 import { NextResponse } from "next/server";
 
+import { UserModel, UserSessionModel } from "@dndnotes/api";
 import { SESSION_TOKEN } from "@dndnotes/lib";
 import { UserSessionType } from "@dndnotes/models";
-import { UserModel, UserSessionModel } from "@dndnotes/server/appRouter";
 
 import { createErrorResponse } from "@/lib/apiResponse";
 

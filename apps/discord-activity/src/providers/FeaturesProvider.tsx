@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, createContext, useContext } from "react";
 
-import { DiscordActivityFeatureFlags } from "@dndnotes/server";
+import { DiscordActivityFeatureFlags } from "@dndnotes/models";
 
 import { api } from "@/lib/api";
 

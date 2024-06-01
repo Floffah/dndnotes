@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 20",
+  "_version": "20.1.0",
+
+  "compilerOptions": {
+    "lib": ["es2018", "dom"],
+    "module": "commonjs",
+    "target": "es2018",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "baseUrl": ".",
+    "rootDir": "src",
+
+    "outDir": "dist",
+    "declaration": true,
+
+    "composite": true
+  },
+  "include": ["src"],
+}

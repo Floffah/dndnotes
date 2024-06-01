@@ -4,6 +4,8 @@ export * from "./CampaignMemberError";
 export * from "./CampaignSessionError";
 export * from "./CampaignSessionScheduleError";
 export * from "./CharacterError";
+export * from "./DiscordGuildError";
 export * from "./FriendshipRequestError";
+export * from "./NotionError";
 export * from "./UserError";
 export * from "./UserSessionError";

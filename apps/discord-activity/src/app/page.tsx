@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { Button, Loader } from "@dndnotes/components";
-import { DiscordActivityFeatureFlags } from "@dndnotes/server";
+import { DiscordActivityFeatureFlags } from "@dndnotes/models";
 
 import { LinkCampaignDialog } from "@/app/LinkCampaignDialog";
 import { useDiscord } from "@/providers/DiscordProvider";

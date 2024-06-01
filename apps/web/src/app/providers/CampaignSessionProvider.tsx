@@ -2,18 +2,16 @@
 
 import { PropsWithChildren, createContext, useContext } from "react";
 
-import { InputTypes } from "@dndnotes/backend-framework";
 import { CampaignSession } from "@dndnotes/models";
-import { AppRouter } from "@dndnotes/server";
 
-import { api } from "@/app/lib/api";
+import { TRPCInputTypes, api } from "@/app/lib/api";
 import defaultSessionDocument from "@/data/defaultSessionDocument.json";
 
 export interface CampaignSessionContextValue extends CampaignSession {
     loading: boolean;
 
     updateSummary: (
-        data: InputTypes<AppRouter>["campaign"]["session"]["updateSummary"],
+        data: TRPCInputTypes["campaign"]["session"]["updateSummary"],
     ) => Promise<void>;
     initEmptySummary: (opts?: {
         campaignId: string;
@@ -34,7 +32,7 @@ export function CampaignSessionProvider({
     campaignId: string;
     sessionId: string;
 }>) {
-    const cache = api.useCache();
+    const cache = api.useUtils();
 
     const session = api.campaign.session.get.useQuery({
         campaignId,

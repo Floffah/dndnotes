@@ -1,10 +1,13 @@
-import { createFetchHandler } from "@dndnotes/backend-framework/server";
-import { appRouter, createContext } from "@dndnotes/server/appRouter";
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-const handler = createFetchHandler({
-    appRouter,
-    createContext,
-    prefix: "/api",
-});
+import { appRouter, createTRPCContext } from "@dndnotes/api";
+
+const handler = (req: Request) =>
+    fetchRequestHandler({
+        endpoint: "/api",
+        req,
+        router: appRouter,
+        createContext: createTRPCContext,
+    });
 
 export { handler as GET, handler as POST };

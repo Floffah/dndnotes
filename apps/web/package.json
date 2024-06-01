@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev",
     "dev:env": "vercel env pull .env",
-    "build": "next build"
+    "build": "next build",
+    "lint": "tsc --noEmit && next lint"
   },
   "engines": {
     "node": "20.x",
@@ -13,7 +14,7 @@
     "@dndnotes/components": "workspace:*",
     "@dndnotes/lib": "workspace:*",
     "@dndnotes/models": "workspace:*",
-    "@dndnotes/server": "workspace:*",
+    "@dndnotes/api": "workspace:*",
     "@dndnotes/tailwind-preset": "workspace:*",
     "@hookform/resolvers": "^3.4.2",
     "@iconify/react": "^4.1.1",
@@ -26,6 +27,10 @@
     "@tiptap/pm": "^2.4.0",
     "@tiptap/react": "^2.4.0",
     "@tiptap/starter-kit": "^2.4.0",
+    "@trpc/client": "^11.0.0-rc.382",
+    "@trpc/next": "^11.0.0-rc.382",
+    "@trpc/react-query": "^11.0.0-rc.382",
+    "@trpc/server": "^11.0.0-rc.382",
     "clsx": "^2.1.1",
     "crypto-random-string": "^5.0.0",
     "date-fns": "^3.6.0",

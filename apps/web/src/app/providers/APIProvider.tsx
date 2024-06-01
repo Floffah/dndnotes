@@ -1,13 +1,10 @@
 "use client";
 
-import { PropsWithChildren } from "react";
-
-import { createClientProvider } from "@dndnotes/backend-framework/client";
+import { DehydratedState } from "@tanstack/query-core";
+import { FunctionComponent, PropsWithChildren } from "react";
 
 import { api } from "@/app/lib/api";
 
-const { ClientProvider } = createClientProvider(api);
-
-export function APIProvider({ children }: PropsWithChildren) {
-    return <ClientProvider>{children}</ClientProvider>;
-}
+export const APIProvider = api.withTRPC(
+    ({ children }: PropsWithChildren) => children,
+) as FunctionComponent<PropsWithChildren<{ state?: DehydratedState }>>;

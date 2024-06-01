@@ -33,7 +33,7 @@ export const useUser = () => useContext(UserContext);
 export function UserProvider({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
 
-    const cache = api.useCache();
+    const cache = api.useUtils();
 
     const userQuery = api.user.me.useQuery();
 

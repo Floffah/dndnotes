@@ -33,13 +33,7 @@
   },
   "references": [
     {
-      "path": "../../packages/server/tsconfig.json"
-    },
-    {
-      "path": "../../packages/backend-framework/tsconfig.json"
-    },
-    {
-      "path": "../../packages/components/tsconfig.json"
+      "path": "../../apps/api/tsconfig.json"
     }
   ],
   "include": [

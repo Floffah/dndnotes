@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "dev:env": "vercel env pull .env",
-    "build": "next build"
+    "build": "next build",
+    "lint": "tsc --noEmit && next lint"
   },
   "engines": {
     "node": "20.x",
@@ -15,7 +16,7 @@
     "@dndnotes/components": "workspace:*",
     "@dndnotes/lib": "workspace:*",
     "@dndnotes/models": "workspace:*",
-    "@dndnotes/server": "workspace:*",
+    "@dndnotes/api": "workspace:*",
     "@dndnotes/tailwind-preset": "workspace:*",
     "@hookform/resolvers": "^3.4.2",
     "@iconify/react": "^4.1.1",

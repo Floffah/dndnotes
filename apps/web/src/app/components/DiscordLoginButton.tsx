@@ -9,7 +9,7 @@ import { authenticateUser } from "@/app/lib/authenticateUser";
 
 export function DiscordLoginButton({ redirectUri }: { redirectUri?: string }) {
     const router = useRouter();
-    const cache = api.useCache();
+    const cache = api.useUtils();
 
     return (
         <button

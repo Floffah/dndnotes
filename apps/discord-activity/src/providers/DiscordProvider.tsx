@@ -11,7 +11,7 @@ import { createContext, useContext, useEffect, useRef } from "react";
 
 import { Loader } from "@dndnotes/components";
 
-import { api } from "@/lib/api";
+import { api, trpcAuthContext } from "@/lib/api";
 
 interface MutableActivity {
     title: string;
@@ -116,10 +116,10 @@ export function DiscordProvider({ children }) {
             const accessToken = res.data.access_token;
             const sessionToken = res.data.session_token;
 
-            api.setHeader("x-session-token", sessionToken);
-            api.setHeader("x-access-token", accessToken);
+            trpcAuthContext.sessionToken = sessionToken;
+            trpcAuthContext.accessToken = accessToken;
             if (sdk.guildId) {
-                api.setHeader("x-guild-id", sdk.guildId);
+                trpcAuthContext.guildId = sdk.guildId;
             }
 
             const auth = await sdk.commands.authenticate({

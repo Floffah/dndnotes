@@ -1,30 +1,25 @@
+import { createServerSideHelpers } from "@trpc/react-query/server";
 import { headers } from "next/headers";
 import { cache } from "react";
 import superjson from "superjson";
 
-import { createCallerClient } from "@dndnotes/backend-framework/server";
-import { appRouter, createContext } from "@dndnotes/server/appRouter";
+import { appRouter, createTRPCContext } from "@dndnotes/api";
+
+import { queryClientConfig } from "@/app/lib/reactQuery";
 
 export const getServerHelpers = cache(async () => {
-    const deferredPromises: Promise<unknown>[] = [];
-
-    const ctx = await createContext({
+    const ctx = await createTRPCContext({
         req: {
             headers: headers(),
         } as Request,
         resHeaders: new Headers(),
-        defer: (fn) => {
-            const promise = fn();
-            deferredPromises.push(promise);
-            return promise;
-        },
+        info: null!,
     });
 
-    await Promise.all(deferredPromises);
-
-    return createCallerClient({
+    return createServerSideHelpers({
         ctx,
         router: appRouter,
         transformer: superjson,
+        queryClientConfig: queryClientConfig,
     });
 });

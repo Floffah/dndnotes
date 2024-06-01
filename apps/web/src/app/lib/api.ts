@@ -1,12 +1,29 @@
+import { httpBatchLink } from "@trpc/client";
+import { createTRPCNext } from "@trpc/next";
+import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
-import { createReactEnvironment } from "@dndnotes/backend-framework/client";
+import { AppRouter } from "@dndnotes/api";
 import { registerTransformerTypes } from "@dndnotes/models";
-import { AppRouter } from "@dndnotes/server";
+
+import { queryClientConfig } from "@/app/lib/reactQuery";
 
 registerTransformerTypes();
 
-export const api = createReactEnvironment<AppRouter>({
-    url: process.env.NEXT_PUBLIC_BASE_URL + "/api",
+export const api = createTRPCNext<AppRouter>({
+    config: () => ({
+        links: [
+            httpBatchLink({
+                url: process.env.NEXT_PUBLIC_BASE_URL + "/api",
+                transformer: superjson,
+            }),
+        ],
+        queryClientConfig,
+    }),
     transformer: superjson,
+    ssr: true,
+    ssrPrepass: () => Promise.resolve(),
 });
+
+export type TRPCInputTypes = inferRouterInputs<AppRouter>;
+export type TRPCOutputTypes = inferRouterOutputs<AppRouter>;

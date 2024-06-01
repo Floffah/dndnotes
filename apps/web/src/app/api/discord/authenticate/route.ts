@@ -1,12 +1,8 @@
 import cryptoRandomString from "crypto-random-string";
 
+import { UserModel, UserSessionModel, mongoConnect } from "@dndnotes/api";
 import { SESSION_TOKEN } from "@dndnotes/lib";
 import { UserAPIModel, UserSessionType } from "@dndnotes/models";
-import {
-    UserModel,
-    UserSessionModel,
-    mongoConnect,
-} from "@dndnotes/server/appRouter";
 
 import {
     createErrorResponse,

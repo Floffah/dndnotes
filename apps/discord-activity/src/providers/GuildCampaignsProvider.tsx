@@ -3,7 +3,7 @@
 import { PropsWithChildren, createContext, useContext } from "react";
 
 import { CampaignAPIModel, CampaignError } from "@dndnotes/models";
-import { CampaignFilter } from "@dndnotes/server";
+import { CampaignFilter } from "@dndnotes/models";
 
 import { api } from "@/lib/api";
 

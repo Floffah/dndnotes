@@ -5,7 +5,7 @@ import { NotionRenderer } from "react-notion-x";
 import "react-notion-x/src/styles.css";
 
 import { Button, Loader } from "@dndnotes/components";
-import { NotionError } from "@dndnotes/server";
+import { NotionError } from "@dndnotes/models";
 
 import { LinkToNotionDialog } from "@/app/(authRoutes)/campaign/[campaignId]/session/[sessionId]/LinkToNotionDialog";
 import { api } from "@/app/lib/api";

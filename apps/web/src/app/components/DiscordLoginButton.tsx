@@ -14,16 +14,16 @@ export function DiscordLoginButton({ redirectUri }: { redirectUri?: string }) {
     return (
         <button
             className="flex items-center gap-2 self-center rounded-md bg-discord-blurple px-3 py-1 outline-0 ring-0"
-            onClick={() => {
-                authenticateUser((user) => {
-                    cache.user.me.setData(undefined, user);
+            onClick={async () => {
+                const user = await authenticateUser();
 
-                    if (redirectUri) {
-                        router.replace(redirectUri);
-                    } else {
-                        router.replace("/home");
-                    }
-                });
+                cache.user.me.setData(undefined, user);
+
+                if (redirectUri) {
+                    router.replace(redirectUri);
+                } else {
+                    router.replace("/home");
+                }
             }}
         >
             <Icon label="discord" icon="ic:baseline-discord" />

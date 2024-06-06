@@ -12,6 +12,7 @@ import { createContext, useContext, useEffect, useRef } from "react";
 import { Loader } from "@dndnotes/components";
 
 import { api, trpcAuthContext } from "@/lib/api";
+import { authenticateDiscord } from "@/actions/authenticateDiscord";
 
 interface MutableActivity {
     title: string;
@@ -95,26 +96,7 @@ export function DiscordProvider({ children }) {
 
             log("Received code from Discord");
 
-            const res = await fetch("/api/authorize", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    code,
-                    guild_id: sdk.guildId,
-                }),
-            }).then((res) => res.json());
-
-            log("Response received for Discord access token");
-
-            if (!res.ok) {
-                log(`Error: ${res.error}`, ConsoleLevel.ERROR);
-                throw new Error(res.error);
-            }
-
-            const accessToken = res.data.access_token;
-            const sessionToken = res.data.session_token;
+            const { accessToken, sessionToken } = await authenticateDiscord(code, sdk.guildId!)
 
             trpcAuthContext.sessionToken = sessionToken;
             trpcAuthContext.accessToken = accessToken;

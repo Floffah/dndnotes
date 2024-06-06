@@ -1,21 +1,17 @@
+"use server";
+
 import { REST } from "@discordjs/rest";
 import cryptoRandomString from "crypto-random-string";
 import { RESTGetAPICurrentUserResult, Routes } from "discord-api-types/v10";
-import { NextResponse } from "next/server";
 
 import { UserModel, UserSessionModel } from "@dndnotes/api";
 import { SESSION_TOKEN } from "@dndnotes/lib";
 import { UserSessionType } from "@dndnotes/models";
+import { cookies } from "next/headers";
 
-import { createErrorResponse } from "@/lib/apiResponse";
-
-export const POST = async (req: Request) => {
-    const body = await req.json();
-    const code = body.code;
-    const guild_id = body.guild_id;
-
+export async function authenticateDiscord(code: string, guild_id: string) {
     if (!code || !guild_id) {
-        return createErrorResponse("Invalid payload");
+        throw new Error("Invalid payload");
     }
 
     const codeExchangeResponse = await fetch(
@@ -35,7 +31,7 @@ export const POST = async (req: Request) => {
     ).then((res) => res.json());
 
     if (codeExchangeResponse.error || !codeExchangeResponse.access_token) {
-        return createErrorResponse(
+        throw new Error(
             codeExchangeResponse.error ?? "No access token provided",
         );
     }
@@ -52,13 +48,13 @@ export const POST = async (req: Request) => {
             Routes.user("@me"),
         )) as RESTGetAPICurrentUserResult;
     } catch (e) {
-        return createErrorResponse("Invalid access token");
+        throw new Error("Invalid access token");
     }
 
     try {
         await discord.get(Routes.userGuildMember(guild_id));
     } catch (e) {
-        return createErrorResponse("Invalid guild id");
+        throw new Error("Invalid guild id");
     }
 
     let username = userResponse.username.toLowerCase() as string;
@@ -98,14 +94,7 @@ export const POST = async (req: Request) => {
         },
     );
 
-    const response = new NextResponse(
-        JSON.stringify({
-            ok: true,
-            data: { access_token: accessToken, session_token: session.token },
-        }),
-    );
-
-    response.cookies.set({
+    cookies().set({
         name: SESSION_TOKEN,
         value: session.token,
         path: "/",
@@ -117,5 +106,8 @@ export const POST = async (req: Request) => {
         sameSite: "strict",
     });
 
-    return response;
+    return {
+        accessToken,
+        sessionToken: session.token
+    }
 };

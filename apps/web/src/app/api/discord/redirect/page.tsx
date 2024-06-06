@@ -1,12 +1,14 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { deserialize } from "superjson";
+import { deserialize, stringify } from "superjson";
+
+import { Loader } from "@dndnotes/components";
 
 import { authenticateDiscord } from "@/app/api/discord/redirect/action";
 
-// not bad practice, react encourages it for this kind of thing here :) https://react.dev/learn/you-might-not-need-an-effect
-let didAuthenticate = false;
 export default function DiscordRedirectPage({
     searchParams: { code },
 }: {
@@ -16,28 +18,56 @@ export default function DiscordRedirectPage({
         error_description?: string;
     };
 }) {
-    useEffect(() => {
-        if (!didAuthenticate) {
-            didAuthenticate = true;
+    const router = useRouter();
 
-            if (code) {
-                const onReady = async () => {
-                    const user = deserialize(await authenticateDiscord(code));
+    const { isLoading, isError, error, data } = useQuery({
+        queryKey: ["authenticate", "discord", code],
 
-                    window.opener.callback(user);
-                    window.close();
-                };
+        retry: false,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
 
-                if (document.readyState === "loading") {
-                    document.addEventListener("DOMContentLoaded", onReady);
-                } else {
-                    onReady();
-                }
-            } else {
-                window.close();
-            }
-        }
+        enabled: !!code,
+
+        queryFn: async () => deserialize(await authenticateDiscord(code!)),
     });
 
-    return null;
+    useEffect(() => {
+        if (typeof window === "undefined") {
+            return;
+        }
+
+        if (typeof window.opener === "undefined") {
+            router.replace("/");
+            return;
+        }
+
+        if (isError) {
+            window.opener.callback(stringify(error));
+            window.close();
+        } else if (!isLoading) {
+            window.opener.callback(stringify(data));
+            window.close();
+        }
+    }, [isLoading, isError]);
+
+    return (
+        <div className="fixed inset-0 flex h-screen w-screen items-center justify-center">
+            {isLoading && (
+                <div className="flex items-center gap-2">
+                    <Loader />
+                    <span className="text-sm font-semibold text-white/75">
+                        Authenticating...
+                    </span>
+                </div>
+            )}
+
+            {isError && (
+                <p className="text-sm font-semibold text-red-500/75">
+                    An error occurred. Redirecting...
+                </p>
+            )}
+        </div>
+    );
 }

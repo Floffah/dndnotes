@@ -28,5 +28,8 @@
     "turbo": "^2.0.1",
     "turbo-ignore": "^2.0.1"
   },
-  "packageManager": "bun@1.1.10"
+  "packageManager": "bun@1.1.10",
+  "trustedDependencies": [
+    "@vercel/speed-insights"
+  ]
 }

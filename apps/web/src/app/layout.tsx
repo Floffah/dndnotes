@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Nunito } from "next/font/google";
 
 import { DialogProvider } from "@dndnotes/components";
@@ -20,6 +22,9 @@ export default function RootLayout({ children }) {
                 <APIProvider>
                     <DialogProvider>{children}</DialogProvider>
                 </APIProvider>
+
+                <SpeedInsights />
+                <Analytics />
             </body>
         </html>
     );

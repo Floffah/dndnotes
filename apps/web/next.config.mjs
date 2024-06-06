@@ -12,8 +12,8 @@ const withMDX = createMDX({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     experimental: {
-        esmExternals: "loose", // <-- add this
-        serverComponentsExternalPackages: ["mongoose"], // <-- and this
+        esmExternals: "loose",
+        serverComponentsExternalPackages: ["mongoose"],
     },
     typescript: {
         // part of lint step, next ignores tsconfig references and breaks trpc

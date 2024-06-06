@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "dev": {
       "cache": false,
       "persistent": true
@@ -37,7 +37,7 @@
     },
     "build:docs": {
       "outputs": [
-        "docs/.vuepress/dist/**"
+        "storybook-static"
       ],
       "dependsOn": [
         "^build"

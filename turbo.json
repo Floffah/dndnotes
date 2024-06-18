@@ -23,25 +23,12 @@
     },
     "test": {
       "dependsOn": [
-        "lint",
         "build"
       ]
     },
-    "dev:env": {
+    "setup": {
       "cache": false,
       "persistent": false
-    },
-    "dev:docs": {
-      "cache": false,
-      "persistent": false
-    },
-    "build:docs": {
-      "outputs": [
-        "storybook-static"
-      ],
-      "dependsOn": [
-        "^build"
-      ]
     }
   }
 }

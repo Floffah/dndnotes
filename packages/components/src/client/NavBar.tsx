@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { EventHandler, MouseEvent, useEffect, useState } from "react";
 
-import { Icon } from "@/client/Icon";
+import { LegacyIcon } from "@/client/LegacyIcon";
 
 function NavLink({
     icon,
@@ -29,7 +29,7 @@ function NavLink({
             )}
             onClick={onClick}
         >
-            <Icon label={children} icon={icon} /> {children}
+            <LegacyIcon label={children} icon={icon} /> {children}
         </button>
     );
 

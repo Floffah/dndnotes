@@ -10,7 +10,7 @@ import {
     useState,
 } from "react";
 
-import { Icon } from "@/client/Icon";
+import { LegacyIcon } from "@/client/LegacyIcon";
 
 export const SelectButton = forwardRef<
     HTMLButtonElement,
@@ -30,7 +30,7 @@ export const SelectButton = forwardRef<
             </p>
 
             <RUISelect.Icon>
-                <Icon
+                <LegacyIcon
                     label="select dropdown"
                     icon="ic:baseline-keyboard-arrow-down"
                     className="h-5 w-5"
@@ -55,13 +55,13 @@ export const SelectPanel = forwardRef<
                 ref={ref}
                 className={clsx(
                     className,
-                    "w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg border border-gray-700 bg-gray-800 p-0.75",
+                    "p-0.75 w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg border border-gray-700 bg-gray-800",
                 )}
                 position="popper"
                 sideOffset={5}
                 {...props}
             >
-                <RUISelect.Viewport className="flex flex-col gap-0.75">
+                <RUISelect.Viewport className="gap-0.75 flex flex-col">
                     {children}
                 </RUISelect.Viewport>
             </RUISelect.Content>

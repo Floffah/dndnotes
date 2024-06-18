@@ -6,30 +6,25 @@
     "packages/*"
   ],
   "scripts": {
-    "deps": "ncu -ws --root --reject eslint",
+    "deps": "ncu -ws --root -x eslint",
     "build": "turbo run build",
     "start": "turbo run start",
     "dev": "turbo run dev",
-    "dev:docs": "turbo run dev:docs",
-    "build:docs": "turbo run build:docs",
-    "env": "turbo run dev:env",
-    "test": "turbo run test",
-    "tunnel:discord": "sudo cloudflared tunnel run --url http://localhost:3001 discord-activity",
-    "tunnel:web": "sudo cloudflared tunnel run --url http://localhost:3000 dndnotes-web",
-    "tunnel": "concurrently \"yarn tunnel:discord\" \"yarn tunnel:web\""
+    "setup": "turbo run setup",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "concurrently": "^8.2.2",
-    "isomorphic-git": "^1.25.10",
     "npm-check-updates": "^16.14.20",
-    "prettier": "^3.3.1",
-    "prettier-plugin-tailwindcss": "^0.6.1",
-    "turbo": "^2.0.1",
-    "turbo-ignore": "^2.0.1"
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "turbo": "^2.0.4",
+    "turbo-ignore": "^2.0.4"
   },
-  "packageManager": "bun@1.1.10",
+  "packageManager": "bun@1.1.13",
   "trustedDependencies": [
-    "@vercel/speed-insights"
+    "@swc/core",
+    "@vercel/speed-insights",
+    "esbuild"
   ]
 }

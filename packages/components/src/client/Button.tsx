@@ -13,7 +13,7 @@ import {
     useState,
 } from "react";
 
-import { Icon } from "@/client/Icon";
+import { LegacyIcon } from "@/client/LegacyIcon";
 import { Loader } from "@/client/Loader";
 
 export interface ButtonProps extends ComponentProps<"button"> {
@@ -80,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 {icon &&
                     !loading &&
                     (typeof icon === "string" ? (
-                        <Icon
+                        <LegacyIcon
                             className={clsx({
                                 "opacity-60": disabled,
 

@@ -4,8 +4,8 @@ import * as Popover from "@radix-ui/react-popover";
 import clsx from "clsx";
 import { ComponentProps, forwardRef, useEffect, useRef, useState } from "react";
 
-import { Icon } from "@/client/Icon";
 import { Input } from "@/client/Input";
+import { LegacyIcon } from "@/client/LegacyIcon";
 
 export interface DateInputProps
     extends Omit<ComponentProps<typeof Input>, "value" | "children" | "ref"> {
@@ -147,7 +147,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
 
                         <div className="relative flex w-full flex-col">
                             <button
-                                className="fixed right-2.25 top-2.25 items-center rounded bg-white/10 px-1 py-0.5 text-xs"
+                                className="right-2.25 top-2.25 fixed items-center rounded bg-white/10 px-1 py-0.5 text-xs"
                                 onClick={() => {
                                     setValue(new Date());
                                 }}
@@ -175,7 +175,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                         setValue(newValue);
                                     }}
                                 >
-                                    <Icon
+                                    <LegacyIcon
                                         label="subtract year"
                                         icon="mdi:minus"
                                     />
@@ -200,7 +200,10 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                         setValue(newValue);
                                     }}
                                 >
-                                    <Icon label="add year" icon="mdi:plus" />
+                                    <LegacyIcon
+                                        label="add year"
+                                        icon="mdi:plus"
+                                    />
                                 </button>
                             </div>
 
@@ -222,7 +225,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                         );
                                     }}
                                 >
-                                    <Icon
+                                    <LegacyIcon
                                         label="scroll left"
                                         icon="mdi:chevron-left"
                                         className="h-5 w-5"
@@ -282,7 +285,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
                                         );
                                     }}
                                 >
-                                    <Icon
+                                    <LegacyIcon
                                         label="scroll right"
                                         icon="mdi:chevron-right"
                                         className="h-5 w-5"

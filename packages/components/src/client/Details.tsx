@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ComponentProps, forwardRef } from "react";
 
-import { Icon } from "@/client/Icon";
+import { LegacyIcon } from "@/client/LegacyIcon";
 
 export interface DetailsItemProps extends Omit<ComponentProps<"div">, "ref"> {
     icon: string;
@@ -18,7 +18,7 @@ const Item = forwardRef<HTMLDivElement, DetailsItemProps>(
             )}
             {...props}
         >
-            <Icon
+            <LegacyIcon
                 className="flex-shrink-0"
                 icon={icon}
                 label={label ?? icon.split(":")[1]}

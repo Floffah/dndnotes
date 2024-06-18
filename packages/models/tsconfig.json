@@ -1,21 +1,23 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 22",
+  "_version": "22.0.0",
+
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
+    "lib": ["es2023"],
+    "module": "node16",
+    "target": "es2022",
+
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowJs": true,
-    "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "moduleResolution": "node16",
+
     "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
       ]
     }
-  },
-  "$schema": "https://json.schemastore.org/tsconfig",
+  }
 }

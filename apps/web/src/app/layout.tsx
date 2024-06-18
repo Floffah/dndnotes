@@ -5,8 +5,8 @@ import { Nunito } from "next/font/google";
 import { DialogProvider } from "@dndnotes/components";
 
 import "@/app/globals.css";
-import { populateMetadata } from "@/app/lib/populateMetadata";
-import { APIProvider } from "@/app/providers/APIProvider";
+import { populateMetadata } from "@/lib/populateMetadata";
+import { APIProvider } from "@/providers/APIProvider";
 
 export const metadata = populateMetadata({
     title: "Floffah's DND Notes",

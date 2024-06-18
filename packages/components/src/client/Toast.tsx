@@ -5,7 +5,7 @@ import { animated, useTransition } from "@react-spring/web";
 import { useLayoutEffect, useState } from "react";
 
 import { Button, ButtonProps } from "@/client/Button";
-import { Icon } from "@/client/Icon";
+import { LegacyIcon } from "@/client/LegacyIcon";
 
 export interface ToastProps {
     open: boolean;
@@ -106,7 +106,7 @@ export function Toast({
 
                         {closable && (
                             <RUIToast.Close asChild>
-                                <Icon
+                                <LegacyIcon
                                     label="close toast"
                                     icon="mdi:close"
                                     className="h-5 w-5 text-white/50 transition-transform duration-150 hover:scale-110 hover:text-white"

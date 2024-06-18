@@ -1,4 +1,5 @@
 import { Options, defineConfig } from "tsup";
+import Icons from "unplugin-icons/esbuild";
 
 const commonOptions: Options = {
     target: ["chrome90", "firefox88", "safari14", "edge90", "node18"],
@@ -7,6 +8,7 @@ const commonOptions: Options = {
     dts: true,
     clean: false,
     sourcemap: true,
+    plugins: [Icons({})],
 };
 
 export default defineConfig([

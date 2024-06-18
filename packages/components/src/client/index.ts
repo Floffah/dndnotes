@@ -6,7 +6,7 @@ export * from "./Details";
 export * from "./Dialog";
 export * from "./Divider";
 export * from "./Form";
-export * from "./Icon";
+export * from "./LegacyIcon";
 export * from "./Link";
 export * from "./Loader";
 export * from "./NavBar";

@@ -8,5 +8,5 @@ module.exports = {
         ],
     },
 
-    presets: [require("@dndnotes/tailwind-preset")],
+    // presets: [require("@dndnotes/tailwind-preset")],
 };

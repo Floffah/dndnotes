@@ -32,6 +32,8 @@ export const authenticationRouter = router({
                             .NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
                         client_secret: process.env
                             .DISCORD_CLIENT_SECRET as string,
+                        redirect_uri: process.env
+                            .NEXT_PUBLIC_DISCORD_REDIRECT_URI as string,
                     }),
                 },
             ).then((res) => res.json());
@@ -43,7 +45,7 @@ export const authenticationRouter = router({
                 throw new TRPCError({
                     code: "BAD_REQUEST",
                     message:
-                        codeExchangeResponse.error ??
+                        codeExchangeResponse.error_description ??
                         "No access token provided",
                 });
             }
@@ -62,7 +64,8 @@ export const authenticationRouter = router({
             if (discordUser.error || !discordUser.id) {
                 throw new TRPCError({
                     code: "INTERNAL_SERVER_ERROR",
-                    message: discordUser.error ?? "No user id provided",
+                    message:
+                        discordUser.error_description ?? "No user id provided",
                 });
             }
 
@@ -119,6 +122,12 @@ export const authenticationRouter = router({
             });
 
             const reqURL = new URL(opts.ctx.req.url);
+
+            console.log(
+                reqURL.hostname === "localhost" ||
+                    reqURL.hostname.endsWith("dndnotes.app"),
+                reqURL.hostname,
+            );
 
             if (
                 reqURL.hostname === "localhost" ||

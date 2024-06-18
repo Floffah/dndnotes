@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { stringify } from "superjson";
 
 import { Loader } from "@dndnotes/components";
@@ -17,14 +17,20 @@ export default function DiscordRedirectPage({
 }) {
     const router = useRouter();
 
-    const { isPending, isError, error, data, mutate } =
-        api.authentication.loginWithDiscord.useMutation();
+    const authSentRef = useRef(false);
 
-    useEffect(() => {
-        if (!isPending && !isError && !data && code) {
-            mutate({ code });
-        }
-    }, [code, data, isError, isPending, mutate]);
+    const { isSuccess, isPending, isError, error, data, mutate } =
+        api.authentication.loginWithDiscord.useMutation({
+            onSettled: (user, error) => {
+                if (error) {
+                    window.opener.callback(stringify(error));
+                } else if (user) {
+                    window.opener.callback(stringify(user));
+                }
+
+                window.close();
+            },
+        });
 
     useEffect(() => {
         if (typeof window.opener === "undefined") {
@@ -37,26 +43,18 @@ export default function DiscordRedirectPage({
                 stringify(new Error(callbackErrorDescription)),
             );
             window.close();
-        } else if (isError) {
-            window.opener.callback(stringify(error));
-            window.close();
-        } else if (!isPending) {
-            window.opener.callback(stringify(data));
-            window.close();
+            return;
         }
-    }, [
-        isPending,
-        isError,
-        router,
-        error,
-        data,
-        callbackError,
-        callbackErrorDescription,
-    ]);
+
+        if (!authSentRef.current && code) {
+            authSentRef.current = true;
+            mutate({ code });
+        }
+    }, [callbackError, callbackErrorDescription, code, mutate, router]);
 
     return (
         <div className="fixed inset-0 flex h-screen w-screen items-center justify-center">
-            {isPending && (
+            {!data && !isError && (
                 <div className="flex items-center gap-2">
                     <Loader />
                     <span className="text-sm font-semibold text-white/75">

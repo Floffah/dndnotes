@@ -30,6 +30,9 @@
       ]
     },
     "incremental": false,
+    "types": [
+      "unplugin-icons/types/react",
+    ]
   },
   "references": [
     {

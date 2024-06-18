@@ -1,5 +1,6 @@
 import remarkGfm from "remark-gfm";
 import createMDX from "@next/mdx"
+import Icons from 'unplugin-icons/webpack'
 
 const withMDX = createMDX({
     options: {
@@ -11,6 +12,7 @@ const withMDX = createMDX({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    reactStrictMode: true,
     experimental: {
         esmExternals: "loose",
         serverComponentsExternalPackages: ["mongoose"],
@@ -30,6 +32,13 @@ const nextConfig = {
         }
 
         config.resolve.alias.hexoid = 'hexoid/dist/index.js'
+
+        config.plugins.push(
+            Icons({
+                compiler: 'jsx',
+                jsx: 'react'
+            })
+        )
 
         return config
     }

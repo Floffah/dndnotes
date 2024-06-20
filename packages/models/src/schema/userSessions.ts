@@ -15,6 +15,7 @@ export const userSessions = mysqlTable(
         userId: int("user_id").notNull(),
         token: varchar("token", { length: 256 }).notNull(),
         expiresAt: datetime("expires_at").notNull(),
+        lastUsedAt: datetime("last_used_at"),
     },
     (userSessions) => {
         return {

@@ -3,7 +3,7 @@ import { parse } from "cookie";
 import { eq } from "drizzle-orm";
 
 import { SESSION_TOKEN } from "@dndnotes/lib";
-import { db, users } from "@dndnotes/models";
+import { db, userSessions, users } from "@dndnotes/models";
 
 export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
     if (
@@ -48,6 +48,12 @@ export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
             lastActiveAt: new Date(),
         })
         .where(eq(users.id, session.userId));
+
+    db.update(userSessions)
+        .set({
+            lastUsedAt: new Date(),
+        })
+        .where(eq(userSessions.id, session.id));
 
     if (opts.req.headers.has("x-access-token")) {
         // TODO: implement Discord activity token validation

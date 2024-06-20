@@ -1,8 +1,9 @@
 import { TRPCError } from "@trpc/server";
 import { serialize } from "cookie";
 import cryptoRandomString from "crypto-random-string";
+import { addDays } from "date-fns";
 import { addMonths } from "date-fns/addMonths";
-import { and, eq, like } from "drizzle-orm";
+import { and, eq, inArray, like } from "drizzle-orm";
 import { z } from "zod";
 
 import { SESSION_TOKEN } from "@dndnotes/lib";
@@ -107,6 +108,26 @@ export const authenticationRouter = router({
                 user = await db.query.users.findFirst({
                     where: (users) => eq(users.id, userProvider.userId),
                 });
+
+                const previousSessions = await db.query.userSessions.findMany({
+                    where: (sessions) => eq(sessions.userId, user!.id),
+                });
+
+                let idsToDelete: number[] = [];
+
+                for (const session of previousSessions) {
+                    if (
+                        session.expiresAt < new Date() ||
+                        !session.lastUsedAt ||
+                        session.lastUsedAt < addDays(new Date(), -7)
+                    ) {
+                        idsToDelete.push(session.id);
+                    }
+                }
+
+                await db
+                    .delete(userSessions)
+                    .where(inArray(userSessions.id, idsToDelete));
             }
 
             const token = cryptoRandomString({ length: 64 });
@@ -122,12 +143,6 @@ export const authenticationRouter = router({
             });
 
             const reqURL = new URL(opts.ctx.req.url);
-
-            console.log(
-                reqURL.hostname === "localhost" ||
-                    reqURL.hostname.endsWith("dndnotes.app"),
-                reqURL.hostname,
-            );
 
             if (
                 reqURL.hostname === "localhost" ||

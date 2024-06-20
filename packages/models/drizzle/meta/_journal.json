@@ -29,6 +29,13 @@
       "when": 1718710638616,
       "tag": "0003_dapper_black_cat",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1718902335703,
+      "tag": "0004_fast_nighthawk",
+      "breakpoints": true
     }
   ]
 }

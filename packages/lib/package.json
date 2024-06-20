@@ -19,7 +19,7 @@
     "@tiptap/starter-kit": "^2.4.0"
   },
   "devDependencies": {
-    "bun-types": "^1.1.13",
+    "bun-types": "^1.1.15",
     "tsup": "^8.1.0",
     "typescript": "^5.4.5"
   }

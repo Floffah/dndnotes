@@ -19,7 +19,7 @@ export default function DiscordRedirectPage({
 
     const authSentRef = useRef(false);
 
-    const { isSuccess, isPending, isError, error, data, mutate } =
+    const { isError, data, mutate } =
         api.authentication.loginWithDiscord.useMutation({
             onSettled: (user, error) => {
                 if (error) {

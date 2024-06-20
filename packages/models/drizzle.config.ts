@@ -6,9 +6,9 @@ export default defineConfig({
     dialect: "mysql",
     verbose: true,
     dbCredentials: {
-        host: process.env.DATABASE_HOST!,
-        user: process.env.DATABASE_USERNAME!,
-        password: process.env.DATABASE_PASSWORD!,
-        database: "dndnotes",
+        host: process.env.PLANETSCALE_DB_HOST!,
+        user: process.env.PLANETSCALE_DB_USERNAME!,
+        password: process.env.PLANETSCALE_DB_PASSWORD!,
+        database: process.env.PLANETSCALE_DB!,
     },
 });

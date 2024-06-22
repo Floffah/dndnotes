@@ -3,7 +3,6 @@ import {
     datetime,
     mysqlTable,
     serial,
-    timestamp,
     uniqueIndex,
     varchar,
 } from "drizzle-orm/mysql-core";
@@ -15,8 +14,8 @@ export const users = mysqlTable(
         name: varchar("name", { length: 256 }).notNull(),
         email: varchar("email", { length: 320 }),
         createdAt: datetime("created_at")
-            .default(sql`now()`)
-            .notNull(),
+            .notNull()
+            .default(sql`now()`),
         lastActiveAt: datetime("last_active_at").default(sql`now()`),
     },
     (users) => {

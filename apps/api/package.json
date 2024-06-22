@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "dev": "concurrently \"tsup --watch\" \"tsc -w --emitDeclarationOnly\" \"tsc-alias -w\"",
+    "dev": "concurrently \"tsup --watch\" \"tsc -w --pretty --preserveWatchOutput --emitDeclarationOnly\" \"tsc-alias -w\"",
     "build": "tsup && tsc -b --emitDeclarationOnly && tsc-alias",
     "test": "bun test"
   },

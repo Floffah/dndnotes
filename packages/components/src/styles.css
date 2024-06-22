@@ -3,13 +3,7 @@
 @tailwind utilities;
 
 html {
-    @apply bg-gray-700 text-white;
-}
-
-@layer base {
-    :root {
-        --indicate-color: theme("colors.white/50");
-    }
+    @apply bg-gray-800 text-white;
 }
 
 @layer utilities {
@@ -32,14 +26,6 @@ html {
         }
         100% {
             opacity: 0;
-        }
-    }
-
-    .indicate-action {
-        @apply relative after:absolute after:bottom-0 after:left-0 after:mb-1 after:w-3 after:border-b after:border-dashed;
-
-        &::after {
-            border-color: var(--indicate-color);
         }
     }
 }

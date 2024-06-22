@@ -17,7 +17,6 @@ import { useUser } from "@/state/user";
 export function LoginWithDiscordButton() {
     const trpcUtils = api.useUtils();
     const router = useRouter();
-    const params = useSearchParams();
 
     const user = useUser();
 
@@ -43,8 +42,10 @@ export function LoginWithDiscordButton() {
     }, [router]);
 
     useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search);
+
         if (
-            params.has("forceLogin") &&
+            searchParams.has("forceLogin") &&
             !user.isLoading &&
             !user.isAuthenticated &&
             !triedForceLoginRef.current
@@ -52,7 +53,7 @@ export function LoginWithDiscordButton() {
             triedForceLoginRef.current = true;
             authenticateMutation.mutate();
         }
-    }, [authenticateMutation, params, user.isAuthenticated, user.isLoading]);
+    }, [authenticateMutation, user.isAuthenticated, user.isLoading]);
 
     useEffect(() => {
         if (!user.isLoading && user.isAuthenticated) {

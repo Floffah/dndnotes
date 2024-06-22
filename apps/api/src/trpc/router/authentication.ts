@@ -83,7 +83,7 @@ export const authenticationRouter = router({
             const userProvider = await db.query.userOAuthProviders.findFirst({
                 where: (providers) =>
                     and(
-                        eq(providers.provider, "discord"),
+                        eq(providers.provider, "DISCORD"),
                         eq(providers.providerUserId, discordUser.id),
                     ),
             });
@@ -100,7 +100,7 @@ export const authenticationRouter = router({
                 });
 
                 await db.insert(userOAuthProviders).values({
-                    provider: "discord",
+                    provider: "DISCORD",
                     providerUserId: discordUser.id,
                     userId: user!.id,
                 });

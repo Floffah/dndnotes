@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { EventHandler, MouseEvent, useEffect, useState } from "react";
+import { EventHandler, MouseEvent } from "react";
 
 import { LegacyIcon } from "@/client/LegacyIcon";
 

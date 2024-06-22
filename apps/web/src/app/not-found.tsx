@@ -1,7 +1,7 @@
 "use client";
 
 import emptyField from "@public/images/emptyField.png";
-import { animated, useSpring, useSpringValue } from "@react-spring/web";
+import { animated, useSpringValue } from "@react-spring/web";
 import Image from "next/image";
 import HomeIcon from "~icons/mdi/home";
 

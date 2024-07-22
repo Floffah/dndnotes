@@ -1,4 +1,5 @@
 import { eq, inArray } from "drizzle-orm";
+import { z } from "zod";
 
 import { db } from "@dndnotes/models";
 
@@ -17,8 +18,16 @@ export const campaignRouter = router({
 
         const campaignIds = campaignMembers.map((member) => member.campaignId);
 
-        return await db.query.campaigns.findMany({
+        return db.query.campaigns.findMany({
             where: (campaigns) => inArray(campaigns.id, campaignIds),
         });
     }),
+
+    create: authedProcedure
+        .input(
+            z.object({
+                name: z.string(),
+            }),
+        )
+        .mutation(async (opts) => {}),
 });

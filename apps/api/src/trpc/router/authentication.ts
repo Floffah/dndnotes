@@ -91,12 +91,13 @@ export const authenticationRouter = router({
             let user;
 
             if (!userProvider) {
-                await db.insert(users).values({
+                const insertedUser = await db.insert(users).values({
                     name: username,
                     email: discordUser.email,
                 });
                 user = await db.query.users.findFirst({
-                    where: (users) => eq(users.name, username),
+                    where: (users) =>
+                        eq(users.id, parseInt(insertedUser.insertId)),
                 });
 
                 await db.insert(userOAuthProviders).values({
@@ -133,13 +134,14 @@ export const authenticationRouter = router({
             const token = cryptoRandomString({ length: 64 });
             const expiresAt = addMonths(new Date(), 6);
 
-            await db.insert(userSessions).values({
+            const insertedSession = await db.insert(userSessions).values({
                 userId: user!.id,
                 token,
                 expiresAt,
             });
             const session = await db.query.userSessions.findFirst({
-                where: (sessions) => eq(sessions.token, token),
+                where: (sessions) =>
+                    eq(sessions.id, parseInt(insertedSession.insertId)),
             });
 
             const reqURL = new URL(opts.ctx.req.url);

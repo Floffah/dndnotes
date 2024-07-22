@@ -3,29 +3,11 @@
 @tailwind utilities;
 
 html {
-    @apply bg-gray-800 text-white;
+    @apply bg-gray-950 text-white;
 }
 
 @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
         display: none;
-    }
-
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @keyframes fadeOut {
-        0% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-        }
     }
 }

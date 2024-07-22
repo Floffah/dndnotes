@@ -1,16 +1,18 @@
 import clsx from "clsx";
 import { forwardRef } from "react";
 
-import { IconProps, LegacyIcon } from "@/client/LegacyIcon";
+import LoadingIcon from "~icons/mdi/loading";
+
+import { Icon, IconProps } from "@/client/Icon";
 
 export const Loader = forwardRef<
     SVGSVGElement,
     Omit<IconProps, "ref" | "label" | "icon">
 >(({ className, ...props }, ref) => {
     return (
-        <LegacyIcon
+        <Icon
             label="loading"
-            icon="mdi:loading"
+            icon={LoadingIcon}
             ref={ref}
             className={clsx("animate-spin", className)}
             {...props}

@@ -8,7 +8,12 @@ const commonOptions: Options = {
     dts: true,
     clean: false,
     sourcemap: true,
-    plugins: [Icons({})],
+    esbuildPlugins: [
+        Icons({
+            compiler: "jsx",
+            jsx: "react",
+        }),
+    ],
 };
 
 export default defineConfig([

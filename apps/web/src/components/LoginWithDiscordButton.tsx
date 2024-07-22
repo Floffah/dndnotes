@@ -2,8 +2,9 @@
 
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { ComponentProps, useEffect, useRef } from "react";
+
 import DiscordIcon from "~icons/ic/baseline-discord";
 import WarningIcon from "~icons/ic/round-warning-amber";
 import LoadingIcon from "~icons/mdi/loading";
@@ -14,9 +15,15 @@ import { api } from "@/lib/api";
 import { authenticateUser } from "@/lib/auth/authenticateUser";
 import { useUser } from "@/state/user";
 
-export function LoginWithDiscordButton() {
+export function LoginWithDiscordButton({
+    className,
+    disabled,
+    onClick,
+    ...props
+}: ComponentProps<"button">) {
     const trpcUtils = api.useUtils();
     const router = useRouter();
+    const pathName = usePathname();
 
     const user = useUser();
 
@@ -56,20 +63,24 @@ export function LoginWithDiscordButton() {
     }, [authenticateMutation, user.isAuthenticated, user.isLoading]);
 
     useEffect(() => {
-        if (!user.isLoading && user.isAuthenticated) {
+        if (!user.isLoading && user.isAuthenticated && pathName === "/") {
             router.push("/home");
         }
-    }, [router, user.isAuthenticated, user.isLoading]);
+    }, [pathName, router, user.isAuthenticated, user.isLoading]);
 
     useEffect(() => {
         if (authenticateMutation.isSuccess && !authenticateMutation.isError) {
             trpcUtils.user.me.setData(undefined, authenticateMutation.data!);
-            router.push("/home");
+
+            if (pathName === "/") {
+                router.push("/home");
+            }
         }
     }, [
         authenticateMutation.data,
         authenticateMutation.isError,
         authenticateMutation.isSuccess,
+        pathName,
         router,
         trpcUtils.user.me,
     ]);
@@ -81,15 +92,20 @@ export function LoginWithDiscordButton() {
         >
             <button
                 className={clsx(
-                    "flex items-center gap-2 rounded-lg p-2 opacity-100 transition-[transform,opacity] duration-150 hover:scale-110 disabled:cursor-not-allowed disabled:opacity-50",
+                    className,
+                    "flex items-center gap-2 rounded-lg p-2 opacity-100 transition-[transform,opacity] duration-150 disabled:cursor-not-allowed disabled:opacity-50",
                     {
                         "scale-90": isLoading,
+                        "hover:scale-110": !isLoading,
                         "bg-discord-blurple": !authenticateMutation.isError,
                         "bg-red-700": authenticateMutation.isError,
                     },
                 )}
-                onClick={() => authenticateMutation.mutate()}
-                disabled={isLoading}
+                onClick={(e) => {
+                    authenticateMutation.mutate();
+                    onClick?.(e);
+                }}
+                disabled={isLoading || disabled}
             >
                 <Icon
                     className={clsx("h-8 w-8", {

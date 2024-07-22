@@ -14,7 +14,8 @@
     "moduleResolution": "node",
 
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "~tests/*": ["tests/*"],
     },
     "baseUrl": ".",
     "rootDir": "src",

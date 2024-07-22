@@ -4,7 +4,7 @@ export function useUser() {
     const userQuery = api.user.me.useQuery();
 
     return {
-        ...(userQuery ?? {}),
+        ...(userQuery.data ?? {}),
         isLoading: userQuery.isLoading,
         isAuthenticated: !!userQuery.data,
     };

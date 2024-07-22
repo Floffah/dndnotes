@@ -13,14 +13,13 @@ export const userSessions = mysqlTable(
     {
         id: serial("id").primaryKey(),
         userId: int("user_id").notNull(),
-        token: varchar("token", { length: 256 }).notNull(),
+        token: varchar("token", { length: 256 }).notNull().unique(),
         expiresAt: datetime("expires_at").notNull(),
         lastUsedAt: datetime("last_used_at"),
     },
     (userSessions) => {
         return {
             userIdIndex: index("user_id_idx").on(userSessions.userId),
-            tokenIndex: uniqueIndex("token_idx").on(userSessions.token),
         };
     },
 );

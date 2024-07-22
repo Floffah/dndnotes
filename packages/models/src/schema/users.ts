@@ -7,22 +7,25 @@ import {
     varchar,
 } from "drizzle-orm/mysql-core";
 
+import { generatePublicId } from "@/lib";
+
 export const users = mysqlTable(
     "users",
     {
         id: serial("id").primaryKey(),
-        name: varchar("name", { length: 256 }).notNull(),
-        email: varchar("email", { length: 320 }),
+        publicId: varchar("public_id", { length: 36 })
+            .notNull()
+            .unique()
+            .$defaultFn(() => generatePublicId()),
+        name: varchar("name", { length: 256 }).notNull().unique(),
+        email: varchar("email", { length: 320 }).unique(),
         createdAt: datetime("created_at")
             .notNull()
             .default(sql`now()`),
         lastActiveAt: datetime("last_active_at").default(sql`now()`),
     },
     (users) => {
-        return {
-            nameIndex: uniqueIndex("name_idx").on(users.name),
-            emailIndex: uniqueIndex("email_idx").on(users.email),
-        };
+        return {};
     },
 );
 

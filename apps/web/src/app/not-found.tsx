@@ -3,6 +3,7 @@
 import emptyField from "@public/images/emptyField.png";
 import { animated, useSpringValue } from "@react-spring/web";
 import Image from "next/image";
+
 import HomeIcon from "~icons/mdi/home";
 
 import { Button } from "@dndnotes/components";
@@ -18,8 +19,8 @@ export default function NotFound() {
     useInverseParallax({
         maxBias: 20,
         onUpdate: (x, y) => {
-            translateX.set(x);
-            translateY.set(y);
+            translateX.start(x);
+            translateY.start(y);
         },
     });
 

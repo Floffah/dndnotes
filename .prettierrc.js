@@ -14,6 +14,7 @@ module.exports = {
     importOrder: [
         "reflect-metadata",
         "<THIRD_PARTY_MODULES>",
+        "^~icons/(.*)$",
         "^@dndnotes/(.*)$",
         "@/(.*)$",
     ],

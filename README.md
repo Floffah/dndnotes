@@ -2,18 +2,10 @@
 
 ## Development
 
-You need to have corepack enabled in your current node installation.
-Make sure you have node 21 installed and run the following in your terminal:
-
-```bash
-npm uninstall yarn -g
-corepack enable
-corepack install
-yarn exec env # <-- This should output a path to the yarn binary rather than a list of environment variables - if it doesn't consult the yarn docs https://yarnpkg.com/corepack
-yarn
-```
-
 ### Discord activity
+
+> [!NOTE]
+> Discord activity development is paused, this section is not necessary
 
 To get tunnels set up for your discord activity, you need to do the following:
 
@@ -41,19 +33,26 @@ Then link these domains to discord. In your developer dashboard, go to the "URL 
 
 #### Web
 
-- `DISCORD_CLIENT_SECRET` = discord oauth client secret
-- `MONGODB_URI` = mongodb connection string
-- `NEXT_PUBLIC_BASE_URL` = base url for the web server, should be `http://localhost:3000` in dev - in prod i have it set to `https://dndnotes.floffah.dev`
-- `NEXT_PUBLIC_DISCORD_CLIENT_ID` = discord oauth client id
-- `NEXT_PUBLIC_DISCORD_REDIRECT_URI` = discord oauth redirect uri, set to `http://localhost:3000/api/discord/redirect` in dev
+(Replace with correct values)
 
+```properties
+DISCORD_BOT_TOKEN="token"
+DISCORD_CLIENT_SECRET="secret"
+NEXT_PUBLIC_BASE_URL="https://dndnotes.app" # no trailing slash
+NEXT_PUBLIC_DISCORD_CLIENT_ID="client id"
+NEXT_PUBLIC_DISCORD_REDIRECT_URI="https://dndnotes.app/api/auth/callback/discord"
+PLANETSCALE_DB_HOST=aws.connect.psdb.cloud
+PLANETSCALE_DB_USERNAME=username
+PLANETSCALE_DB_PASSWORD=pscale_pw_somepassword
+PLANETSCALE_DB=dndnotes
+```
 #### Server
 
-- `MONGODB_URI_TESTS` = mongodb connection string for tests
+Only requires credentials for a test database, should NOT be a database used for production or local testing as it will unpredictably wipe data.
 
-#### Discord activity
-
-- `DISCORD_CLIENT_SECRET` = discord oauth client secret
-- `NEXT_PUBLIC_DISCORD_CLIENT_ID` = discord oauth client id
-- `NEXT_PUBLIC_BASE_URL` = should be set to `https://<discord client id>.discordsays.com` in all environments. discord proxies the prod deployment AND the development cloudflare tunnel
-- `NEXT_PUBLIC_FORCE_PROXIED_ICONS` = should always be `true` in all environments - forced iconify to use the iconify api through a discordsays.com proxied url mapping
+```properties
+TEST_DB_HOST=aws.connect.psdb.cloud
+TEST_DB_USERNAME=username
+TEST_DB_PASSWORD=pscale_pw_somepassword
+TEST_DB=dndnotes
+```

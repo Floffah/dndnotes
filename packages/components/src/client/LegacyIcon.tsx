@@ -10,11 +10,11 @@ import { forwardRef, useMemo } from "react";
 
 _api.setFetch(fetch);
 
-export interface IconProps extends IconifyIconProps {
+export interface LegacyIconProps extends IconifyIconProps {
     label: string;
 }
 
-export const LegacyIcon = forwardRef<SVGSVGElement, IconProps>(
+export const LegacyIcon = forwardRef<SVGSVGElement, LegacyIconProps>(
     ({ icon: propsIcon, label: propsLabel, ...props }, ref) => {
         const label = useMemo(() => {
             if (propsLabel.includes("icon")) {

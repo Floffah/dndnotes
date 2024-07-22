@@ -6,6 +6,9 @@ function* resolve<T>(input: Promise<T>): Generator<Promise<T>, T, T> {
     return yield input;
 }
 
+/**
+ * Should only be used if react-query is not an option.
+ */
 export function useAsyncEffect(
     effect: (context: {
         onCancel: (cleanup: () => void) => void;

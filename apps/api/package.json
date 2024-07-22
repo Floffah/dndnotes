@@ -18,23 +18,23 @@
     "@discordjs/rest": "^2.3.0",
     "@dndnotes/lib": "workspace:*",
     "@dndnotes/models": "workspace:*",
-    "@tiptap/core": "^2.4.0",
-    "@tiptap/pm": "^2.4.0",
-    "@trpc/server": "^11.0.0-rc.417",
+    "@tiptap/core": "^2.5.5",
+    "@tiptap/pm": "^2.5.5",
+    "@trpc/server": "^11.0.0-rc.444",
     "cookie": "^0.6.0",
     "crypto-random-string": "^5.0.0",
     "date-fns": "^3.6.0",
-    "discord-api-types": "^0.37.90",
-    "drizzle-orm": "^0.31.2",
+    "discord-api-types": "^0.37.93",
+    "drizzle-orm": "^0.32.0",
     "nanoid": "^5.0.7",
     "superjson": "^2.2.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/cookie": "^0.6.0",
-    "bun-types": "^1.1.15",
-    "tsup": "^8.1.0",
+    "bun-types": "^1.1.20",
+    "tsup": "^8.2.2",
     "tsc-alias": "^1.8.10",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   }
 }

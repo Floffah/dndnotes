@@ -7,7 +7,7 @@ const commonOptions: Options = {
     format: ["cjs", "esm"],
     dts: true,
     clean: false,
-    sourcemap: true,
+    // sourcemap: true,
     esbuildPlugins: [
         Icons({
             compiler: "jsx",

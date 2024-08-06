@@ -43,13 +43,15 @@ export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
         };
     }
 
-    db.update(users)
+    await db
+        .update(users)
         .set({
             lastActiveAt: new Date(),
         })
         .where(eq(users.id, session.userId));
 
-    db.update(userSessions)
+    await db
+        .update(userSessions)
         .set({
             lastUsedAt: new Date(),
         })

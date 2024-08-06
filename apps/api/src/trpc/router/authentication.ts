@@ -50,7 +50,6 @@ export const authenticationRouter = router({
                         "No access token provided",
                 });
             }
-            console.log(codeExchangeResponse);
 
             const accessToken = codeExchangeResponse.access_token;
 
@@ -62,7 +61,6 @@ export const authenticationRouter = router({
                     },
                 },
             ).then((res) => res.json());
-            console.log(discordUser);
 
             if (discordUser?.error || !discordUser?.id) {
                 throw new TRPCError({
@@ -97,6 +95,7 @@ export const authenticationRouter = router({
                     name: username,
                     email: discordUser.email,
                 });
+                console.log(insertedUser);
                 user = await db.query.users.findFirst({
                     where: (users) =>
                         eq(users.id, parseInt(insertedUser.insertId)),

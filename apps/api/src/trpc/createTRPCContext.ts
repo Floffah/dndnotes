@@ -32,11 +32,9 @@ export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
         };
     }
 
-    const session = await db.query.userSessions
-        .findFirst({
-            where: (userSessions) => eq(userSessions.token, token),
-        })
-        .catch(console.error);
+    const session = await db.query.userSessions.findFirst({
+        where: (userSessions) => eq(userSessions.token, token),
+    });
 
     if (!session) {
         return {

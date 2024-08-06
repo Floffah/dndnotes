@@ -40,8 +40,8 @@ export const authenticationRouter = router({
             ).then((res) => res.json());
 
             if (
-                codeExchangeResponse.error ||
-                !codeExchangeResponse.access_token
+                codeExchangeResponse?.error ||
+                !codeExchangeResponse?.access_token
             ) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
@@ -50,6 +50,7 @@ export const authenticationRouter = router({
                         "No access token provided",
                 });
             }
+            console.log(codeExchangeResponse);
 
             const accessToken = codeExchangeResponse.access_token;
 
@@ -61,8 +62,9 @@ export const authenticationRouter = router({
                     },
                 },
             ).then((res) => res.json());
+            console.log(discordUser);
 
-            if (discordUser.error || !discordUser.id) {
+            if (discordUser?.error || !discordUser?.id) {
                 throw new TRPCError({
                     code: "INTERNAL_SERVER_ERROR",
                     message:

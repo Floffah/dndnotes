@@ -14,7 +14,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 disabled={disabled}
                 className={clsx(
                     className,
-                    "rounded-lg border border-gray-700 bg-gray-800 px-2 py-1 placeholder-white/40 outline-none ring-0 transition-colors duration-150 focus:ring-1 focus:ring-offset-0",
+                    "rounded-lg border border-gray-700 bg-transparent px-2 py-1 placeholder-white/40 outline-none ring-0 transition-colors duration-150 focus:ring-1 focus:ring-offset-0",
                     {
                         "focus:border-blue-600 focus:ring-blue-600":
                             !error && !disabled,

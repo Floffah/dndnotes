@@ -10,7 +10,7 @@ import ChevronDownIcon from "~icons/mdi/chevron-down";
 import LoadingIcon from "~icons/mdi/loading";
 import LoginIcon from "~icons/mdi/login";
 
-import { DropdownMenu } from "@dndnotes/components";
+import { DropdownMenu, Icon } from "@dndnotes/components";
 
 import { useUser } from "@/state/user";
 
@@ -37,14 +37,18 @@ export function NavBar({ className }: { className?: string }) {
             <div className="flex-grow" />
 
             {user.isLoading && (
-                <LoadingIcon className="h-6 w-6 animate-spin text-white" />
+                <Icon
+                    icon={LoadingIcon}
+                    label="loading"
+                    className="h-6 w-6 animate-spin text-white"
+                />
             )}
             {!user.isAuthenticated && !user.isLoading && (
                 <Link
                     href="/?forceLogin"
                     className="flex items-center gap-2 rounded-lg border border-white/10 px-2 py-1 transition-[background-color,transform] duration-150 hover:scale-110 hover:bg-white/10"
                 >
-                    <LoginIcon />
+                    <Icon icon={LoginIcon} />
                     Login
                 </Link>
             )}
@@ -52,8 +56,8 @@ export function NavBar({ className }: { className?: string }) {
                 <>
                     <DropdownMenu>
                         <DropdownMenu.Trigger className="flex items-center rounded-lg border border-white/10 px-2 py-1 transition-colors duration-150 hover:bg-white/10">
-                            <AddIcon />
-                            <ChevronDownIcon />
+                            <Icon icon={AddIcon} label="add" />
+                            <Icon icon={ChevronDownIcon} label="dropdown" />
                         </DropdownMenu.Trigger>
                         <DropdownMenu.Content align="end">
                             <DropdownMenu.Item asChild>

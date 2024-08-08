@@ -18,8 +18,8 @@
     "@discordjs/rest": "^2.3.0",
     "@dndnotes/lib": "workspace:*",
     "@dndnotes/models": "workspace:*",
-    "@tiptap/core": "^2.5.8",
-    "@tiptap/pm": "^2.5.8",
+    "@tiptap/core": "^2.5.9",
+    "@tiptap/pm": "^2.5.9",
     "@trpc/server": "^11.0.0-rc.477",
     "cookie": "^0.6.0",
     "crypto-random-string": "^5.0.0",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@types/cookie": "^0.6.0",
-    "bun-types": "^1.1.21",
+    "bun-types": "^1.1.22",
     "tsup": "^8.2.4",
     "tsc-alias": "^1.8.10",
     "typescript": "^5.5.4"

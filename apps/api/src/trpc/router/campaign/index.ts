@@ -1,7 +1,9 @@
+import { TRPCError } from "@trpc/server";
 import { eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@dndnotes/models";
+import { campaignMembers, campaigns } from "@dndnotes/models";
 
 import { authedProcedure, router } from "@/trpc/trpc";
 
@@ -26,8 +28,33 @@ export const campaignRouter = router({
     create: authedProcedure
         .input(
             z.object({
-                name: z.string(),
+                name: z.string().min(5).max(50),
             }),
         )
-        .mutation(async (opts) => {}),
+        .mutation(async (opts) => {
+            const createCampaignResult = await db.insert(campaigns).values({
+                name: opts.input.name,
+                createdByUserId: opts.ctx.session.userId,
+            });
+            const campaignId = parseInt(createCampaignResult.insertId);
+
+            const campaign = await db.query.campaigns.findFirst({
+                where: (campaigns) => eq(campaigns.id, campaignId),
+            });
+
+            if (!campaign) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Campaign not found",
+                });
+            }
+
+            await db.insert(campaignMembers).values({
+                campaignId,
+                userId: opts.ctx.session.userId,
+                type: "DM",
+            });
+
+            return campaign.publicId;
+        }),
 });

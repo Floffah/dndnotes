@@ -32,7 +32,9 @@ export function NavBar({ className }: { className?: string }) {
                 className="h-8 w-8 rounded-lg"
             />
 
-            <h1 className="text-xl font-bold text-white">DNDNotes</h1>
+            <Link href="/home" className="text-xl font-bold text-white">
+                DNDNotes
+            </Link>
 
             <div className="flex-grow" />
 

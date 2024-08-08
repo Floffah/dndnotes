@@ -95,7 +95,6 @@ export const authenticationRouter = router({
                     name: username,
                     email: discordUser.email,
                 });
-                console.log(insertedUser);
                 user = await db.query.users.findFirst({
                     where: (users) =>
                         eq(users.id, parseInt(insertedUser.insertId)),
